@@ -1,67 +1,53 @@
 import React, { useState } from 'react';
-import {
-    SafeAreaView,
-    StyleSheet,
-    View,
-    Text,
-    TextInput,
-    Button
-} from 'react-native';
+import { View, SafeAreaView, Text, TextInput, Button } from 'react-native';
 
-import style from './style';
+const Login = (onPressLogin) => {
 
-const Login = ({ onLoginPress }) => {
-
-    const [userName, setUserName] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleUserNameChange = (e) => {
+    const [formState, setFormState] = useState({
+        message: '',
+        isLoggingIn: false
+    });
+
+    // const buttonState = formState.isLoggingIn || !user.username || !user.password;
+
+    // const handleChange = e => {
+    //     console.log(e.target);
+    //     setUser({ ...user, [e.target.id]: e.target.value });
+    // };
+
+    const handleLogin = e => {
         e.preventDefault();
-        setUserName(e.username.value);
+        console.log("User" + username);
     }
-
-    const handlePasswordChange = (e) => {
-        e.preventDefault();
-        setPassword(e.password.value);
-    };
-
-    const handleLogin = (e) => {
-        e.preventDefault();
-        // api call to login (userName, password) => token via SSL
-        // if(authored)
-        onLoginPress();
-    };
-
 
     return (
         <SafeAreaView>
-            <Text style={style.loginText}>
-                Login
-            </Text>
-
-            <TextInput
-                style={style.input}
-                placeholder='Username'
-                name='username'
-                onChange={e => handleUserNameChange(e)}
-                value={userName}
-            />
-            <TextInput
-                style={style.input}
-                placeholder='Password'
-                name='password'
-                onChange={e => handlePasswordChange(e)}
-                value={password}
-            />
-            <View style={{ margin: 7 }} />
-            <Button
-                onPress={e => handleLogin(e)}
-                title="Submit"
-            />
+            <View>
+                <Text>
+                    Login page
+                </Text>
+                <TextInput
+                    placeholder='Username'
+                    onChangeText={(username => setUsername(username))}
+                    value={username}
+                />
+                <TextInput
+                    placeholder='Password'
+                    onChangeText={password => setPassword(password)}
+                />
+                <Button
+                    onPress={e => handleLogin(e)}
+                    title='Login'
+                // disabled={buttonState}
+                />
+                <Button title='Sign Up' />
+            </View>
         </SafeAreaView>
-    )
-};
 
+    )
+}
 
 export default Login;
-
