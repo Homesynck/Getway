@@ -6,7 +6,13 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+// import {
+//   SafeAreaView,
+//   View,
+//   StatusBar,
+// } from 'react-native';
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,6 +22,7 @@ import {
   StatusBar,
 } from 'react-native';
 
+
 import {
   Header,
   LearnMoreLinks,
@@ -24,7 +31,18 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const App: () => React$Node = () => {
+import Login from './src/components/Login/Login';
+import Dashboard from './src/components/Dashboard/Dashboard';
+
+
+const App = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+
+  }, []);
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -33,41 +51,19 @@ const App: () => React$Node = () => {
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
+          <View>
+            <Login />
           </View>
         </ScrollView>
       </SafeAreaView>
+      {/* <StatusBar barStyle="dark-content" />
+      <SafeAreaView>
+        <View>
+          {isLoggedIn ? <Login onPressLogin={() => setIsLoggedIn(true)} />
+            : <Dashboard />
+          }
+        </View>
+      </SafeAreaView> */}
     </>
   );
 };
