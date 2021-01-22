@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 
 import {
-    AppRegistry,
     SafeAreaView,
-    StyleSheet,
-    ScrollView,
-    View,
-    Text,
-    StatusBar,
 } from 'react-native';
 
 import Login from './components/Login/Login';
@@ -20,10 +14,14 @@ const Getway = () => {
     return (
         <>
             <SafeAreaView>
-                <Login onLoginPress={() => this.setIsLoggedIn(true)} />
+                {
+                    isLoggedIn ? <Dasbhoard />
+                        : <Login onLoginPress={() => setIsLoggedIn(true)}
+                        />}
             </SafeAreaView>
         </>
-
     )
 };
+
+export default Getway;
 
