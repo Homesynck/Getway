@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
 
-import React, { useState, useEffect } from 'react';
-// import {
-//   SafeAreaView,
-//   View,
-//   StatusBar,
-// } from 'react-native';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,10 +12,6 @@ import {
 
 import {
   Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
 import Login from './src/components/Login/Login';
@@ -33,17 +22,13 @@ const App = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(() => {
-
-  }, []);
 
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
         <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
+          contentInsetAdjustmentBehavior="automatic">
           <Header />
           <View>
             <Login />
@@ -60,17 +45,6 @@ const App = () => {
       </SafeAreaView> */}
     </>
   );
-};
-
-return (
-  <>
-    <SafeAreaView>
-      {isLoggedIn ? <Dashboard />
-        : <Login onLoginPress={() => setIsLoggedIn(true)} />
-      }
-    </SafeAreaView>
-  </>
-)
 };
 
 export default App;
