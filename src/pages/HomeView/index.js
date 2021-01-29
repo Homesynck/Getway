@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
 
-const Dashboard = () => {
+const HomeView = () => {
     return (
         <SafeAreaView>
 
@@ -9,4 +9,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard;
+export default HomeView;
