@@ -14,8 +14,7 @@ import {
   Header,
 } from 'react-native/Libraries/NewAppScreen';
 
-import Login from './src/pages/Login/Login';
-import Dashboard from './src/components/Dashboard/Dashboard';
+import Login from './src/pages/LoginView';
 
 
 const App = () => {
