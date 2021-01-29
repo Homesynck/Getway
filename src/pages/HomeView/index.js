@@ -1,6 +1,5 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { Text } from 'react-native';
 
 import Contact from '../../components/Contact';
 
@@ -13,4 +12,4 @@ const Home = () => {
     )
 }
 
-export default Home;
+export default HomeView;
