@@ -10,16 +10,6 @@ const ForgotPassword = (onPressForgotPassword) => {
         isLoggingIn: false
     });
 
-<<<<<<< HEAD
-=======
-    // const buttonState = formState.isLoggingIn || !user.username || !user.password;
-
-    // const handleChange = e => {
-    //     console.log(e.target);
-    //     setUser({ ...user, [e.target.id]: e.target.value });
-    // };
-
->>>>>>> d0d8259d02d172ae62b619e5c34f5beff9976be8
     return (
         <SafeAreaView>
             <View>
