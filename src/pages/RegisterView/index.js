@@ -14,7 +14,7 @@ const RegisterNumber = (switchStep) => {
             />
             <AppButton text="Register you phone number" onPress={switchStep(2)} />
             <Text>Login</Text>
-            <Text>Forget</Text>
+
         </View>
     )
 
