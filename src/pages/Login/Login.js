@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, SafeAreaView, Text, TextInput, Button } from 'react-native';
 
-const Login = (onPressLogin) => {
+const Login = ({ navigation }) => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -39,7 +39,8 @@ const Login = (onPressLogin) => {
                     onChangeText={password => setPassword(password)}
                 />
                 <Button
-                    onPress={e => handleLogin(e)}
+                    // onPress={e => handleLogin(e)}
+                    onPress={() => navigation.navigate('Dashboard')}
                     title='Login'
                 // disabled={buttonState}
                 />
