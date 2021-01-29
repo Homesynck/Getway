@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { Text } from 'react-native';
 
-const Dashboard = () => {
+const HomeView = () => {
     return (
         <SafeAreaView>
             <Text>Dashboard</Text>
@@ -10,4 +10,4 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard;
+export default HomeView;
