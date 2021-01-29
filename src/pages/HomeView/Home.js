@@ -2,12 +2,12 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { Text } from 'react-native';
 
-const HomeView = () => {
+const Home = () => {
     return (
         <SafeAreaView>
-            <Text>Dashboard</Text>
+            <Text>Home</Text>
         </SafeAreaView>
     )
 }
 
-export default HomeView;
+export default Home;

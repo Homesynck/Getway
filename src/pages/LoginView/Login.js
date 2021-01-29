@@ -40,11 +40,14 @@ const Login = ({ navigation }) => {
                 />
                 <Button
                     // onPress={e => handleLogin(e)}
-                    onPress={() => navigation.navigate('Dashboard')}
+                    onPress={() => navigation.navigate('Home')}
                     title='Login'
                 // disabled={buttonState}
                 />
-                <Button title='Sign Up' />
+                <Button 
+                    onPress={() => navigation.navigate('Register')}
+                    title='Sign Up' 
+                />
             </View>
         </SafeAreaView>
 
