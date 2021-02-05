@@ -1,4 +1,5 @@
 import React from "react";
+import { View, TextInput } from 'react-native';
 
 const AppInput = ({value, placeHolder, onChange}) => {
 
@@ -14,15 +15,14 @@ const AppInput = ({value, placeHolder, onChange}) => {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        value={{value}}
+    <View>
+      <TextInput
+        value={value}
         onChangeText={onChange}
-        placeHolder={{placeHolder}}
+        placeHolder={placeHolder}
       />
-      <p>// place for errors</p>
-    </div>
+      {/* <p>// place for errors</p> */}
+    </View>
   );
 };
 
