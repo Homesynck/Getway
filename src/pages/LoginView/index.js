@@ -15,7 +15,7 @@ const Login = ({ navigation }) => {
         isLoggingIn: false
     });
 
-    const buttonState = formState.isLoggingIn || !user.username || !user.password;
+    const buttonState = formState.isLoggingIn || !username || !password;
 
     // const handleChange = e => {
     //     console.log(e.target);
