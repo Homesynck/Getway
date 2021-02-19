@@ -3,6 +3,8 @@ import { ScrollView, SafeAreaView, StyleSheet, View, Text, TextInput, Button } f
 
 import { Sizing, Typography, Outlines, Colors, Buttons } from "../../styles"
 
+import { login } from "../../modules";
+
 const Login = ({ navigation }) => {
 
     const [username, setUsername] = useState('');
@@ -13,20 +15,27 @@ const Login = ({ navigation }) => {
         isLoggingIn: false
     });
 
-    // const buttonState = formState.isLoggingIn || !user.username || !user.password;
+    const buttonState = formState.isLoggingIn || !user.username || !user.password;
 
     // const handleChange = e => {
     //     console.log(e.target);
     //     setUser({ ...user, [e.target.id]: e.target.value });
     // };
 
-    const handleLogin = e => {
+    const handleLogin = async e => {
         e.preventDefault();
+        setFormState(...formState, isLoggingIn = true);
         console.log("User" + username);
+
+        try {
+            const res = await login({username, password});
+            navigation.navigate('Home');
+        } catch (error) {
+            setFormState(...formState, message = error); 
+        }
     }
 
     return (
-        <SafeAreaView>
             <ScrollView contentContainerStyle={style.contentContainer}>
                 <View style={style.sectionContainer}>
                     <View style={style.container}>
@@ -51,10 +60,9 @@ const Login = ({ navigation }) => {
                         onChangeText={password => setPassword(password)}
                     />
                     <Button
-                        // onPress={e => handleLogin(e)}
-                        onPress={() => navigation.navigate('Home')}
+                        onPress={e => handleLogin(e)}
                         title='Login'
-                    // disabled={buttonState}
+                        // disabled={buttonState}
                     />
                     <Button 
                         onPress={() => navigation.navigate('Register')}
@@ -62,7 +70,6 @@ const Login = ({ navigation }) => {
                     />
                 </View>
             </ScrollView>
-        </SafeAreaView>
     )
 }
 
@@ -92,6 +99,6 @@ const style = StyleSheet.create({
       subheaderText: {
         ...Typography.header.x20,
       },
-})
+});
 
 export default Login;

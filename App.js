@@ -2,22 +2,15 @@ import 'react-native-gesture-handler';
 import React, { useState } from 'react';
 
 import Root from './Root';
-import { NativeModules } from 'react-native'
+import { NativeModules, SafeAreaView } from 'react-native'
 
 const App = () => {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const { Getway } = NativeModules;
-
-  const sayHiFromJava = async () => {
-    Getway.sayHi((err) => { console.log(err) }, (msg) => { console.log(msg) });
-  };
-
-  sayHiFromJava();
-
   return (
-    <Root />
+    <SafeAreaView>
+          <Root />
+    </SafeAreaView>
+
     // <StatusBar barStyle="dark-content" />
     // <SafeAreaView>
     //   <ScrollView
