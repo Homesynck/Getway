@@ -1,11 +1,13 @@
-import {NativeModules} from 'react-native';
+import { NativeModules } from 'react-native';
 
-const { Getway } = NativeModules;
+const { SignIn } = NativeModules;
 
-export const login = async credentials => {
+export const login = async (username, password) => {
     try {
-        return await Getway.connect(username, password) //TODO call java method
+        console.log("Hello i'm here !");
+        const signin = await SignIn.signIn(username, password); //TODO call java method
+        console.log(signin);
     } catch (error) {
-        return error;
+        console.log(error);
     }
 };

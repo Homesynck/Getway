@@ -207,6 +207,17 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+    implementation('com.neovisionaries:nv-websocket-client:2.12')
+
+    // JSON handling
+    implementation("com.github.openjson:openjson:1.0.11")
+
+    // Phoenix Channel Client
+    implementation("ch.kuon.phoenix:channel:0.1.6")
+
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.30'
 }
 
 // Run this once to be able to run the application with BUCK

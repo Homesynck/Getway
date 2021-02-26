@@ -3,7 +3,7 @@ import { ScrollView, SafeAreaView, StyleSheet, View, Text, TextInput, Button } f
 
 import { Sizing, Typography, Outlines, Colors, Buttons } from "../../styles"
 
-import { login } from "../../modules";
+import { login, onPress } from "../../modules";
 
 const Login = ({ navigation }) => {
 
@@ -22,54 +22,60 @@ const Login = ({ navigation }) => {
     //     setUser({ ...user, [e.target.id]: e.target.value });
     // };
 
-    const handleLogin = async e => {
+    const handleLogin = e => {
         e.preventDefault();
-        setFormState(...formState, isLoggingIn = true);
-        console.log("User" + username);
+        const formState_tmp = {
+            message: formState.message,
+            isLoggingIn: true
+        };
+
+        setFormState(formState_tmp);
+        console.log("User -> " + username);
 
         try {
-            const res = await login({username, password});
+            login(username, password);
             navigation.navigate('Home');
         } catch (error) {
-            setFormState(...formState, message = error); 
+            console.log(error);
+            setFormState(...formState, message = error);
         }
     }
 
     return (
-            <ScrollView contentContainerStyle={style.contentContainer}>
-                <View style={style.sectionContainer}>
-                    <View style={style.container}>
-                        <View style={style.headerContainer}>
-                            <Text style={style.headerText}>
-                                Getway
+        <ScrollView contentContainerStyle={style.contentContainer}>
+            <View style={style.sectionContainer}>
+                <View style={style.container}>
+                    <View style={style.headerContainer}>
+                        <Text style={style.headerText}>
+                            Getway
                             </Text>
-                            <Text style={style.subheaderText}>
-                                Sign in to your account
+                        <Text style={style.subheaderText}>
+                            Sign in to your account
                             </Text>
-                        </View>
                     </View>
                 </View>
-                <View style={style.sectionContainer}>
-                    <TextInput
-                        placeholder='Username'
-                        onChangeText={(username => setUsername(username))}
-                        value={username}
-                    />
-                    <TextInput
-                        placeholder='Password'
-                        onChangeText={password => setPassword(password)}
-                    />
-                    <Button
-                        onPress={e => handleLogin(e)}
-                        title='Login'
-                        // disabled={buttonState}
-                    />
-                    <Button 
-                        onPress={() => navigation.navigate('Register')}
-                        title='Sign Up' 
-                    />
-                </View>
-            </ScrollView>
+            </View>
+            <View style={style.sectionContainer}>
+                <TextInput
+                    placeholder='Username'
+                    onChangeText={(username => setUsername(username))}
+                    value={username}
+                />
+                <TextInput
+                    placeholder='Password'
+                    onChangeText={password => setPassword(password)}
+                />
+                <Button
+                    onPress={e => handleLogin(e)}
+                    title='Login'
+                // disabled={buttonState}
+                />
+                <Button
+                    onPress={() => navigation.navigate('Register')}
+                    title='Sign Up'
+                />
+            </View>
+        </ScrollView>
     )
 }
 
@@ -85,20 +91,20 @@ const style = StyleSheet.create({
     },
     container: {
         marginBottom: Sizing.x80,
-      },
-      headerContainer: {
+    },
+    headerContainer: {
         marginBottom: Sizing.x20,
         paddingBottom: Sizing.x20,
         borderBottomWidth: Outlines.borderWidth.thin,
         borderColor: Colors.neutral.s100,
-      },
-      headerText: {
+    },
+    headerText: {
         ...Typography.header.x60,
         marginBottom: Sizing.x10,
-      },
-      subheaderText: {
+    },
+    subheaderText: {
         ...Typography.header.x20,
-      },
+    },
 });
 
 export default Login;
