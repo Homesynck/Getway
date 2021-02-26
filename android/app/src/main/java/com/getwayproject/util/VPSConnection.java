@@ -16,6 +16,7 @@ public class VPSConnection {
     }
 
     private static void newSocket() {
+
         Socket.Options opts = new Socket.Options();
         opts.setTimeout(5000);
         opts.setHeartbeatIntervalMs(100000);
