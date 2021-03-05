@@ -1,26 +1,34 @@
 import React, { useState } from 'react'
-import { SafeAreaView, Text, TextInput, Button, View } from 'react-native';
+import { SafeAreaView, ScrollView, View } from 'react-native';
+
+import { Button, Input, Text } from '@ui-kitten/components';
 
 const RegisterNumber = ({user, update, nextStep}) => {
 
     const [number, setNumber] = useState("");
 
     return (
-        <View>
-            <TextInput
-            placeholder='Enter your phone number'
-            onChangeText={number => setNumber(number)}
-            value={number}
-            />
-            <Button 
-            onPress={() => {
-                user.phone = number
-                update(user)
-                nextStep()
-            }}
-            title='Register you phone number' 
-            />
-        </View>
+        <ScrollView>
+            <View>
+                <Text category='h3'>Vérification du numéro de téléphone</Text>
+                <Text category='s1'>Nous vous enverrons un code!</Text>
+            </View>
+            <View>
+                <Input
+                placeholder='Numéro de téléphone'
+                onChangeText={number => setNumber(number)}
+                value={number}
+                />
+                <Button 
+                onPress={() => {
+                    user.phone = number
+                    update(user)
+                    nextStep()
+                }}>
+                    Valider
+                </Button>
+            </View>
+        </ScrollView>
     )
 };
 
@@ -30,15 +38,15 @@ const VerifyNumber = ({nextStep}) => {
 
     return (
         <View>
-            <TextInput
-            placeholder='Enter you verify code'
+            <Input
+            placeholder='----'
             onChangeText={code => setCode(code)}
             value={code}
             />
             <Button 
-            onPress={() => nextStep()}
-            title='Verify my phone number' 
-            />
+            onPress={() => nextStep()}>
+                Vérifier mon numéro
+            </Button>
         </View>
     )
 };
@@ -46,9 +54,10 @@ const VerifyNumber = ({nextStep}) => {
 const RegisterInformation = ({user, update, nextStep}) => {
     return (
         <View>
-            <TextInput
+            <Text category='h3'>INSCRIPTION</Text>
+            <Input
                 value={user.username}
-                placeholder="Enter an username"
+                placeholder="Identifiant"
                 onChangeText={
                     username => {
                         let tempUser = {...user}
@@ -57,9 +66,9 @@ const RegisterInformation = ({user, update, nextStep}) => {
                     }
                 }
             />
-            <TextInput
+            <Input
                 value={user.email}
-                placeholder="Enter you email"
+                placeholder="Email"
                 onChangeText={
                     email => {
                         let tempUser = {...user}
@@ -69,9 +78,9 @@ const RegisterInformation = ({user, update, nextStep}) => {
                 }
             />
             <View>
-                <TextInput
+                <Input
                     value={user.password}
-                    placeholder="Enter a password"
+                    placeholder="Mot de passe"
                     onChangeText={
                         password => {
                             let tempUser = {...user}
@@ -85,9 +94,9 @@ const RegisterInformation = ({user, update, nextStep}) => {
                 )}
             </View>
             <View>
-                <TextInput
+                <Input
                     value={user.password2}
-                    placeholder="Retype your password"
+                    placeholder="Confirmation du mot de passe"
                     onChangeText={
                         password2 => {
                             let tempUser = {...user}
@@ -100,10 +109,12 @@ const RegisterInformation = ({user, update, nextStep}) => {
                     <Text>You have to enter the same password</Text>
                 )}
             </View>
-            <Button title="Confirm my registration" onPress={() => {
+            <Button
+            onPress={() => {
                     nextStep()
-                }}
-            />
+                }}>
+                Valider
+            </Button>
         </View>
     )
 };

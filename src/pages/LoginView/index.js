@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text, TextInput, Button } from 'react-native';
+import { SafeAreaView } from 'react-native';
 
-import { style } from "./style.js";
+import { Button, Input, Icon, Text, Layout } from '@ui-kitten/components';
 
 import { login } from "../../modules";
+
+const NextArrowIcon = (props) => (
+    <Icon name='arrow-forward' {...props} />
+);
+
+const NextButton = ({ onPress, title }) => (
+    <Button accessoryRight={NextArrowIcon} onPress={onPress}>
+        {title}
+    </Button>
+);
 
 const Login = ({ navigation }) => {
 
@@ -37,41 +47,34 @@ const Login = ({ navigation }) => {
     }
 
     return (
-        <ScrollView contentContainerStyle={style.contentContainer}>
-            <View style={style.sectionContainer}>
-                <View style={style.container}>
-                    <View style={style.headerContainer}>
-                        <Text style={style.headerText}>
-                            Getway
-                            </Text>
-                        <Text style={style.subheaderText}>
-                            Sign in to your account
-                            </Text>
-                    </View>
-                </View>
-            </View>
-            <View style={style.sectionContainer}>
-                <TextInput
-                    placeholder='Username'
+        <SafeAreaView style={{ flex: 1 }}>
+            <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
+                <Text category='h1'>GETWAY</Text>
+                <Text category='s1'>Bon retour parmis nous!</Text>
+
+                <Input
+                    placeholder='Identifiant'
                     onChangeText={(username => setUsername(username))}
                     value={username}
                 />
-                <TextInput
-                    placeholder='Password'
+                <Input
+                    placeholder='Mot de passe'
                     onChangeText={password => setPassword(password)}
                 />
-                <Button
-                    onPress={e => handleLogin(e)}
-                    title='Login'
+                <NextButton
+                    // onPress={e => handleLogin(e)}
+                    onPress={() => navigation.navigate('Home')}
+                    title='Connexion'
                 // disabled={buttonState}
                 />
-                <Button
+                <NextButton
                     onPress={() => navigation.navigate('Register')}
-                    title='Sign Up'
+                    title='Inscription'
                 />
-            </View>
-        </ScrollView>
+            </Layout>
+        </SafeAreaView>
     )
-};
+}
 
 export default Login;
