@@ -23,5 +23,6 @@
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
-
+    <uses-feature android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-feature android:name="android.permission.READ_CONTACTS"/>
 </manifest>
