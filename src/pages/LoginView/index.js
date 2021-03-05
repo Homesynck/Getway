@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { ScrollView, SafeAreaView, StyleSheet, View, Text, TextInput, Button } from 'react-native';
+import { ScrollView, View, Text, TextInput, Button } from 'react-native';
 
-import { Sizing, Typography, Outlines, Colors, Buttons } from "../../styles"
+import { style } from "./style.js";
 
-import { login, onPress } from "../../modules";
+import { login } from "../../modules";
 
 const Login = ({ navigation }) => {
 
@@ -17,11 +17,6 @@ const Login = ({ navigation }) => {
 
     const buttonState = formState.isLoggingIn || !username || !password;
 
-    // const handleChange = e => {
-    //     console.log(e.target);
-    //     setUser({ ...user, [e.target.id]: e.target.value });
-    // };
-
     const handleLogin = e => {
         e.preventDefault();
         const formState_tmp = {
@@ -30,15 +25,15 @@ const Login = ({ navigation }) => {
         };
 
         setFormState(formState_tmp);
-        console.log("User -> " + username);
 
-        try {
-            login(username, password);
-            navigation.navigate('Home');
-        } catch (error) {
-            console.log(error);
-            setFormState(...formState, message = error);
-        }
+        login(username, password)
+            .then(() => {
+                navigation.navigate('Home');
+            })
+            .catch(error => {
+                console.log(error.message);
+                setFormState(...formState, message = error.message);
+            });
     }
 
     return (
@@ -77,34 +72,6 @@ const Login = ({ navigation }) => {
             </View>
         </ScrollView>
     )
-}
-
-const style = StyleSheet.create({
-    contentContainer: {
-        padding: Sizing.x20,
-    },
-    sectionContainer: {
-        borderBottomWidth: Outlines.borderWidth.thin,
-        borderColor: Colors.neutral.s100,
-        paddingBottom: Sizing.x20,
-        marginBottom: Sizing.x20,
-    },
-    container: {
-        marginBottom: Sizing.x80,
-    },
-    headerContainer: {
-        marginBottom: Sizing.x20,
-        paddingBottom: Sizing.x20,
-        borderBottomWidth: Outlines.borderWidth.thin,
-        borderColor: Colors.neutral.s100,
-    },
-    headerText: {
-        ...Typography.header.x60,
-        marginBottom: Sizing.x10,
-    },
-    subheaderText: {
-        ...Typography.header.x20,
-    },
-});
+};
 
 export default Login;

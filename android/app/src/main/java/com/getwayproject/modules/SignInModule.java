@@ -61,12 +61,12 @@ public class SignInModule extends ReactContextBaseJavaModule {
 
 
         ch.push("login", connectionParams,socket.getOpts().getTimeout()).receive("ok", (msg) -> {
-            System.out.println("Connection réussie : " + msg.toString());
+            Log.d("CONNECTION SUCCESS", msg.toString());
             promiseConnected.resolve(msg);
 
             return null;
         }).receive("error", (msg) -> {
-            System.out.println("ERREUR : " + msg);
+            Log.d("ERROR", msg.toString());
             promiseConnected.reject("server", new JSONObject(msg).getString("reason"));
             return null;
         });
