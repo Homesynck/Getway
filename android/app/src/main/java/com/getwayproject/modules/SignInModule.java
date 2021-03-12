@@ -31,13 +31,6 @@ public class SignInModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void signIn(String username, String password, Promise promiseConnected) {
-
-        try {
-            Class.forName("com.getwayproject.util.VPSConnection");
-        }catch (ClassNotFoundException e) {
-            Log.d("VPSConnection Handler ->",
-                    "Can't load VPSConnection class : Error ->" + e.getMessage());
-        }
         
         Socket socket = VPSConnection.getSocket();
         System.out.println(socket);

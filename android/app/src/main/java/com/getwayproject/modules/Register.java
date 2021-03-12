@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
 import com.getwayproject.util.VPSConnection;
 import com.github.openjson.JSONObject;
 
@@ -22,17 +23,13 @@ public class Register extends ReactContextBaseJavaModule {
     @NonNull
     @Override
     public String getName() {
-        return "SignUp";
+        return "Register";
     }
 
-    public void signup(String username, String password, String phoneNumber, Promise promiseConnected){
 
-        try{
-            Class.forName("com.getwayproject.util.VPSConnection");
-        }catch (ClassNotFoundException e){
-            Log.d("VPSConnectionHandler ->",
-                    "Can't load VPSConnection class : Error ->" + e.getMessage());
-        }
+
+    @ReactMethod
+    public void signup(String username, String password, Promise promiseConnected){
 
         Socket socket = VPSConnection.getSocket();
         System.out.println(socket);
@@ -40,9 +37,9 @@ public class Register extends ReactContextBaseJavaModule {
         Channel ch = socket.channel("auth:lobby", new JSONObject());
 
         JSONObject connectionparams = new JSONObject();
+        connectionparams.accumulate("register_tocken", "ceci_est_un_tocken");
         connectionparams.accumulate("login", username);
         connectionparams.accumulate("password", password);
-        connectionparams.accumulate("phone", phoneNumber);
 
 
         ch.push("register", connectionparams, socket.getOpts().getTimeout()).receive("ok", (msg ->{
@@ -54,6 +51,27 @@ public class Register extends ReactContextBaseJavaModule {
             System.out.println("ERREUR : " + msg);
             promiseConnected.reject("server", new JSONObject(msg).getString("reason"));
 
+            return null;
+        });
+    }
+
+    @ReactMethod
+    public void sendPhoneNumber(String phoneNumber, Promise promisePhoneSend){
+        Socket socket = VPSConnection.getSocket();
+        System.out.println(socket);
+
+        Channel ch = socket.channel("auth:lobby", new JSONObject());
+
+        JSONObject jsonPhoneNumber = new JSONObject();
+        jsonPhoneNumber.accumulate("phone", phoneNumber);
+
+        ch.push("phone", jsonPhoneNumber, socket.getOpts().getTimeout()).receive("ok", (msg) ->{
+            Log.d("Telephone envoyé", msg.toString());
+            promisePhoneSend.resolve(msg);
+            return null;
+        }).receive("error", (msg) -> {
+            Log.d("ERROR", msg.toString());
+            promisePhoneSend.reject("server", new JSONObject(msg).getString("reason"));
             return null;
         });
     }

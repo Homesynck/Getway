@@ -7,11 +7,10 @@ import ch.kuon.phoenix.Socket;
 public class VPSConnection {
     private static Socket socket;
 
-    static {
-        newSocket();
-    }
-
     public static Socket getSocket(){
+        if (socket == null){
+            newSocket();
+        }
         return socket;
     }
 
