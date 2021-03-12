@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.getwayproject.util.VPSConnection;
+import com.github.openjson.JSONArray;
 import com.github.openjson.JSONObject;
 
 import ch.kuon.phoenix.Channel;
@@ -38,6 +39,11 @@ public class Register extends ReactContextBaseJavaModule {
 
         Channel ch = socket.channel("auth:lobby", new JSONObject());
 
+        ch.join(100).receive("ok", (msg) -> {
+            JSONArray jsonA = msg.getJSONArray("nom");
+            return null;
+        });
+
         JSONObject connectionparams = new JSONObject();
         connectionparams.accumulate("register_tocken", "ceci_est_un_tocken");
         connectionparams.accumulate("login", username);
@@ -63,6 +69,11 @@ public class Register extends ReactContextBaseJavaModule {
         Log.i(TAG, socket.toString());
 
         Channel ch = socket.channel("auth:lobby", new JSONObject());
+
+        ch.join(100).receive("ok", (msg) -> {
+            JSONArray jsonA = msg.getJSONArray("nom");
+            return null;
+        });
 
         JSONObject jsonPhoneNumber = new JSONObject();
         jsonPhoneNumber.accumulate("phone", phoneNumber);

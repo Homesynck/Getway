@@ -43,7 +43,6 @@ public class SignInModule extends ReactContextBaseJavaModule {
         ch.on("new_msg", (msg) -> {
             Log.i(TAG, msg.toString());
             return null;
-
         });
         ch.join(100).receive("ok", (msg) -> {
             JSONArray jsonA = msg.getJSONArray("nom");
