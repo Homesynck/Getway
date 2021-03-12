@@ -32,7 +32,7 @@ public class VPSConnection {
         params.put("user_token", "supersecret");
         opts.setParams(params); // params
 
-        socket = new Socket("ws://149.202.42.98:4000/socket", opts);
+        socket = new Socket("wss://homesynck.anicetnougaret.fr/socket", opts);
         socket.connect();
 
         System.out.println("Socket instanciation ->" +socket.toString());

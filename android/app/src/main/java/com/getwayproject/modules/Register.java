@@ -13,9 +13,9 @@ import com.github.openjson.JSONObject;
 import ch.kuon.phoenix.Channel;
 import ch.kuon.phoenix.Socket;
 
-public class SignUpModule extends ReactContextBaseJavaModule {
+public class Register extends ReactContextBaseJavaModule {
 
-    public SignUpModule(ReactApplicationContext applicationContext){
+    public Register(ReactApplicationContext applicationContext){
         super(applicationContext);
     }
 
