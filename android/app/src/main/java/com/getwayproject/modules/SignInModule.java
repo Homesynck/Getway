@@ -19,6 +19,8 @@ import ch.kuon.phoenix.Socket;
 
 public class SignInModule extends ReactContextBaseJavaModule {
 
+    private final String TAG = "signin";
+
     public SignInModule(ReactApplicationContext reactContext){
         super(reactContext);
     }
@@ -33,13 +35,13 @@ public class SignInModule extends ReactContextBaseJavaModule {
     public void signIn(String username, String password, Promise promiseConnected) {
         
         Socket socket = VPSConnection.getSocket();
-        System.out.println(socket);
+        Log.i(TAG, socket.toString());
 
         Channel ch = socket.channel("auth:lobby", new JSONObject());
 
 
         ch.on("new_msg", (msg) -> {
-            System.out.println(msg.toString());
+            Log.i(TAG, msg.toString());
             return null;
 
         });
@@ -54,12 +56,12 @@ public class SignInModule extends ReactContextBaseJavaModule {
 
 
         ch.push("login", connectionParams,socket.getOpts().getTimeout()).receive("ok", (msg) -> {
-            Log.d("CONNECTION SUCCESS", msg.toString());
+            Log.d(TAG, msg.toString());
             promiseConnected.resolve(msg);
 
             return null;
         }).receive("error", (msg) -> {
-            Log.d("ERROR", msg.toString());
+            Log.e(TAG, msg.toString());
             promiseConnected.reject("server", new JSONObject(msg).getString("reason"));
             return null;
         });

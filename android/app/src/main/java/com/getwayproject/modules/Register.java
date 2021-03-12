@@ -16,6 +16,8 @@ import ch.kuon.phoenix.Socket;
 
 public class Register extends ReactContextBaseJavaModule {
 
+    private final String TAG = "register";
+
     public Register(ReactApplicationContext applicationContext){
         super(applicationContext);
     }
@@ -32,7 +34,7 @@ public class Register extends ReactContextBaseJavaModule {
     public void signup(String username, String password, Promise promiseConnected){
 
         Socket socket = VPSConnection.getSocket();
-        System.out.println(socket);
+        Log.i(TAG, socket.toString());
 
         Channel ch = socket.channel("auth:lobby", new JSONObject());
 
@@ -43,12 +45,12 @@ public class Register extends ReactContextBaseJavaModule {
 
 
         ch.push("register", connectionparams, socket.getOpts().getTimeout()).receive("ok", (msg ->{
-            System.out.println("Connection réussie : " + msg.toString());
+            Log.d(TAG, msg.toString());
             promiseConnected.resolve(msg);
 
             return null;
         })).receive("error", (msg) -> {
-            System.out.println("ERREUR : " + msg);
+            Log.e(TAG, msg.toString());
             promiseConnected.reject("server", new JSONObject(msg).getString("reason"));
 
             return null;
@@ -58,7 +60,7 @@ public class Register extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendPhoneNumber(String phoneNumber, Promise promisePhoneSend){
         Socket socket = VPSConnection.getSocket();
-        System.out.println(socket);
+        Log.i(TAG, socket.toString());
 
         Channel ch = socket.channel("auth:lobby", new JSONObject());
 
@@ -66,13 +68,15 @@ public class Register extends ReactContextBaseJavaModule {
         jsonPhoneNumber.accumulate("phone", phoneNumber);
 
         ch.push("phone", jsonPhoneNumber, socket.getOpts().getTimeout()).receive("ok", (msg) ->{
-            Log.d("Telephone envoyé", msg.toString());
+            Log.i(TAG, msg.toString());
             promisePhoneSend.resolve(msg);
             return null;
         }).receive("error", (msg) -> {
-            Log.d("ERROR", msg.toString());
+            Log.e(TAG, msg.toString());
             promisePhoneSend.reject("server", new JSONObject(msg).getString("reason"));
             return null;
         });
     }
+
+
 }
