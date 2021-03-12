@@ -20,29 +20,18 @@ const Login = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const [formState, setFormState] = useState({
-        message: '',
-        isLoggingIn: false
-    });
-
-    const buttonState = formState.isLoggingIn || !username || !password;
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleLogin = e => {
         e.preventDefault();
-        const formState_tmp = {
-            message: formState.message,
-            isLoggingIn: true
-        };
-
-        setFormState(formState_tmp);
 
         login(username, password)
             .then(() => {
                 navigation.navigate('Home');
             })
             .catch(error => {
-                console.log(error.message);
-                setFormState(...formState, message = error.message);
+                setErrorMessage(error.message);
+                console.error("Error message: ", error.message);
             });
     }
 
@@ -52,7 +41,7 @@ const Login = ({ navigation }) => {
 
                 <Text category='h1'>GETWAY</Text>
                 <Text category='s1'>Bon retour parmis nous!</Text>
-
+                <Text category='h5'>{errorMessage}</Text>
                 <Input
                     placeholder='Identifiant'
                     onChangeText={(username => setUsername(username))}
@@ -63,8 +52,7 @@ const Login = ({ navigation }) => {
                     onChangeText={password => setPassword(password)}
                 />
                 <NextButton
-                    // onPress={e => handleLogin(e)}
-                    onPress={() => navigation.navigate('Home')}
+                    onPress={e => handleLogin(e)}
                     title='Connexion'
                 // disabled={buttonState}
                 />

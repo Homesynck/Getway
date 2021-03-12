@@ -3,9 +3,26 @@ import { SafeAreaView, ScrollView, View } from 'react-native';
 
 import { Button, Input, Text } from '@ui-kitten/components';
 
-const RegisterNumber = ({user, update, nextStep}) => {
+import { registration, sendPhoneNumber, verifyNumberWithCode } from '../../modules/index';
+
+const RegisterNumber = ({ user, update, nextStep }) => {
 
     const [number, setNumber] = useState("");
+
+    const handleRegistrationNumber = e => {
+        e.preventDefault();
+        sendPhoneNumber(number)
+            .then(() => {
+                console.log("It's work");
+                user.phone = number;
+                update(user);
+                nextStep();
+            })
+            .catch(error => {
+                console.log("ERROR");
+                console.log(error.message);
+            });
+    };
 
     return (
         <ScrollView>
@@ -15,16 +32,12 @@ const RegisterNumber = ({user, update, nextStep}) => {
             </View>
             <View>
                 <Input
-                placeholder='Numéro de téléphone'
-                onChangeText={number => setNumber(number)}
-                value={number}
+                    placeholder='Numéro de téléphone'
+                    onChangeText={number => setNumber(number)}
+                    value={number}
                 />
-                <Button 
-                onPress={() => {
-                    user.phone = number
-                    update(user)
-                    nextStep()
-                }}>
+                <Button
+                    onPress={handleRegistrationNumber}>
                     Valider
                 </Button>
             </View>
@@ -32,26 +45,49 @@ const RegisterNumber = ({user, update, nextStep}) => {
     )
 };
 
-const VerifyNumber = ({nextStep}) => {
+const VerifyNumber = ({ nextStep }) => {
 
     const [code, setCode] = useState("");
+
+    const handleVerifyNumber = e => {
+        e.preventDefault();
+        verifyNumberWithCode(code)
+            .then(() => {
+                nextStep();
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
+    };
 
     return (
         <View>
             <Input
-            placeholder='----'
-            onChangeText={code => setCode(code)}
-            value={code}
+                placeholder='----'
+                onChangeText={code => setCode(code)}
+                value={code}
             />
-            <Button 
-            onPress={() => nextStep()}>
+            <Button
+                onPress={handleVerifyNumber}>
                 Vérifier mon numéro
             </Button>
         </View>
     )
 };
 
-const RegisterInformation = ({user, update, nextStep}) => {
+const RegisterInformation = ({ user, update, nextStep }) => {
+
+    const handleRegistration = e => {
+        e.preventDefault();
+        registration(user)
+            .then(() => {
+                nextStep();
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
+    };
+
     return (
         <View>
             <Text category='h3'>INSCRIPTION</Text>
@@ -60,7 +96,7 @@ const RegisterInformation = ({user, update, nextStep}) => {
                 placeholder="Identifiant"
                 onChangeText={
                     username => {
-                        let tempUser = {...user}
+                        let tempUser = { ...user }
                         tempUser.username = username
                         update(tempUser)
                     }
@@ -71,7 +107,7 @@ const RegisterInformation = ({user, update, nextStep}) => {
                 placeholder="Email"
                 onChangeText={
                     email => {
-                        let tempUser = {...user}
+                        let tempUser = { ...user }
                         tempUser.email = email
                         update(tempUser)
                     }
@@ -83,7 +119,7 @@ const RegisterInformation = ({user, update, nextStep}) => {
                     placeholder="Mot de passe"
                     onChangeText={
                         password => {
-                            let tempUser = {...user}
+                            let tempUser = { ...user }
                             tempUser.password = password
                             update(tempUser)
                         }
@@ -99,7 +135,7 @@ const RegisterInformation = ({user, update, nextStep}) => {
                     placeholder="Confirmation du mot de passe"
                     onChangeText={
                         password2 => {
-                            let tempUser = {...user}
+                            let tempUser = { ...user }
                             tempUser.password2 = password2
                             update(tempUser)
                         }
@@ -110,9 +146,7 @@ const RegisterInformation = ({user, update, nextStep}) => {
                 )}
             </View>
             <Button
-            onPress={() => {
-                    nextStep()
-                }}>
+                onPress={handleRegistration}>
                 Valider
             </Button>
         </View>
@@ -138,12 +172,12 @@ const Register = () => {
     }
 
     const updateUser = (user) => {
-        setUser(user)
+        setUser(user);
     }
 
     const finalizeRegistration = () => {
         console.log(user)
-        console.log("Successfully register new user : " + user.username + " " + user.email + " " + user.password)
+        console.log("Successfully register new user : ", user.username, " ", user.email, " ", user.password)
     }
 
     const registerStepList = [

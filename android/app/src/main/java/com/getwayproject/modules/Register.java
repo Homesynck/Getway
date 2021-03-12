@@ -78,7 +78,7 @@ public class Register extends ReactContextBaseJavaModule {
         JSONObject jsonPhoneNumber = new JSONObject();
         jsonPhoneNumber.accumulate("phone", phoneNumber);
 
-        ch.push("phone", jsonPhoneNumber, socket.getOpts().getTimeout()).receive("ok", (msg) ->{
+        ch.push("validate_phone", jsonPhoneNumber, socket.getOpts().getTimeout()).receive("ok", (msg) ->{
             Log.i(TAG, msg.toString());
             promisePhoneSend.resolve(msg);
             return null;
