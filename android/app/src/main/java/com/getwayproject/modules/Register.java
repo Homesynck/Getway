@@ -35,7 +35,7 @@ public class Register extends ReactContextBaseJavaModule {
     public void signup(String username,
                        String email,
                        String password,
-                       Strign passwordVerification,
+                       String passwordVerification,
                        Promise promiseConnected
     ){
         

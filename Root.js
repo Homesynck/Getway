@@ -7,6 +7,7 @@ import Register from './src/pages/RegisterView/';
 import ForgotPassword from './src/pages/ForgotPasswordView/';
 import Home from './src/pages/HomeView/';
 import Contact from './src/pages/ContactView/';
+import Dashboard from './src/pages/DashboardView';
 
 const Stack = createStackNavigator();
 
@@ -14,7 +15,7 @@ function Root() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Dashboard"
         screenOptions={{headerShown: false}}
       >
         <Stack.Screen name="Login" component={Login} />
@@ -22,6 +23,7 @@ function Root() {
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Contact" component={Contact} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
       </Stack.Navigator>
     </NavigationContainer>
   );
