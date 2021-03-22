@@ -32,12 +32,16 @@ public class Register extends ReactContextBaseJavaModule {
 
 
     @ReactMethod
-    public void signup(String username, String password, Promise promiseConnected){
-
+    public void signup(String username,
+                       String email,
+                       String password,
+                       Strign passwordVerification,
+                       Promise promiseConnected
+    ){
+        
         Socket socket = VPSConnection.getSocket();
 
         Channel ch = socket.channel("auth:lobby", new JSONObject());
-
 
         ch.on("new_msg", (msg) -> {
             return null;
@@ -47,13 +51,15 @@ public class Register extends ReactContextBaseJavaModule {
             return null;
         });
 
-        JSONObject connectionparams = new JSONObject();
-        connectionparams.accumulate("register_token", "ceci_est_un_token");
-        connectionparams.accumulate("login", username);
-        connectionparams.accumulate("password", password);
+        JSONObject params = new JSONObject();
+        params.accumulate("register_token", "ceci_est_un_token");
+        params.accumulate("login", username);
+        params.accumulate("password", password);
+
+        Log.d(TAG, params.toString());
 
 
-        ch.push("register", connectionparams, socket.getOpts().getTimeout()).receive("ok", (msg ->{
+        ch.push("register", params, socket.getOpts().getTimeout()).receive("ok", (msg ->{
             Log.d(TAG, msg.toString());
             promiseConnected.resolve(msg);
 

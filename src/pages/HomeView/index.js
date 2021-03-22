@@ -4,11 +4,12 @@ import { Button, Divider, Layout, TopNavigation } from '@ui-kitten/components';
 
 import Contact from '../../components/Contact';
 
-const navigateDetails = () => {
+const Home = ({ navigation }) => {
+
+  const navigateDetails = () => {
     navigation.navigate('Login');
   };
-
-const Home = () => {
+  
     return (
         <SafeAreaView style={{ flex: 1 }}>
         <TopNavigation title='MyApp' alignment='center'/>

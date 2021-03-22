@@ -8,19 +8,22 @@ import { registration, sendPhoneNumber, verifyNumberWithCode } from '../../modul
 const RegisterNumber = ({ user, update, nextStep }) => {
 
     const [number, setNumber] = useState("");
+    const [error, setError] = useState("");
 
     const handleRegistrationNumber = e => {
         e.preventDefault();
         sendPhoneNumber(number)
             .then(() => {
-                console.log("It's work");
+                console.log("It works");
                 user.phone = number;
                 update(user);
                 nextStep();
             })
             .catch(error => {
-                console.log("ERROR");
-                console.log(error.message);
+                console.error("[SEND PHONE NUMBER] ", error.message);
+                setError(error.message);
+                nextStep();
+
             });
     };
 
@@ -30,6 +33,7 @@ const RegisterNumber = ({ user, update, nextStep }) => {
                 <Text category='h3'>Vérification du numéro de téléphone</Text>
                 <Text category='s1'>Nous vous enverrons un code!</Text>
             </View>
+            <Text category="h6">{error}</Text>
             <View>
                 <Input
                     placeholder='Numéro de téléphone'
@@ -80,11 +84,12 @@ const RegisterInformation = ({ user, update, nextStep }) => {
     const handleRegistration = e => {
         e.preventDefault();
         registration(user)
-            .then(() => {
+            .then(res => {
+                console.log(res);
                 nextStep();
             })
             .catch(error => {
-                console.log(error.message);
+                console.error(error.message);
             });
     };
 
@@ -184,9 +189,9 @@ const Register = () => {
         {
             step: <RegisterNumber user={user} update={updateUser} nextStep={handleNextStep} />
         },
-        {
-            step: <VerifyNumber nextStep={handleNextStep} />
-        },
+        // {
+        //     step: <VerifyNumber nextStep={handleNextStep} />
+        // },
         {
             step: <RegisterInformation user={user} update={updateUser} nextStep={finalizeRegistration} />
         }

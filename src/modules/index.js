@@ -7,18 +7,16 @@ export const login = async (username, password) => {
 };
 
 export const sendPhoneNumber = async (number) => {
-    //TODO call validate phone method
-    const res = await Register.sendPhoneNumber(number);
-    console.log("Promise received: ", res);
-    return res;
+    return await Register.sendPhoneNumber(number);
 }
 
 export const verifyNumberWithCode = async (code) => {
-    //TODO call method which verify code
-    return true;
+    // const res = await Register.
+    return null;
 }
 
 export const registration = async (user) => {
-    //TODO call method which signup user
-    return true;
+    if (username == null || password == null)
+        return null;
+    return await Register.signup(user);
 }
