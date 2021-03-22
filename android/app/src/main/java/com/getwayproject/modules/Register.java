@@ -35,12 +35,11 @@ public class Register extends ReactContextBaseJavaModule {
     public void signup(String username, String password, Promise promiseConnected){
 
         Socket socket = VPSConnection.getSocket();
-        Log.i(TAG, socket.toString());
 
         Channel ch = socket.channel("auth:lobby", new JSONObject());
 
+
         ch.on("new_msg", (msg) -> {
-            Log.i(TAG, msg.toString());
             return null;
         });
         ch.join(100).receive("ok", (msg) -> {
@@ -49,7 +48,7 @@ public class Register extends ReactContextBaseJavaModule {
         });
 
         JSONObject connectionparams = new JSONObject();
-        connectionparams.accumulate("register_tocken", "ceci_est_un_tocken");
+        connectionparams.accumulate("register_token", "ceci_est_un_token");
         connectionparams.accumulate("login", username);
         connectionparams.accumulate("password", password);
 
@@ -70,8 +69,6 @@ public class Register extends ReactContextBaseJavaModule {
     @ReactMethod
     public void sendPhoneNumber(String phoneNumber, Promise promisePhoneSend){
         Socket socket = VPSConnection.getSocket();
-        Log.i(TAG, socket.toString());
-
         Channel ch = socket.channel("auth:lobby", new JSONObject());
 
         ch.on("new_msg", (msg) -> {
@@ -87,7 +84,7 @@ public class Register extends ReactContextBaseJavaModule {
         jsonPhoneNumber.accumulate("phone", phoneNumber);
 
         ch.push("validate_phone", jsonPhoneNumber, socket.getOpts().getTimeout()).receive("ok", (msg) ->{
-            Log.i(TAG, msg.toString());
+            Log.d(TAG, msg.toString());
             promisePhoneSend.resolve(msg);
             return null;
         }).receive("error", (msg) -> {
