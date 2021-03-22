@@ -39,6 +39,10 @@ public class Register extends ReactContextBaseJavaModule {
 
         Channel ch = socket.channel("auth:lobby", new JSONObject());
 
+        ch.on("new_msg", (msg) -> {
+            Log.i(TAG, msg.toString());
+            return null;
+        });
         ch.join(100).receive("ok", (msg) -> {
             JSONArray jsonA = msg.getJSONArray("nom");
             return null;
@@ -70,6 +74,10 @@ public class Register extends ReactContextBaseJavaModule {
 
         Channel ch = socket.channel("auth:lobby", new JSONObject());
 
+        ch.on("new_msg", (msg) -> {
+            Log.i(TAG, msg.toString());
+            return null;
+        });
         ch.join(100).receive("ok", (msg) -> {
             JSONArray jsonA = msg.getJSONArray("nom");
             return null;
@@ -88,6 +96,4 @@ public class Register extends ReactContextBaseJavaModule {
             return null;
         });
     }
-
-
 }

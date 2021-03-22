@@ -39,7 +39,6 @@ public class SignInModule extends ReactContextBaseJavaModule {
 
         Channel ch = socket.channel("auth:lobby", new JSONObject());
 
-
         ch.on("new_msg", (msg) -> {
             Log.i(TAG, msg.toString());
             return null;
