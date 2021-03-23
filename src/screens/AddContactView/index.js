@@ -1,9 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 
 const AddContact = () => {
     return (
-        <View></View>
+        <View>
+            <Text>Here is the add contact view</Text>
+        </View>
     )
 }
 
