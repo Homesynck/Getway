@@ -5,6 +5,8 @@ export const styles = StyleSheet.create({
         padding: 5,
         display: 'flex',
         justifyContent: 'space-between',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
         alignItems: 'center',
     },
     card: {
