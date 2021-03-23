@@ -1,11 +1,13 @@
 import React from 'react';
 import { SafeAreaView, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { Icon } from '@ui-kitten/components';
 
 import { styles } from './style';
 
-const Dashboard = ({navigation}) => {
+const Dashboard = () => {
+    const navigation = useNavigation();
     return (
         <ScrollView>
             <SafeAreaView style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
