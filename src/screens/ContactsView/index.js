@@ -1,9 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 
 const Contacts = () => {
     return (
-        <View></View>
+        <View>
+            <Text>Here is the list of contacts</Text>
+        </View>
     )
 }
 
