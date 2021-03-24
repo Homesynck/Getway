@@ -5,6 +5,7 @@ import { Icon } from '@ui-kitten/components';
 
 import { styles } from './style';
 
+{console.log('[LOG]: loading dashboard.js')}
 const Dashboard = ({navigation}) => {
     return (
         <ScrollView>
