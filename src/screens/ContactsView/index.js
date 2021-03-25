@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, SafeAreaView, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { FlatList, SafeAreaView, Text, StyleSheet } from 'react-native';
+import ContactListItem from '../../components/ContactListItem';
 import { useNavigation } from '@react-navigation/native';
 
 import { getAllContacts } from '../../modules';
 
 import { Layout } from '@ui-kitten/components';
-
-
-const ContactItem = ({ name, onPress }) => (
-  <TouchableOpacity style={styles.item} onPress={onPress}>
-    <Text style={styles.text}>{name}</Text>
-  </TouchableOpacity>
-);
 
 const Contacts = () => {
   const navigation = useNavigation();
@@ -28,11 +22,11 @@ const Contacts = () => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <ContactItem 
-    name={item.displayName}
-    onPress={() => navigation.navigate('Contact', {
-      contact: item
-    })} />
+    <ContactListItem 
+      name={item.displayName}
+      onPress={() => navigation.navigate('Contact', {
+        contact: item
+      })} />
   );
 
     return (
@@ -47,21 +41,5 @@ const Contacts = () => {
         </SafeAreaView>
     )
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  item: {
-    backgroundColor: '#607D8B',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  text: {
-    fontSize: 18,
-    color: "#f5f1f0",
-  },
-});
 
 export default Contacts;
