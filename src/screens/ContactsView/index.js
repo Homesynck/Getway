@@ -1,24 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FlatList, SafeAreaView, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+import { getAllContacts } from '../../modules';
 
 import { Layout } from '@ui-kitten/components';
 
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    name: 'Hélène Te',
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    name: 'Jules Doumèche',
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    name: 'Daniel Aguiar',
-  },
-];
 
 const ContactItem = ({ name, onPress }) => (
   <TouchableOpacity style={styles.item} onPress={onPress}>
@@ -29,9 +16,20 @@ const ContactItem = ({ name, onPress }) => (
 const Contacts = () => {
   const navigation = useNavigation();
 
+  const [contactsData, setContactsData] = useState([]);
+
+  useEffect(() => {
+
+    const contacts =  async () => {
+     const contactsRes = await getAllContacts();
+     setContactsData(contactsRes);
+    }
+    contacts();
+  }, []);
+
   const renderItem = ({ item }) => (
     <ContactItem 
-    name={item.name}
+    name={item.displayName}
     onPress={() => navigation.navigate('Contact', {
       contact: item
     })} />
@@ -43,9 +41,9 @@ const Contacts = () => {
             <Text>List of contacts</Text>
           </Layout>
           <FlatList
-              data={DATA}
+              data={contactsData}
               renderItem={renderItem}
-              keyExtractor={item => item.id} />
+              keyExtractor={item => item.recordID} />
         </SafeAreaView>
     )
 };
