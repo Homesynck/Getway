@@ -46,7 +46,7 @@ const App = () => {
 
     function AuthProvider() {
 
-        const [state, setState] = useState('SIGNED_IN');
+        const [state, setState] = useState('NOT_SIGNIN');
 
         const value = {state, setState}
 

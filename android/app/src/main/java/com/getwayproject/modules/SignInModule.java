@@ -19,7 +19,7 @@ import ch.kuon.phoenix.Socket;
 
 public class SignInModule extends ReactContextBaseJavaModule {
 
-    private final String TAG = "signin";
+    private final String TAG = "SignIn";
 
     public SignInModule(ReactApplicationContext reactContext){
         super(reactContext);
@@ -32,7 +32,7 @@ public class SignInModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void signIn(String username, String password, Promise promiseConnected) {
+    public void signIn(String username, String password, Promise connectedPromise) {
         
         Socket socket = VPSConnection.getSocket();
         Log.i(TAG, socket.toString());
@@ -55,12 +55,12 @@ public class SignInModule extends ReactContextBaseJavaModule {
 
         ch.push("login", connectionParams,socket.getOpts().getTimeout()).receive("ok", (msg) -> {
             Log.d(TAG, msg.toString());
-            promiseConnected.resolve(msg);
+            connectedPromise.resolve(msg.toString());
 
             return null;
         }).receive("error", (msg) -> {
             Log.e(TAG, msg.toString());
-            promiseConnected.reject("server", new JSONObject(msg).getString("reason"));
+            connectedPromise.reject("server", new JSONObject(msg).getString("reason"));
             return null;
         });
     }
