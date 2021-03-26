@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { SafeAreaView, ScrollView, View } from 'react-native';
+import { SafeAreaView, ScrollView, View, StyleSheet } from 'react-native';
 
-import { Button, Input, Text } from '@ui-kitten/components';
+import { Button, Input, Text, Layout } from '@ui-kitten/components';
 
 import { registration, sendPhoneNumber, verifyNumberWithCode } from '../../modules/index';
 
@@ -11,41 +11,46 @@ const RegisterNumber = ({ user, update, nextStep }) => {
     const [error, setError] = useState("");
 
     const handleRegistrationNumber = e => {
-        e.preventDefault();
-        sendPhoneNumber(number)
-            .then(() => {
-                console.log("It works");
-                user.phone = number;
-                update(user);
-                nextStep();
-            })
-            .catch(error => {
-                console.error("[SEND PHONE NUMBER] ", error.message);
-                setError(error.message);
-                nextStep();
+        nextStep();
+        // e.preventDefault();
+        // sendPhoneNumber(number)
+        //     .then(() => {
+        //         console.log("It works");
+        //         user.phone = number;
+        //         update(user);
+        //         nextStep();
+        //     })
+        //     .catch(error => {
+        //         console.error("[SEND PHONE NUMBER] ", error.message);
+        //         setError(error.message);
+        //         nextStep();
 
-            });
+        //     });
     };
 
     return (
-        <ScrollView>
-            <View>
-                <Text category='h3'>Vérification du numéro de téléphone</Text>
-                <Text category='s1'>Nous vous enverrons un code!</Text>
-            </View>
-            <Text category="h6">{error}</Text>
-            <View>
-                <Input
-                    placeholder='Numéro de téléphone'
-                    onChangeText={number => setNumber(number)}
-                    value={number}
-                />
-                <Button
-                    onPress={handleRegistrationNumber}>
-                    Valider
-                </Button>
-            </View>
-        </ScrollView>
+        <SafeAreaView>
+            <Layout style={styles.container}>
+                
+                    <Text style={styles.title} category='h3'>Vérification du numéro de téléphone</Text>
+                    <Text style={styles.subtitle} category='s1'>Nous vous enverrons un code!</Text>
+                
+                    <Text category="h6">{error}</Text>
+            
+                    <Input
+                        placeholder='Numéro de téléphone'
+                       // onChangeText={number => setNumber(number)}
+                        //value={number}
+                        style={styles.input}
+                    />
+                    <Button
+                        onPress={handleRegistrationNumber}
+                        style={styles.button}
+                    >
+                        Valider
+                    </Button>
+            </Layout>
+        </SafeAreaView>
     )
 };
 
@@ -65,17 +70,51 @@ const VerifyNumber = ({ nextStep }) => {
     };
 
     return (
-        <View>
+        
+        <Layout style={styles.container}>
+
+            <Text style={styles.title} category='h3'>Saisissez le code</Text>
+            <View style={{flexDirection:'row'}} >
             <Input
+                placeholder="."
+                style={styles.inputNum}>
+            </Input>
+            <Input
+                placeholder="."
+                style={styles.inputNum}>
+            </Input>
+            <Input
+                placeholder="."
+                style={styles.inputNum}>
+            </Input>
+            <Input
+                placeholder="."
+                style={styles.inputNum}>
+            </Input>
+            <Input
+                placeholder="."
+                style={styles.inputNum}>
+            </Input>
+            <Input
+                placeholder="."
+                style={styles.inputNum}>
+            </Input>
+           
+            {/* <Input
                 placeholder='----'
                 onChangeText={code => setCode(code)}
                 value={code}
-            />
+            /> */}
+            </View>
             <Button
-                onPress={handleVerifyNumber}>
+                onPress={handleVerifyNumber}
+                style={styles.button}>
                 Vérifier mon numéro
+                
             </Button>
-        </View>
+        
+        </Layout>
+ 
     )
 };
 
@@ -94,11 +133,13 @@ const RegisterInformation = ({ user, update, nextStep }) => {
     };
 
     return (
-        <View>
-            <Text category='h3'>INSCRIPTION</Text>
+        <SafeAreaView>
+        <Layout style={styles.container}>
+        
+            <Text style={styles.title} category='h3'>Inscription</Text>
             <Input
                 value={user.username}
-                placeholder="Identifiant"
+                label='Identifiant'
                 onChangeText={
                     username => {
                         let tempUser = { ...user }
@@ -106,10 +147,11 @@ const RegisterInformation = ({ user, update, nextStep }) => {
                         update(tempUser)
                     }
                 }
+                style={styles.input}
             />
             <Input
                 value={user.email}
-                placeholder="Email"
+                label="Email"
                 onChangeText={
                     email => {
                         let tempUser = { ...user }
@@ -117,11 +159,12 @@ const RegisterInformation = ({ user, update, nextStep }) => {
                         update(tempUser)
                     }
                 }
+                style={styles.input}
             />
-            <View>
+         
                 <Input
                     value={user.password}
-                    placeholder="Mot de passe"
+                    label="Mot de passe"
                     onChangeText={
                         password => {
                             let tempUser = { ...user }
@@ -129,15 +172,15 @@ const RegisterInformation = ({ user, update, nextStep }) => {
                             update(tempUser)
                         }
                     }
+                    style={styles.input}
                 />
                 {(user.password.length < 8 && user.password.length > 0) && (
-                    <Text>Your password must be at least with 8 characters ...</Text>
+                    <Text>Votre mot de passe doit faire minimum 8 charatères</Text>
                 )}
-            </View>
-            <View>
+            
                 <Input
                     value={user.password2}
-                    placeholder="Confirmation du mot de passe"
+                    label="Confirmation du mot de passe"
                     onChangeText={
                         password2 => {
                             let tempUser = { ...user }
@@ -145,16 +188,21 @@ const RegisterInformation = ({ user, update, nextStep }) => {
                             update(tempUser)
                         }
                     }
+                    style={styles.input}
                 />
                 {(user.password != user.password2) && (
-                    <Text>You have to enter the same password</Text>
+                    <Text>Veuillez entrer le même mot de passe</Text>
                 )}
-            </View>
+            
             <Button
-                onPress={handleRegistration}>
+                onPress={handleRegistration}
+                style={styles.button}
+            >
                 Valider
             </Button>
-        </View>
+        
+        </Layout>
+        </SafeAreaView>
     )
 };
 
@@ -189,9 +237,9 @@ const Register = () => {
         {
             step: <RegisterNumber user={user} update={updateUser} nextStep={handleNextStep} />
         },
-        // {
-        //     step: <VerifyNumber nextStep={handleNextStep} />
-        // },
+      {
+         step: <VerifyNumber nextStep={handleNextStep} />
+        },
         {
             step: <RegisterInformation user={user} update={updateUser} nextStep={finalizeRegistration} />
         }
@@ -203,5 +251,42 @@ const Register = () => {
         </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        alignItems:'center', 
+        padding:20,
+        justifyContent:'center',
+    },
+    title: {
+      textAlign:'center',
+      marginBottom:10,
+    },
+    subtitle:{
+        marginBottom:20,
+    },
+    input:{
+        borderRadius:30,
+        marginLeft:50,
+        marginRight:50,
+        marginBottom:10,
+        marginTop:10,
+    },
+    inputNum:{
+        borderRadius:100,
+        width:53,
+        textAlign:'center', 
+        margin:1,
+        
+        
+    },
+    button:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 70,
+        marginTop:10,
+
+    },
+  });
 
 export default Register;

@@ -50,8 +50,9 @@ const Login = ({ navigation }) => {
                 >Connexion</Button>
                 <Button
                     onPress={() => navigation.navigate('Register')}
-                    style={styles.button}
-                >Inscription</Button>
+                    style={styles.button}>
+                    Inscription
+                </Button>
             </Layout>
         </SafeAreaView>
     )
@@ -59,11 +60,9 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
     getwayTitle: {
       letterSpacing: 20, 
-      color: 'black',
       fontWeight:'bold'
     },
     subtitle:{
-        color:'black', 
         marginBottom:20,
     },
     input:{
@@ -73,12 +72,10 @@ const styles = StyleSheet.create({
         marginBottom:10
     },
     button:{
-        borderColor:'#E46F4C',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
         borderRadius: 60,
-        backgroundColor: '#E46F4C', //couleur à mettre dans la future palette
         marginTop:10,
     },
   });

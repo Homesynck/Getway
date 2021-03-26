@@ -3,8 +3,8 @@
   "color-primary-200": "#FFCDBB",
   "color-primary-300": "#FFAB9A",
   "color-primary-400": "#FF8B81",
-  "color-primary-500": "#FF5757",
-  "color-primary-600": "#DB3F4D",
+  "color-primary-500": "#E46F4C", //orange couleur btn
+  "color-primary-600": "#f59b81", //au clic
   "color-primary-700": "#B72B44",
   "color-primary-800": "#931B3A",
   "color-primary-900": "#7A1035",
@@ -91,5 +91,6 @@
   "color-basic-transparent-400": "rgba(128, 128, 128, 0.32)",
   "color-basic-transparent-500": "rgba(128, 128, 128, 0.4)",
   "color-basic-transparent-600": "rgba(128, 128, 128, 0.48)",
-  "text-basic-color": "$color-basic-400"
+  "color-basic-black": "#000000",
+  "text-basic-color": "$color-basic-black"
 }
