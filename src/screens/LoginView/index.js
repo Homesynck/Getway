@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, NativeModules } from 'react-native';
 
 import { Button, Input, Icon, Text, Layout } from '@ui-kitten/components';
 
-import { login } from "../../modules";
+const { SignIn } = NativeModules;
 
 const NextArrowIcon = (props) => (
     <Icon name='arrow-forward' {...props} />
@@ -22,17 +22,16 @@ const Login = ({ navigation }) => {
 
     const [errorMessage, setErrorMessage] = useState('');
 
-    const handleLogin = e => {
+    const handleLogin = async e => {
         e.preventDefault();
-
-        login(username, password)
-            .then(() => {
-                navigation.navigate('Home');
-            })
-            .catch(error => {
-                setErrorMessage(error.message);
-                console.error("Error message: ", error.message);
-            });
+        try {
+            const res = await SignIn.signIn(username, password);
+            console.log(res);
+            navigation.navigate("Register");
+        } catch (error) {
+            console.error(error.message);
+            setErrorMessage(error.message);
+        }
     }
 
     return (
