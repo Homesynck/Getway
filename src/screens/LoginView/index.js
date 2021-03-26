@@ -24,9 +24,9 @@ const Login = ({ navigation }) => {
 
     const handleLogin = e => {
         e.preventDefault();
-
         login(username, password)
             .then(() => {
+                //On doit revenir à app.component
                 navigation.navigate('Home');
             })
             .catch(error => {
