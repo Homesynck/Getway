@@ -40,13 +40,13 @@ const requestReadContactsPermission = async () => {
 
 const App = () => {
 
+  useEffect(() => {
+    setTimeout(() => requestReadContactsPermission(), 200);
+  }, []);
+
     function AuthProvider() {
 
-        useEffect(() => {
-            setTimeout(() => requestReadContactsPermission(), 200);
-          }, []);
-
-        const [state, setState] = useState('NOT_SIGNED_IN');
+        const [state, setState] = useState('SIGNED_IN');
 
         const value = {state, setState}
 
@@ -57,7 +57,7 @@ const App = () => {
                 <LoginNavigator />
             );
             break;
-            case 'SIGNIN':
+            case 'SIGNED_IN':
             arr.push(
                 <AppNavigator />
             );

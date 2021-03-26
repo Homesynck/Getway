@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 import { Button, Divider, Layout, TopNavigation } from '@ui-kitten/components';
 
-import Contact from '../../components/Contact';
+import Contact from '../../components/contact.component';
 
 const Home = ({ navigation }) => {
 

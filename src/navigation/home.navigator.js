@@ -1,10 +1,9 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { BottomTabNavigationOptions, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ContactsNavigator } from './contacts.navigator';
-import { SecondNavigator } from './second.navigator.js';
+import { AddNewNavigator } from './add-new.navigator.js';
 import { ThirdNavigator } from './third.navigator';
 
 import { HomeBottomNavigation } from '../scenes/home/home-bottom-navigation.component';
@@ -13,8 +12,7 @@ const BottomTab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 const initialTabRoute = 'Contacts';
-
-const ROOT_ROUTES = ['Home', 'Contacts', 'Second', 'Third'];
+const ROOT_ROUTES = ['Home', 'Contacts', 'Nouveau', 'Third'];
 
 const TabBarVisibilityOptions = ({ route }) => {
   const isRootRoute = ROOT_ROUTES.includes(route.name);
@@ -29,7 +27,7 @@ const HomeTabsNavigator = () => (
     tabBar={props => <HomeBottomNavigation {...props} />}
     >
     <BottomTab.Screen name='Contacts' component={ContactsNavigator} />
-    <BottomTab.Screen name='Second' component={SecondNavigator} />
+    <BottomTab.Screen name='Nouveau' component={AddNewNavigator} />
     <BottomTab.Screen name='Third' component={ThirdNavigator} />
   </BottomTab.Navigator>
 );

@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Dashboard from '../screens/DashboardView';
-import Contact from '../screens/ContactView';
+import Dashboard from '../scenes/home/dashboard.view';
+import Contact from '../scenes/contact-detail/contact.screen';
 // import Contacts from "./src/screens/ContactsView";
 // import AddContact from "./src/screens/AddContactView";
 

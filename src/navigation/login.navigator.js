@@ -2,9 +2,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Login from '../screens/LoginView';
-import Register from '../screens/RegisterView';
-import ForgotPassword from '../screens/ForgotPasswordView';
+import Login from '../scenes/autentification/login.screen';
+import Register from '../scenes/autentification/register.screen';
+import ForgotPassword from '../scenes/autentification/forgot-password.screen';
 
 const Stack = createStackNavigator();
 

@@ -3,7 +3,7 @@ import { BottomNavigationTab, Divider } from '@ui-kitten/components';
 
 import { SafeAreaLayout } from '../../components/safe-area-layout.component';
 import { BrandBottomNavigation } from '../../components/brand-bottom-navigation.component';
-import { ColorPaletteIcon, LayoutIcon, StarOutlineIcon } from '../../components/icons';
+import { ContactsOutlineIcon, HomeOutlineIcon, AddOutlineIcon } from '../../components/icons';
 
 export const HomeBottomNavigation = (props) => {
 
@@ -19,16 +19,16 @@ export const HomeBottomNavigation = (props) => {
         selectedIndex={props.state.index}
         onSelect={onSelect}>
         <BottomNavigationTab
+          title='Accueil'
+          icon={HomeOutlineIcon}
+        />
+        <BottomNavigationTab
+          title='Ajout'
+          icon={AddOutlineIcon}
+        />
+        <BottomNavigationTab
           title='Contacts'
-          icon={LayoutIcon}
-        />
-        <BottomNavigationTab
-          title='Second'
-          icon={StarOutlineIcon}
-        />
-        <BottomNavigationTab
-          title='Third'
-          icon={ColorPaletteIcon}
+          icon={ContactsOutlineIcon}
         />
       </BrandBottomNavigation>
     </SafeAreaLayout>
