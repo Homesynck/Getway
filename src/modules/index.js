@@ -1,4 +1,5 @@
 import { NativeModules } from 'react-native';
+import Contacts from "react-native-contacts";
 
 const { SignIn, Register } = NativeModules;
 
@@ -19,4 +20,8 @@ export const registration = async (user) => {
     if (username == null || password == null)
         return null;
     return await Register.signup(user);
+}
+
+export const getAllContacts = async () => {
+    return await Contacts.getAll();
 }
