@@ -6,8 +6,8 @@ import { Icon } from '@ui-kitten/components';
 
 import { styles } from './style';
 
-const Dashboard = () => {
-    const navigation = useNavigation();
+{console.log('[LOG]: loading dashboard.js')}
+const Dashboard = ({navigation}) => {
     return (
         <ScrollView>
             <SafeAreaView style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
