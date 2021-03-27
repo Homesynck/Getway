@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet, NativeModules } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 
 import { Button, Input, Text, Layout } from '@ui-kitten/components';
 
-const { SignIn } = NativeModules;
+import LoginButton from '../../modules/authentication/loginButton.consumer';
 
 const Login = ({navigation}) => {
 
@@ -11,18 +11,6 @@ const Login = ({navigation}) => {
     const [password, setPassword] = useState('');
 
     const [errorMessage, setErrorMessage] = useState('');
-
-    const handleLogin = async e => {
-        e.preventDefault();
-        try {
-            const res = await SignIn.signIn(username, password);
-            console.log(res);
-            navigation.navigate("Register");
-        } catch (error) {
-            console.error(error.message);
-            setErrorMessage(error.message);
-        }
-    }
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -42,11 +30,7 @@ const Login = ({navigation}) => {
                     onChangeText={password => setPassword(password)}
                     style={styles.input}
                 />
-                <Button
-                    onPress={e => handleLogin(e)}
-                    style={styles.button}
-                // disabled={buttonState}
-                >Connexion</Button>
+                <LoginButton style={styles.button}/>
                 <Button
                     onPress={() => navigation.navigate('Register')}
                     style={styles.button}>

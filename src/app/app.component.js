@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PermissionsAndroid } from 'react-native';
 
 // UI kitten
@@ -10,12 +10,11 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 
-import LoginNavigator from '../navigation/login.navigator';
+import AuthContext from '../modules/authentication/authentication.context';
 import AppNavigator from '../navigation/app.navigator';
+
 import { default as theme } from './theme.json';
 import { default as mapping } from './mapping.json';
-
-const AuthContext = createContext('NOT_SIGNED_IN');
 
 const requestReadContactsPermission = async () => {
     try {
@@ -41,64 +40,33 @@ const requestReadContactsPermission = async () => {
 
 const App = () => {
 
+  const [authState, setAuthState] = useState('NOT_SIGNED_IN')
+
   useEffect(() => {
     setTimeout(() => requestReadContactsPermission(), 200);
   }, []);
+  //On execute avant toutes les tâches d'initialisations
+  setTimeout(() => SplashScreen.hide(), 200);
 
-    function AuthProvider() {
-
-        const [state, setState] = useState('NOT_SIGNIN');
-
-        const value = {state, setState}
-
-        let arr = [];
-        switch (state) {        
-            case 'NOT_SIGNED_IN':
-            arr.push(
-                <LoginNavigator />
-            );
-            break;
-            case 'SIGNED_IN':
-            arr.push(
-                <AppNavigator />
-            );
-            break;
-            default:
-            arr.push(
-                <LoginNavigator />
-            );
-            break;
-        }
+  return (
+  <>
+      <IconRegistry icons={EvaIconsPack} />
+      {/* AppearanceProvider si besoin d'un dark mode */}
+          <ApplicationProvider 
+          {...eva} 
+          theme={{...eva.light, ...theme}}
+          customMapping={mapping}>
       
-        return (
-        <AuthContext.Provider value={value}>
-            {arr[0]}
-        </AuthContext.Provider>
-        )
+              <SafeAreaProvider>
+                  <AuthContext.Provider value={{authState, setAuthState}}>
+
+                    <AppNavigator />
+
+                  </AuthContext.Provider>
+              </SafeAreaProvider>
       
-      }
-    
-
-    //On execute avant toutes les tâches d'initialisations
-    SplashScreen.hide();
-
-    return (
-    <>
-        <IconRegistry icons={EvaIconsPack} />
-        {/* AppearanceProvider si besoin d'un dark mode */}
-            <ApplicationProvider 
-            {...eva} 
-            theme={{...eva.light, ...theme}}
-            customMapping={mapping}>
-        
-                <SafeAreaProvider>
-                    <AuthProvider>
-
-                    </AuthProvider>
-                </SafeAreaProvider>
-        
-            </ApplicationProvider>
-    </>
+          </ApplicationProvider>
+  </>
 )};
 
 export default App;
