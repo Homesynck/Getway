@@ -4,7 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ContactsNavigator } from './contacts.navigator';
 import { AddNewNavigator } from './add-new.navigator.js';
-import { ThirdNavigator } from './third.navigator';
+import { ListNavigator } from './list.navigator';
 
 import { HomeBottomNavigation } from '../scenes/home/home-bottom-navigation.component';
 
@@ -12,7 +12,7 @@ const BottomTab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
 const initialTabRoute = 'Contacts';
-const ROOT_ROUTES = ['Home', 'Contacts', 'Nouveau', 'Third'];
+const ROOT_ROUTES = ['Home', 'Contacts', 'Nouveau', 'List'];
 
 const TabBarVisibilityOptions = ({ route }) => {
   const isRootRoute = ROOT_ROUTES.includes(route.name);
@@ -28,7 +28,7 @@ const HomeTabsNavigator = () => (
     >
     <BottomTab.Screen name='Contacts' component={ContactsNavigator} />
     <BottomTab.Screen name='Nouveau' component={AddNewNavigator} />
-    <BottomTab.Screen name='Third' component={ThirdNavigator} />
+    <BottomTab.Screen name='List' component={ListNavigator} />
   </BottomTab.Navigator>
 );
 
