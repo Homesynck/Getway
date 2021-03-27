@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, SafeAreaView, Text, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, Text } from 'react-native';
+import Contacts from "react-native-contacts";
+
 import ContactListItem from '../../components/ContactListItem';
 import { useNavigation } from '@react-navigation/native';
 
-import { getAllContacts } from '../../modules';
 
 import { Layout } from '@ui-kitten/components';
 
-const Contacts = () => {
+const ContactsScreen = () => {
   const navigation = useNavigation();
 
   const [contactsData, setContactsData] = useState([]);
@@ -15,7 +16,7 @@ const Contacts = () => {
   useEffect(() => {
 
     const contacts =  async () => {
-     const contactsRes = await getAllContacts();
+     const contactsRes = await Contacts.getAll();;
      setContactsData(contactsRes);
     }
     contacts();
@@ -42,4 +43,4 @@ const Contacts = () => {
     )
 };
 
-export default Contacts;
+export default ContactsScreen;

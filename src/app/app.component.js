@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createContext } from 'react';
+import { PermissionsAndroid } from 'react-native';
 
 // UI kitten
 import * as eva from '@eva-design/eva';
@@ -46,7 +47,7 @@ const App = () => {
 
     function AuthProvider() {
 
-        const [state, setState] = useState('SIGNED_IN');
+        const [state, setState] = useState('NOT_SIGNIN');
 
         const value = {state, setState}
 

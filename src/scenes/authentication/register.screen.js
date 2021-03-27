@@ -1,31 +1,28 @@
 import React, { useState } from 'react'
-import { SafeAreaView, ScrollView, View, StyleSheet } from 'react-native';
+import { SafeAreaView, View, StyleSheet, NativeModules } from 'react-native';
 
 import { Button, Input, Text, Layout } from '@ui-kitten/components';
 
-import { registration, sendPhoneNumber, verifyNumberWithCode } from '../../modules/index';
+const { Register } = NativeModules;
 
 const RegisterNumber = ({ user, update, nextStep }) => {
 
     const [number, setNumber] = useState("");
     const [error, setError] = useState("");
 
-    const handleRegistrationNumber = e => {
+    const handleRegistrationNumber = async e => {
         nextStep();
-        // e.preventDefault();
-        // sendPhoneNumber(number)
-        //     .then(() => {
-        //         console.log("It works");
-        //         user.phone = number;
-        //         update(user);
-        //         nextStep();
-        //     })
-        //     .catch(error => {
-        //         console.error("[SEND PHONE NUMBER] ", error.message);
-        //         setError(error.message);
-        //         nextStep();
-
-        //     });
+        e.preventDefault();
+        try {
+            await Register.sendPhoneNumber(number);
+            user.phone = number;
+            update(user);
+            nextStep();
+        } catch (error) {
+            console.error("[SEND PHONE NUMBER] ", error.message);
+            setError(error.message);
+            nextStep();
+        }
     };
 
     return (
@@ -58,15 +55,15 @@ const VerifyNumber = ({ nextStep }) => {
 
     const [code, setCode] = useState("");
 
-    const handleVerifyNumber = e => {
+    const handleVerifyNumber = async e => {
         e.preventDefault();
-        verifyNumberWithCode(code)
-            .then(() => {
-                nextStep();
-            })
-            .catch(error => {
-                console.log(error.message);
-            });
+        nextStep();
+        // try {
+        //     // TODO call verifyNumber method from bridge
+        // } catch (error) {
+        //     //TODO update state
+        //     console.error(error);
+        // }
     };
 
     return (
@@ -118,18 +115,18 @@ const VerifyNumber = ({ nextStep }) => {
     )
 };
 
-const RegisterInformation = ({ user, update, nextStep }) => {
+const RegisterInformation = ({ user, update }) => {
 
-    const handleRegistration = e => {
+    const handleRegistration = async e => {
         e.preventDefault();
-        registration(user)
-            .then(res => {
-                console.log(res);
-                nextStep();
-            })
-            .catch(error => {
-                console.error(error.message);
-            });
+        if(user.username == null || user.password == null)
+            return;
+        try {
+            const res = await Register.signup(user);
+            console.log(res);
+        } catch (error) {
+            console.error(error.message);
+        }
     };
 
     return (
@@ -207,7 +204,7 @@ const RegisterInformation = ({ user, update, nextStep }) => {
 };
 
 
-const Register = () => {
+const RegisterScreen = () => {
 
     //Information about the new user
     const [user, setUser] = useState({
@@ -228,11 +225,6 @@ const Register = () => {
         setUser(user);
     }
 
-    const finalizeRegistration = () => {
-        console.log(user)
-        console.log("Successfully register new user : ", user.username, " ", user.email, " ", user.password)
-    }
-
     const registerStepList = [
         {
             step: <RegisterNumber user={user} update={updateUser} nextStep={handleNextStep} />
@@ -241,7 +233,7 @@ const Register = () => {
          step: <VerifyNumber nextStep={handleNextStep} />
         },
         {
-            step: <RegisterInformation user={user} update={updateUser} nextStep={finalizeRegistration} />
+            step: <RegisterInformation user={user} update={updateUser} />
         }
     ];
 
@@ -289,4 +281,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Register;
+export default RegisterScreen;
