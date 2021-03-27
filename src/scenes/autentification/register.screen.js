@@ -1,28 +1,31 @@
 import React, { useState } from 'react'
-import { SafeAreaView, View, StyleSheet, NativeModules } from 'react-native';
+import { SafeAreaView, ScrollView, View, StyleSheet } from 'react-native';
 
 import { Button, Input, Text, Layout } from '@ui-kitten/components';
 
-const { Register } = NativeModules;
+import { registration, sendPhoneNumber, verifyNumberWithCode } from '../../modules/index';
 
 const RegisterNumber = ({ user, update, nextStep }) => {
 
     const [number, setNumber] = useState("");
     const [error, setError] = useState("");
 
-    const handleRegistrationNumber = async e => {
+    const handleRegistrationNumber = e => {
         nextStep();
-        e.preventDefault();
-        try {
-            await Register.sendPhoneNumber(number);
-            user.phone = number;
-            update(user);
-            nextStep();
-        } catch (error) {
-            console.error("[SEND PHONE NUMBER] ", error.message);
-            setError(error.message);
-            nextStep();
-        }
+        // e.preventDefault();
+        // sendPhoneNumber(number)
+        //     .then(() => {
+        //         console.log("It works");
+        //         user.phone = number;
+        //         update(user);
+        //         nextStep();
+        //     })
+        //     .catch(error => {
+        //         console.error("[SEND PHONE NUMBER] ", error.message);
+        //         setError(error.message);
+        //         nextStep();
+
+        //     });
     };
 
     return (
@@ -55,15 +58,15 @@ const VerifyNumber = ({ nextStep }) => {
 
     const [code, setCode] = useState("");
 
-    const handleVerifyNumber = async e => {
+    const handleVerifyNumber = e => {
         e.preventDefault();
-        nextStep();
-        // try {
-        //     // TODO call verifyNumber method from bridge
-        // } catch (error) {
-        //     //TODO update state
-        //     console.error(error);
-        // }
+        verifyNumberWithCode(code)
+            .then(() => {
+                nextStep();
+            })
+            .catch(error => {
+                console.log(error.message);
+            });
     };
 
     return (
@@ -115,18 +118,18 @@ const VerifyNumber = ({ nextStep }) => {
     )
 };
 
-const RegisterInformation = ({ user, update }) => {
+const RegisterInformation = ({ user, update, nextStep }) => {
 
-    const handleRegistration = async e => {
+    const handleRegistration = e => {
         e.preventDefault();
-        if(user.username == null || user.password == null)
-            return;
-        try {
-            const res = await Register.signup(user);
-            console.log(res);
-        } catch (error) {
-            console.error(error.message);
-        }
+        registration(user)
+            .then(res => {
+                console.log(res);
+                nextStep();
+            })
+            .catch(error => {
+                console.error(error.message);
+            });
     };
 
     return (
@@ -204,7 +207,7 @@ const RegisterInformation = ({ user, update }) => {
 };
 
 
-const RegisterScreen = () => {
+const Register = () => {
 
     //Information about the new user
     const [user, setUser] = useState({
@@ -225,6 +228,11 @@ const RegisterScreen = () => {
         setUser(user);
     }
 
+    const finalizeRegistration = () => {
+        console.log(user)
+        console.log("Successfully register new user : ", user.username, " ", user.email, " ", user.password)
+    }
+
     const registerStepList = [
         {
             step: <RegisterNumber user={user} update={updateUser} nextStep={handleNextStep} />
@@ -233,7 +241,7 @@ const RegisterScreen = () => {
          step: <VerifyNumber nextStep={handleNextStep} />
         },
         {
-            step: <RegisterInformation user={user} update={updateUser} />
+            step: <RegisterInformation user={user} update={updateUser} nextStep={finalizeRegistration} />
         }
     ];
 
@@ -281,4 +289,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default RegisterScreen;
+export default Register;
