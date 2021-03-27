@@ -32,9 +32,5 @@ allprojects {
 
         google()
         jcenter()
-        maven { url 'https://www.jitpack.io' }
-        maven {
-            setUrl("https://dl.bintray.com/kuon/java/")
-        }
     }
 }
