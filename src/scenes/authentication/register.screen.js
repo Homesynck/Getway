@@ -3,6 +3,11 @@ import { SafeAreaView, View, StyleSheet, NativeModules } from 'react-native';
 
 import { Button, Input, Text, Layout } from '@ui-kitten/components';
 
+import Unlock from '../../assets/unlock.svg';
+import AppTree from '../../assets/appTree.svg';
+import touchApp from '../../assets/touchApp.svg';
+import Phone from '../../assets/phone.svg';
+
 const { Register } = NativeModules;
 
 const RegisterNumber = ({ user, update, nextStep }) => {
@@ -27,19 +32,17 @@ const RegisterNumber = ({ user, update, nextStep }) => {
 
     return (
         <>
-            <Layout style={{flex: 1, 
-            justifyContent: 'flex-start', 
-            alignItems: 'center',
-            padding: 20}}>
+            <Layout style={styles.title_container}>
                     <Text style={styles.title} category='h3'>Vérification du numéro de téléphone</Text>
                     <Text style={styles.subtitle} category='s1'>Nous vous enverrons un code!</Text>
             </Layout>
-            <Layout style={{flex: 4, 
-            justifyContent: 'center', 
-            alignItems: 'center'}}>    
+            <Layout style={styles.icon_container}>    
                 
-                    <Text category="h6">{error}</Text>
-            
+                <AppTree height={300} width={200}/>
+
+            </Layout>
+            <Layout style={styles.input_container}>    
+                            
                     <Input
                         placeholder='Numéro de téléphone'
                         // onChangeText={number => setNumber(number)}
@@ -52,6 +55,9 @@ const RegisterNumber = ({ user, update, nextStep }) => {
                     >
                         Valider
                     </Button>
+
+                    <Text category="h6">{error}</Text>
+
             </Layout>
         </>
     )
@@ -74,46 +80,57 @@ const VerifyNumber = ({ nextStep }) => {
 
     return (
         <>
-            <Text style={styles.title} category='h3'>Saisissez le code</Text>
-            <View style={{flexDirection:'row'}} >
-            <Input
-                placeholder="."
-                style={styles.inputNum}>
-            </Input>
-            <Input
-                placeholder="."
-                style={styles.inputNum}>
-            </Input>
-            <Input
-                placeholder="."
-                style={styles.inputNum}>
-            </Input>
-            <Input
-                placeholder="."
-                style={styles.inputNum}>
-            </Input>
-            <Input
-                placeholder="."
-                style={styles.inputNum}>
-            </Input>
-            <Input
-                placeholder="."
-                style={styles.inputNum}>
-            </Input>
-           
-            {/* <Input
-                placeholder='----'
-                onChangeText={code => setCode(code)}
-                value={code}
-            /> */}
-            </View>
-            <Button
-                onPress={handleVerifyNumber}
-                style={styles.button}>
-                Vérifier mon numéro
+            <Layout style={styles.title_container}>
+                    <Text style={styles.title} category='h3'>Saisissez le code</Text>
+            </Layout>
+            <Layout style={styles.icon_container}>    
                 
-            </Button>
-        </>
+                <Unlock height={300} width={200}/>
+
+            </Layout>
+            <Layout style={styles.input_container}>
+
+                <View style={{flexDirection:'row'}} >
+                    <Input
+                        placeholder="."
+                        style={styles.inputNum}>
+                    </Input>
+                    <Input
+                        placeholder="."
+                        style={styles.inputNum}>
+                    </Input>
+                    <Input
+                        placeholder="."
+                        style={styles.inputNum}>
+                    </Input>
+                    <Input
+                        placeholder="."
+                        style={styles.inputNum}>
+                    </Input>
+                    <Input
+                        placeholder="."
+                        style={styles.inputNum}>
+                    </Input>
+                    <Input
+                        placeholder="."
+                        style={styles.inputNum}>
+                    </Input>
+                
+                    {/* <Input
+                        placeholder='----'
+                        onChangeText={code => setCode(code)}
+                        value={code}
+                    /> */}
+                </View>
+                                
+                <Button
+                    onPress={handleVerifyNumber}
+                    style={styles.button}>
+                    Vérifier mon numéro
+                </Button>
+
+        </Layout>
+    </>
     )
 };
 
@@ -133,8 +150,17 @@ const RegisterInformation = ({ user, update }) => {
 
     return (
         <>
-            <Text style={styles.title} category='h3'>Inscription</Text>
-            <Input
+            <Layout style={styles.title_container}>
+
+                <Phone height={200} width={150}/>
+
+                <Text style={styles.title} category='h3'>Inscription</Text>
+
+            </Layout>
+
+            <Layout style={styles.input_container}>    
+                                
+                <Input
                 value={user.username}
                 label='Identifiant'
                 onChangeText={
@@ -145,20 +171,19 @@ const RegisterInformation = ({ user, update }) => {
                     }
                 }
                 style={styles.input}
-            />
-            <Input
-                value={user.email}
-                label="Email"
-                onChangeText={
-                    email => {
-                        let tempUser = { ...user }
-                        tempUser.email = email
-                        update(tempUser)
+                />
+                <Input
+                    value={user.email}
+                    label="Email"
+                    onChangeText={
+                        email => {
+                            let tempUser = { ...user }
+                            tempUser.email = email
+                            update(tempUser)
+                        }
                     }
-                }
-                style={styles.input}
-            />
-         
+                    style={styles.input}
+                />
                 <Input
                     value={user.password}
                     label="Mot de passe"
@@ -191,13 +216,15 @@ const RegisterInformation = ({ user, update }) => {
                     <Text>Veuillez entrer le même mot de passe</Text>
                 )}
             
-            <Button
-                onPress={handleRegistration}
-                style={styles.button}
-            >
+                <Button
+                    onPress={handleRegistration}
+                    style={styles.button}
+                >
                 Valider
-            </Button>
-            </>
+                </Button>
+    
+            </Layout>
+        </>
     )
 };
 
@@ -237,16 +264,26 @@ const RegisterScreen = () => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <Layout style={styles.container}>
                 {registerStepList[registerStep].step}
-            </Layout>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 5, 
+    title_container: {
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        padding: 20
+    },
+    icon_container: {
+        flex: 2, 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        padding: 20
+    },
+    input_container: {
+        flex: 2, 
         justifyContent: 'center', 
         alignItems: 'center'
     },
@@ -269,8 +306,6 @@ const styles = StyleSheet.create({
         width:53,
         textAlign:'center', 
         margin:1,
-        
-        
     },
     button:{
         justifyContent: 'center',

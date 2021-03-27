@@ -4,6 +4,7 @@ import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import {Input, Text, Layout, } from '@ui-kitten/components';
 
 import LoginButton from '../../modules/authentication/loginButton.consumer';
+import { endAsyncEvent } from 'react-native/Libraries/Performance/Systrace';
 
 const Login = ({navigation}) => {
 
@@ -32,7 +33,7 @@ const Login = ({navigation}) => {
                     onChangeText={password => setPassword(password)}
                     style={styles.input}
                 />
-                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                <TouchableOpacity style={{justifySelf: 'end'}} onPress={() => navigation.navigate('ForgotPassword')}>
                     <View style={styles.link}>
                     <Text style={styles.linkText} category='p2' appearance='hint'>
                         Mot de passe oublié ?
