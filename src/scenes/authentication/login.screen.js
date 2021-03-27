@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { Button, Input, Text, Layout } from '@ui-kitten/components';
+import {Input, Text, Layout, } from '@ui-kitten/components';
 
 import LoginButton from '../../modules/authentication/loginButton.consumer';
 
@@ -11,6 +11,8 @@ const Login = ({navigation}) => {
     const [password, setPassword] = useState('');
 
     const [errorMessage, setErrorMessage] = useState('');
+
+
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -27,19 +29,32 @@ const Login = ({navigation}) => {
                 />
                 <Input
                     placeholder='Mot de passe'
+                    secureTextEntry={true}
                     onChangeText={password => setPassword(password)}
                     style={styles.input}
                 />
+                <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                    <View style={styles.link}>
+                    <Text style={styles.linkText} category='p2' appearance='hint'>
+                        Mot de passe oublié ?
+                    </Text>
+                    </View>
+                </TouchableOpacity>
                 <LoginButton 
                     style={styles.button}
                     user={{username, password}}
                     fallback={setErrorMessage}/>
-                <Button
+                <TouchableOpacity
                     onPress={() => navigation.navigate('Register')}
                     style={styles.button}>
-                    Inscription
-                </Button>
+                    <View>
+                        <Text category='s2'>
+                            Vous n'avez toujours pas de compte ? Inscrivez-vous !
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             </Layout>
+            
         </SafeAreaView>
     )
 }
@@ -64,6 +79,16 @@ const styles = StyleSheet.create({
         borderRadius: 60,
         marginTop:10,
     },
+    link: {
+        marginBottom: 30,
+        alignItems: 'center',
+        backgroundColor: 'transparent'
+      },
+      linkText: {
+        textAlign: 'center',
+        padding: 5,
+      },
+
   });
 
 export default Login;
