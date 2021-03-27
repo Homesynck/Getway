@@ -17,7 +17,7 @@ function Root() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Dashboard"
+        initialRouteName="AddContact"
         screenOptions={{headerShown: false}}
       >
         <Stack.Screen name="Login" component={Login} />

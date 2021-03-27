@@ -1,53 +1,96 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import { Button, Input, Text } from '@ui-kitten/components';
+import { View, StyleSheet } from 'react-native';
+import { Button, Input, Text, Layout } from '@ui-kitten/components';
+import { color } from 'react-native-reanimated';
 
+    
 const AddContact = () => {
     const [contact, setContact] = useState({
-        name: "",
+        lastName: "",
+        firstName:"",
         phoneNumber: "",
         email: ""
     });
-
     return (
-        <View>
-            <Text category='h3'>Here is the add contact view</Text>
-            <Input
-                value={contact.name}
-                placeholder="Name"
-                onChangeText={ name => {
-                    const tempContact = { ...contact }
-                    tempContact.name = name
-                    setContact(tempContact);
-                }}
-            />
-            <Input
-                value={contact.phoneNumber}
-                placeholder="Phone number"
-                onChangeText={ phoneNumber => {
-                    const tempContact = { ...contact }
-                    tempContact.phoneNumber = phoneNumber
-                    setContact(tempContact);
-                }}
-            />
+        
+        <Layout style={styles.container}>
+             
             <View>
+            <Text style={styles.title} category='h3'>Nouveau contact</Text>
                 <Input
-                    value={contact.email}
-                    placeholder="Email"
-                    onChangeText={email => {
+                    value={contact.name}
+                    label="Nom"
+                    style={styles.input}
+                    onChangeText={ lastName => {
                         const tempContact = { ...contact }
-                        tempContact.email = email
+                        tempContact.lasrName = lastName
                         setContact(tempContact);
                     }}
                 />
+                <Input
+                    value={contact.firstName}
+                    label="Prénom"
+                    style={styles.input}
+                    onChangeText={ firstName => {
+                        const tempContact = { ...contact }
+                        tempContact.firstName = firstName
+                        setContact(tempContact);
+                    }}
+                />
+                <Input
+                    value={contact.phoneNumber}
+                    label="Numéro de téléphone"
+                    style={styles.input}
+                    onChangeText={ phoneNumber => {
+                        const tempContact = { ...contact }
+                        tempContact.phoneNumber = phoneNumber
+                        setContact(tempContact);
+                    }}
+                />
+                
+                    <Input
+                        value={contact.email}
+                        label="Email"
+                        style={styles.input}
+                        onChangeText={email => {
+                            const tempContact = { ...contact }
+                            tempContact.email = email
+                            setContact(tempContact);
+                        }}
+                    />
+               
+                <Button
+                    style={styles.button}
+                    onPress={() => console.log(contact)}>
+                    Ajouter
+                </Button>
             </View>
-            <Button
-                onPress={() => console.log(contact)}>
-                Add
-            </Button>
-        </View>
+        </Layout>
     )
 }
+const styles = StyleSheet.create({
+    container:{
+        flex:1,
+        justifyContent:'center', 
+    },
+    title:{
+        textAlign:'center',
+        marginBottom:40,
+        letterSpacing:12
+    }, 
+    input:{
+        borderRadius:30,
+        marginLeft:50,
+        marginRight:50,
+        marginBottom:10
+    },
+    button:{
+        padding: 10,
+        borderRadius: 60,
+        marginTop:10,
+        alignSelf:'center'
+    },
+})
 
 export default AddContact;
 
