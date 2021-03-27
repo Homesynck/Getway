@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, Input, Text, Layout } from '@ui-kitten/components';
-import { color } from 'react-native-reanimated';
 
     
 const AddContact = () => {
@@ -79,16 +78,17 @@ const styles = StyleSheet.create({
         letterSpacing:12
     }, 
     input:{
-        borderRadius:30,
-        marginLeft:50,
-        marginRight:50,
+        borderRadius:5,
+        marginLeft:20,
+        marginRight:20,
         marginBottom:10
     },
     button:{
         padding: 10,
-        borderRadius: 60,
-        marginTop:10,
-        alignSelf:'center'
+        borderRadius: 5,
+        marginTop:20,
+        marginRight:20,
+        alignSelf:'flex-end'
     },
 })
 
