@@ -1,9 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Text } from 'react-native';
 
 const AddContact = () => {
     return (
-        <View></View>
+        <Text>scenes/addForm/add-contact.screen</Text>
     )
 }
 
