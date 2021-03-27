@@ -13,7 +13,6 @@ const Login = ({navigation}) => {
     const [errorMessage, setErrorMessage] = useState('');
 
 
-
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

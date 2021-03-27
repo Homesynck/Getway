@@ -26,17 +26,23 @@ const RegisterNumber = ({ user, update, nextStep }) => {
     };
 
     return (
-        <SafeAreaView>
-            <Layout style={styles.container}>
-                
+        <>
+            <Layout style={{flex: 1, 
+            justifyContent: 'flex-start', 
+            alignItems: 'center',
+            padding: 20}}>
                     <Text style={styles.title} category='h3'>Vérification du numéro de téléphone</Text>
                     <Text style={styles.subtitle} category='s1'>Nous vous enverrons un code!</Text>
+            </Layout>
+            <Layout style={{flex: 4, 
+            justifyContent: 'center', 
+            alignItems: 'center'}}>    
                 
                     <Text category="h6">{error}</Text>
             
                     <Input
                         placeholder='Numéro de téléphone'
-                       // onChangeText={number => setNumber(number)}
+                        // onChangeText={number => setNumber(number)}
                         //value={number}
                         style={styles.input}
                     />
@@ -47,7 +53,7 @@ const RegisterNumber = ({ user, update, nextStep }) => {
                         Valider
                     </Button>
             </Layout>
-        </SafeAreaView>
+        </>
     )
 };
 
@@ -67,9 +73,7 @@ const VerifyNumber = ({ nextStep }) => {
     };
 
     return (
-        
-        <Layout style={styles.container}>
-
+        <>
             <Text style={styles.title} category='h3'>Saisissez le code</Text>
             <View style={{flexDirection:'row'}} >
             <Input
@@ -109,9 +113,7 @@ const VerifyNumber = ({ nextStep }) => {
                 Vérifier mon numéro
                 
             </Button>
-        
-        </Layout>
- 
+        </>
     )
 };
 
@@ -130,9 +132,7 @@ const RegisterInformation = ({ user, update }) => {
     };
 
     return (
-        <SafeAreaView>
-        <Layout style={styles.container}>
-        
+        <>
             <Text style={styles.title} category='h3'>Inscription</Text>
             <Input
                 value={user.username}
@@ -197,9 +197,7 @@ const RegisterInformation = ({ user, update }) => {
             >
                 Valider
             </Button>
-        
-        </Layout>
-        </SafeAreaView>
+            </>
     )
 };
 
@@ -238,17 +236,19 @@ const RegisterScreen = () => {
     ];
 
     return (
-        <SafeAreaView>
-            {registerStepList[registerStep].step}
+        <SafeAreaView style={{ flex: 1 }}>
+            <Layout style={styles.container}>
+                {registerStepList[registerStep].step}
+            </Layout>
         </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        alignItems:'center', 
-        padding:20,
-        justifyContent:'center',
+        flex: 5, 
+        justifyContent: 'center', 
+        alignItems: 'center'
     },
     title: {
       textAlign:'center',
