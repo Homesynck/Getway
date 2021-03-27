@@ -9,10 +9,10 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.github.homesynck.accounts.Session;
 
 import java.util.Arrays;
 
-import accounts.Session;
 
 public class SignInModule extends ReactContextBaseJavaModule {
     private final Session session;
@@ -32,11 +32,13 @@ public class SignInModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void signIn(String username, String password, Promise connectedPromise) {
 
-        session.login(username, password, msg -> {
-            String response = Arrays.toString(msg);
+        session.login(username, password, success -> {
+            String response = Arrays.toString(success);
             Log.d(TAG, response);
             connectedPromise.resolve(response);
-            return null;
+        }, error -> {
+            Log.e(TAG, error);
+            connectedPromise.reject("homesynck", error);
         });
     }
 }
