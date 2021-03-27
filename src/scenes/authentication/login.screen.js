@@ -30,7 +30,10 @@ const Login = ({navigation}) => {
                     onChangeText={password => setPassword(password)}
                     style={styles.input}
                 />
-                <LoginButton style={styles.button}/>
+                <LoginButton 
+                    style={styles.button}
+                    user={{username, password}}
+                    fallback={setErrorMessage}/>
                 <Button
                     onPress={() => navigation.navigate('Register')}
                     style={styles.button}>
