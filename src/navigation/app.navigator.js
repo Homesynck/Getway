@@ -23,7 +23,6 @@ const AppNavigator = () => (
     {/* Sinon
     <LoginNavigator /> */}
 
-
   </NavigationContainer>
 )
 

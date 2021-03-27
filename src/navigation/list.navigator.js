@@ -1,12 +1,12 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Home from '../scenes/home/home.screen';
+import ListContact from '../scenes/listContact/list-contact.screen';
 
 const Stack = createStackNavigator();
 
-export const ThirdNavigator = () => (
+export const ListNavigator = () => (
   <Stack.Navigator headerMode='none'>
-    <Stack.Screen name="Home" component={Home} />
+    <Stack.Screen name="List" component={ListContact} />
   </Stack.Navigator>
 );
