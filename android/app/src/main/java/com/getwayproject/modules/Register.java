@@ -9,10 +9,10 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
+import com.github.homesynck.accounts.Session;
 
 import java.util.Arrays;
 
-import accounts.Session;
 
 public class Register extends ReactContextBaseJavaModule {
     private final Session session;
@@ -36,21 +36,25 @@ public class Register extends ReactContextBaseJavaModule {
         String password = user.getString("password");
         String token = "";
 
-        session.register(username, password, token, msg -> {
-            String response = Arrays.toString(msg);
+        session.register(username, password, token, success -> {
+            String response = Arrays.toString(success);
             Log.d(TAG, response);
             signedPromise.resolve(response);
-            return null;
+        }, error -> {
+            Log.e(TAG, error);
+            signedPromise.reject("homesynck", error);
         });
     }
 
     @ReactMethod
     public void sendPhoneNumber(String phoneNumber, Promise promisePhoneSend){
 
-        session.phoneValidation(phoneNumber, msg -> {
-            Log.d(TAG, msg);
-            promisePhoneSend.resolve(msg);
-            return null;
+        session.phoneValidation(phoneNumber, success -> {
+            Log.d(TAG, success);
+            promisePhoneSend.resolve(success);
+        }, error -> {
+            Log.e(TAG, error);
+            promisePhoneSend.reject("homesynck", error);
         });
     }
 }

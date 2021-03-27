@@ -53,7 +53,7 @@ const App = () => {
 
         let arr = [];
         switch (state) {        
-            case 'NOT_SIGNIN':
+            case 'NOT_SIGNED_IN':
             arr.push(
                 <LoginNavigator />
             );
