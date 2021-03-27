@@ -1,28 +1,27 @@
 import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, NativeModules } from 'react-native';
 
 import { Button, Input, Text, Layout } from '@ui-kitten/components';
 
-import { login } from "../../modules";
+const { SignIn } = NativeModules;
 
-const Login = ({ navigation }) => {
+const Login = ({navigation}) => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const [errorMessage, setErrorMessage] = useState('');
 
-    const handleLogin = e => {
+    const handleLogin = async e => {
         e.preventDefault();
-        login(username, password)
-            .then(() => {
-                //On doit revenir à app.component
-                navigation.navigate('Home');
-            })
-            .catch(error => {
-                setErrorMessage(error.message);
-                console.error("Error message: ", error.message);
-            });
+        try {
+            const res = await SignIn.signIn(username, password);
+            console.log(res);
+            navigation.navigate("Register");
+        } catch (error) {
+            console.error(error.message);
+            setErrorMessage(error.message);
+        }
     }
 
     return (
