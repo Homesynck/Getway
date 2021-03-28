@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import {Input, Text, Layout, } from '@ui-kitten/components';
-import { SvgXml } from 'react-native-svg';
+import {Input, Text, Layout, Modal, Card, Button } from '@ui-kitten/components';
 import Logo from '../../assets/logo.svg';
 
 import LoginButton from '../../modules/authentication/loginButton.consumer';
@@ -16,17 +15,38 @@ const Login = (props) => {
     const [password, setPassword] = useState('');
 
     const [errorMessage, setErrorMessage] = useState('');
+    const [visible, setVisible] = useState(false);
 
+    const setError = (error) => {
+        setErrorMessage(error)
+        setVisible(true)
+    }
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <Layout style={styles.container}>
 
+            <Modal 
+            visible={visible}
+            backdropStyle={styles.backdrop}
+            onBackdropPress={() => setVisible(false)}>
+                <Card disabled={true}>
+                    <Text category='h6' style={{margin: 5}}>{errorMessage}</Text>
+                    <Button 
+                    size='small'
+                    appearance='outline'
+                    onPress={() => setVisible(false)}
+                    style={{margin: 5}}>
+                        Ok
+                    </Button>
+                </Card>
+            </Modal>
+
                 <Logo height={100} width={100} />
 
                 <Text style={styles.getwayTitle} category='h1'>GETWAY</Text>
                 <Text style={styles.subtitle} category='s1'>Bon retour parmis nous!</Text>
-                <Text category='h5'>{errorMessage}</Text>
+
                 <Input
                     placeholder='Identifiant'
                     onChangeText={(username => setUsername(username))}
@@ -51,7 +71,7 @@ const Login = (props) => {
                 <LoginButton 
                     style={styles.button}
                     user={{username, password}}
-                    fallback={setErrorMessage}/>
+                    fallback={setError}/>
             </Layout>
             <Layout style={{
                 elevation: 0,
@@ -73,6 +93,7 @@ const Login = (props) => {
         </SafeAreaView>
     )
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 7, 
@@ -104,7 +125,10 @@ const styles = StyleSheet.create({
         //marginBottom: 30,
         alignItems: 'flex-end',
         backgroundColor: 'transparent'
-      }
+    },
+    backdrop: {
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    }
 
   });
 
