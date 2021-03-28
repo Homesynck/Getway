@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {Input,Text, Layout, Button} from '@ui-kitten/components';
+
 const ForgotPassword = (onPressForgotPassword) => {
 
     const [username, setUsername] = useState('');

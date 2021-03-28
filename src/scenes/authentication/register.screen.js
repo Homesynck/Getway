@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, createRef } from 'react'
 import { SafeAreaView, View, StyleSheet, NativeModules } from 'react-native';
 
 import { Button, Input, Text, Layout } from '@ui-kitten/components';
@@ -45,8 +45,8 @@ const RegisterNumber = ({ user, update, nextStep }) => {
                             
                     <Input
                         placeholder='Numéro de téléphone'
-                        // onChangeText={number => setNumber(number)}
-                        //value={number}
+                        keyboardType = 'numeric'
+                        onChangeText={number => setNumber(number)}
                         style={styles.input}
                     />
                     <Button
@@ -65,9 +65,21 @@ const RegisterNumber = ({ user, update, nextStep }) => {
 
 const VerifyNumber = ({ nextStep }) => {
 
-    const [code, setCode] = useState("");
+    const [code, setCode] = useState([]);
+    const [error, setError] = useState("");
+
+    const codeLength = 6;
+    const inputRefs = Array(codeLength).fill(createRef())
+
+    const autoNextFocus = (index) => {
+        if(index < codeLength-1) {
+            inputRefs[index + 1].focus();
+        }
+    }
 
     const handleVerifyNumber = async e => {
+        numericCode = code.join('')
+        console.log("VERIFYING CODE: " + numericCode)
         e.preventDefault();
         nextStep();
         // try {
@@ -75,6 +87,7 @@ const VerifyNumber = ({ nextStep }) => {
         // } catch (error) {
         //     //TODO update state
         //     console.error(error);
+        //     setError(error);
         // }
     };
 
@@ -89,38 +102,26 @@ const VerifyNumber = ({ nextStep }) => {
 
             </Layout>
             <Layout style={styles.input_container}>
-
                 <View style={{flexDirection:'row'}} >
-                    <Input
-                        placeholder="."
-                        style={styles.inputNum}>
-                    </Input>
-                    <Input
-                        placeholder="."
-                        style={styles.inputNum}>
-                    </Input>
-                    <Input
-                        placeholder="."
-                        style={styles.inputNum}>
-                    </Input>
-                    <Input
-                        placeholder="."
-                        style={styles.inputNum}>
-                    </Input>
-                    <Input
-                        placeholder="."
-                        style={styles.inputNum}>
-                    </Input>
-                    <Input
-                        placeholder="."
-                        style={styles.inputNum}>
-                    </Input>
-                
-                    {/* <Input
-                        placeholder='----'
-                        onChangeText={code => setCode(code)}
-                        value={code}
-                    /> */}
+                    {
+                        inputRefs.map((k, id) => (
+                            <Input
+                            placeholder='-'
+                            keyboardType = 'numeric'
+                            key={id}
+                            style={styles.inputNum}
+                            ref={r => inputRefs[id] = r}
+                            maxLength={1}
+                            onChangeText={
+                                digit => {
+                                    let tempCode = [ ...code ]
+                                    tempCode[id] = digit
+                                    setCode(tempCode)
+                                    autoNextFocus(id)
+                                }
+                            }></Input>
+                        ))
+                    }
                 </View>
                                 
                 <Button
@@ -128,6 +129,8 @@ const VerifyNumber = ({ nextStep }) => {
                     style={styles.button}>
                     Vérifier mon numéro
                 </Button>
+
+                <Text category="h6">{error}</Text>
 
         </Layout>
     </>
