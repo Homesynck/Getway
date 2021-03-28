@@ -1,24 +1,46 @@
 import React, { useState, useEffect, PureComponent } from 'react';
-import { View, SafeAreaView, StyleSheet, StatusBar, FlatList, TouchableOpacity } from 'react-native';
+
+import { StyleSheet, StatusBar } from 'react-native'
+import { ListItem, Avatar, Badge } from 'react-native-elements';
+
+import TouchableScale from 'react-native-touchable-scale';
 import { useNavigation } from '@react-navigation/native';
 
 import Contacts from 'react-native-contacts';
-import { ListItem, Text, List, Icon } from '@ui-kitten/components';
+import { List, Icon } from '@ui-kitten/components';
 
 class ContactListItem extends PureComponent {
 
   render() {
     const props = this.props;
-    const renderItemIcon = (props) => (
-      <Icon {...props} name='person'/>
-    );
-    return (
-        <ListItem
+    return ( 
+      <ListItem
+        Component={TouchableScale}
+        friction={90}
+        tension={100}
+        activeScale={0.95}
         onPress={props.onPress}
-        accessoryLeft={renderItemIcon}
-        title={props.title}
-        description='ok'
-        />
+        onLongPress={() => console.log('DELETE')}
+        style={{
+          margin: 10,
+          borderRadius: 100
+        }}
+      >
+        <Avatar rounded />
+        <ListItem.Content>
+          <ListItem.Title style={{ fontWeight: 'bold' }}>
+            {props.title}
+          </ListItem.Title>
+          <ListItem.Subtitle>
+            Some info here
+          </ListItem.Subtitle>
+        </ListItem.Content>
+        {/* <Badge //TODO AFFICHER au longpress + Touchable
+          status='error'
+          value={'X'}
+          containerStyle={{ marginTop: -65, marginRight: -20}}
+        /> */}
+      </ListItem>
     )
   }
 }
@@ -43,6 +65,9 @@ const ListContact = () => {
       <ContactListItem 
         title = {item.displayName}
         onPress={() => navigation.navigate('Contact', {contact: item})}
+        style={{
+          margin: '10'
+        }}
       />
     );
 
@@ -52,6 +77,7 @@ const ListContact = () => {
         data={contactsData}
         renderItem={renderItem}
         keyExtractor={item => item.recordID}
+        contentContainerStyle={{borderRadius: 6, overflow: 'hidden'}}
       />
       </>
     )
