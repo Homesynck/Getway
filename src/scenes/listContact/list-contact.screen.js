@@ -14,6 +14,7 @@ class ContactListItem extends PureComponent {
     );
     return (
         <ListItem
+        onPress={props.onPress}
         accessoryLeft={renderItemIcon}
         title={props.title}
         description='ok'
@@ -30,7 +31,7 @@ const ListContact = () => {
 
     const getAllContacts = async () => {
         const contacts = await Contacts.getAll();
-        console.log(contacts);
+        console.log(contacts.length + " contacts : " + contacts.map((contact) => contact.displayName).join(', '));
         setContactsData(contacts);
     }
 
@@ -41,19 +42,18 @@ const ListContact = () => {
     const renderItem = ({item}) => (
       <ContactListItem 
         title = {item.displayName}
-        
-        onPress={navigation.navigate('Contact', {contact: item} )}
+        onPress={() => navigation.navigate('Contact', {contact: item})}
       />
     );
 
     return (
-      
+      <>
       <List
         data={contactsData}
         renderItem={renderItem}
         keyExtractor={item => item.recordID}
       />
-
+      </>
     )
 }
 
