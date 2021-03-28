@@ -1,21 +1,23 @@
 import React, { useState, useEffect, PureComponent } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, StatusBar, FlatList, TouchableOpacity } from 'react-native';
+import { View, SafeAreaView, StyleSheet, StatusBar, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import Contacts from 'react-native-contacts';
+import { ListItem, Text, List, Icon } from '@ui-kitten/components';
 
 class ContactListItem extends PureComponent {
 
   render() {
     const props = this.props;
-
+    const renderItemIcon = (props) => (
+      <Icon {...props} name='person'/>
+    );
     return (
-      <TouchableOpacity onPress={props.onPress}>
-        <View style={styles.item}>
-          <Text style={styles.title}>{props.title}</Text>
-        </View>
-      </TouchableOpacity>
-      
+        <ListItem
+        accessoryLeft={renderItemIcon}
+        title={props.title}
+        description='ok'
+        />
     )
   }
 }
@@ -35,22 +37,23 @@ const ListContact = () => {
     useEffect(() => {
         getAllContacts();
     },[]);
-
+    
     const renderItem = ({item}) => (
       <ContactListItem 
         title = {item.displayName}
+        
         onPress={navigation.navigate('Contact', {contact: item} )}
       />
     );
 
     return (
-        <SafeAreaView style={styles.container}>
-          <FlatList
-              data={contactsData}
-              renderItem={renderItem}
-              keyExtractor={item => item.recordID}
-          />
-    </SafeAreaView>
+      
+      <List
+        data={contactsData}
+        renderItem={renderItem}
+        keyExtractor={item => item.recordID}
+      />
+
     )
 }
 
@@ -65,9 +68,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
   },
-  title: {
-    fontSize: 18,
-  },
+
 });
 
 export default ListContact;

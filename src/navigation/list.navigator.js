@@ -7,6 +7,6 @@ const Stack = createStackNavigator();
 
 export const ListNavigator = () => (
   <Stack.Navigator headerMode='none'>
-    <Stack.Screen name="List" component={ListContact} />
+    <Stack.Screen name="ListContact" component={ListContact} />
   </Stack.Navigator>
 );
