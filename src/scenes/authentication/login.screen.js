@@ -24,7 +24,7 @@ const Login = (props) => {
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <Layout style={styles.container}>
+            <View style={styles.container}>
 
             <Modal 
             visible={visible}
@@ -72,12 +72,13 @@ const Login = (props) => {
                     style={styles.button}
                     user={{username, password}}
                     fallback={setError}/>
-            </Layout>
-            <Layout style={{
+            </View>
+            <View style={{
                 elevation: 0,
                 flex: 1, 
                 justifyContent: 'center', 
-                alignItems: 'center'}
+                alignItems: 'center',
+                backgroundColor: 'transparent'}
                 }>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('Register')}
@@ -88,7 +89,7 @@ const Login = (props) => {
                         </Text>
                     </View>
                 </TouchableOpacity>
-            </Layout>
+            </View>
             
         </SafeAreaView>
     )

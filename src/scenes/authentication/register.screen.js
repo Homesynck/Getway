@@ -12,311 +12,312 @@ const { Register } = NativeModules;
 
 const RegisterNumber = ({ user, update, nextStep }) => {
 
-    const [number, setNumber] = useState("");
-    const [error, setError] = useState("");
+  const [number, setNumber] = useState("");
+  const [error, setError] = useState("");
 
-    const handleRegistrationNumber = async e => {
-        nextStep();
-        e.preventDefault();
-        try {
-            await Register.sendPhoneNumber(number);
-            user.phone = number;
-            update(user);
-            nextStep();
-        } catch (error) {
-            console.error("[SEND PHONE NUMBER] ", error.message);
-            setError(error.message);
-            nextStep();
-        }
-    };
+  const handleRegistrationNumber = async e => {
+    nextStep();
+    e.preventDefault();
+    try {
+      await Register.sendPhoneNumber(number);
+      user.phone = number;
+      update(user);
+      nextStep();
+    } catch (error) {
+      console.error("[SEND PHONE NUMBER] ", error.message);
+      setError(error.message);
+      nextStep();
+    }
+  };
 
-    return (
-        <>
-            <Layout style={styles.title_container}>
-                    <Text style={styles.title} category='h3'>Vérification du numéro de téléphone</Text>
-                    <Text style={styles.subtitle} category='s1'>Nous vous enverrons un code!</Text>
-            </Layout>
-            <Layout style={styles.icon_container}>    
-                
-                <AppTree height={300} width={200}/>
+  return (
+    <>
+      <View style={styles.title_container}>
+        <Text style={styles.title} category='h3'>Vérification du numéro de téléphone</Text>
+        <Text style={styles.subtitle} category='s1'>Nous vous enverrons un code!</Text>
+      </View>
+      <View style={styles.icon_container}>
 
-            </Layout>
-            <Layout style={styles.input_container}>    
-                            
-                    <Input
-                        placeholder='Numéro de téléphone'
-                        keyboardType = 'numeric'
-                        onChangeText={number => setNumber(number)}
-                        style={styles.input}
-                    />
-                    <Button
-                        onPress={handleRegistrationNumber}
-                        style={styles.button}
-                    >
-                        Valider
+        <AppTree height={300} width={200} />
+
+      </View>
+      <View style={styles.input_container}>
+
+        <Input
+          placeholder='Numéro de téléphone'
+          keyboardType='numeric'
+          onChangeText={number => setNumber(number)}
+          style={styles.input}
+          maxLength={10}
+        />
+        <Button
+          onPress={handleRegistrationNumber}
+          style={styles.button}
+        >
+          Valider
                     </Button>
 
-                    <Text category="h6">{error}</Text>
+        <Text category="h6">{error}</Text>
 
-            </Layout>
-        </>
-    )
+      </View>
+    </>
+  )
 };
 
 const VerifyNumber = ({ nextStep }) => {
 
-    const [code, setCode] = useState([]);
-    const [error, setError] = useState("");
+  const [code, setCode] = useState([]);
+  const [error, setError] = useState("");
 
-    const codeLength = 6;
-    const inputRefs = Array(codeLength).fill(createRef())
+  const codeLength = 6;
+  const inputRefs = Array(codeLength).fill(createRef())
 
-    const autoNextFocus = (index) => {
-        if(index < codeLength-1) {
-            inputRefs[index + 1].focus();
-        }
+  const autoNextFocus = (index) => {
+    if (index < codeLength - 1) {
+      inputRefs[index + 1].focus();
     }
+  }
 
-    const handleVerifyNumber = async e => {
-        numericCode = code.join('')
-        console.log("VERIFYING CODE: " + numericCode)
-        e.preventDefault();
-        nextStep();
-        // try {
-        //     // TODO call verifyNumber method from bridge
-        // } catch (error) {
-        //     //TODO update state
-        //     console.error(error);
-        //     setError(error);
-        // }
-    };
+  const handleVerifyNumber = async e => {
+    numericCode = code.join('')
+    console.log("VERIFYING CODE: " + numericCode)
+    e.preventDefault();
+    nextStep();
+    // try {
+    //     // TODO call verifyNumber method from bridge
+    // } catch (error) {
+    //     //TODO update state
+    //     console.error(error);
+    //     setError(error);
+    // }
+  };
 
-    return (
-        <>
-            <Layout style={styles.title_container}>
-                    <Text style={styles.title} category='h3'>Saisissez le code</Text>
-            </Layout>
-            <Layout style={styles.icon_container}>    
-                
-                <Unlock height={300} width={200}/>
+  return (
+    <>
+      <View style={styles.title_container}>
+        <Text style={styles.title} category='h3'>Saisissez le code</Text>
+      </View>
+      <View style={styles.icon_container}>
 
-            </Layout>
-            <Layout style={styles.input_container}>
-                <View style={{flexDirection:'row'}} >
-                    {
-                        inputRefs.map((k, id) => (
-                            <Input
-                            placeholder='-'
-                            keyboardType = 'numeric'
-                            key={id}
-                            style={styles.inputNum}
-                            ref={r => inputRefs[id] = r}
-                            maxLength={1}
-                            onChangeText={
-                                digit => {
-                                    let tempCode = [ ...code ]
-                                    tempCode[id] = digit
-                                    setCode(tempCode)
-                                    autoNextFocus(id)
-                                }
-                            }></Input>
-                        ))
-                    }
-                </View>
-                                
-                <Button
-                    onPress={handleVerifyNumber}
-                    style={styles.button}>
-                    Vérifier mon numéro
+        <Unlock height={300} width={200} />
+
+      </View>
+      <View style={styles.input_container}>
+        <View style={{ flexDirection: 'row' }} >
+          {
+            inputRefs.map((k, id) => (
+              <Input
+                placeholder='-'
+                keyboardType='numeric'
+                key={id}
+                style={styles.inputNum}
+                ref={r => inputRefs[id] = r}
+                maxLength={1}
+                onChangeText={
+                  digit => {
+                    let tempCode = [...code]
+                    tempCode[id] = digit
+                    setCode(tempCode)
+                    autoNextFocus(id)
+                  }
+                }></Input>
+            ))
+          }
+        </View>
+
+        <Button
+          onPress={handleVerifyNumber}
+          style={styles.button}>
+          Vérifier mon numéro
                 </Button>
 
-                <Text category="h6">{error}</Text>
+        <Text category="h6">{error}</Text>
 
-        </Layout>
+      </View>
     </>
-    )
+  )
 };
 
 const RegisterInformation = ({ user, update }) => {
 
-    const handleRegistration = async e => {
-        e.preventDefault();
-        if(user.username == null || user.password == null)
-            return;
-        try {
-            const res = await Register.signup(user);
-            console.log(res);
-        } catch (error) {
-            console.error(error.message);
-        }
-    };
+  const handleRegistration = async e => {
+    e.preventDefault();
+    if (user.username == null || user.password == null)
+      return;
+    try {
+      const res = await Register.signup(user);
+      console.log(res);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
-    return (
-        <>
-            <Layout style={styles.title_container}>
+  return (
+    <>
+      <View style={styles.title_container}>
 
-                <Phone height={200} width={150}/>
+        <Phone height={200} width={150} />
 
-                <Text style={styles.title} category='h3'>Inscription</Text>
+        <Text style={styles.title} category='h3'>Inscription</Text>
 
-            </Layout>
+      </View>
 
-            <Layout style={styles.input_container}>    
-                                
-                <Input
-                value={user.username}
-                label='Identifiant'
-                onChangeText={
-                    username => {
-                        let tempUser = { ...user }
-                        tempUser.username = username
-                        update(tempUser)
-                    }
-                }
-                style={styles.input}
-                />
-                <Input
-                    value={user.email}
-                    label="Email"
-                    onChangeText={
-                        email => {
-                            let tempUser = { ...user }
-                            tempUser.email = email
-                            update(tempUser)
-                        }
-                    }
-                    style={styles.input}
-                />
-                <Input
-                    value={user.password}
-                    label="Mot de passe"
-                    onChangeText={
-                        password => {
-                            let tempUser = { ...user }
-                            tempUser.password = password
-                            update(tempUser)
-                        }
-                    }
-                    style={styles.input}
-                />
-                {(user.password.length < 8 && user.password.length > 0) && (
-                    <Text>Votre mot de passe doit faire minimum 8 charatères</Text>
-                )}
-            
-                <Input
-                    value={user.password2}
-                    label="Confirmation du mot de passe"
-                    onChangeText={
-                        password2 => {
-                            let tempUser = { ...user }
-                            tempUser.password2 = password2
-                            update(tempUser)
-                        }
-                    }
-                    style={styles.input}
-                />
-                {(user.password != user.password2) && (
-                    <Text>Veuillez entrer le même mot de passe</Text>
-                )}
-            
-                <Button
-                    onPress={handleRegistration}
-                    style={styles.button}
-                >
-                Valider
+      <View style={styles.input_container}>
+
+        <Input
+          value={user.username}
+          label='Identifiant'
+          onChangeText={
+            username => {
+              let tempUser = { ...user }
+              tempUser.username = username
+              update(tempUser)
+            }
+          }
+          style={styles.input}
+        />
+        <Input
+          value={user.email}
+          label="Email"
+          onChangeText={
+            email => {
+              let tempUser = { ...user }
+              tempUser.email = email
+              update(tempUser)
+            }
+          }
+          style={styles.input}
+        />
+        <Input
+          value={user.password}
+          label="Mot de passe"
+          onChangeText={
+            password => {
+              let tempUser = { ...user }
+              tempUser.password = password
+              update(tempUser)
+            }
+          }
+          style={styles.input}
+        />
+        {(user.password.length < 8 && user.password.length > 0) && (
+          <Text>Votre mot de passe doit faire minimum 8 charatères</Text>
+        )}
+
+        <Input
+          value={user.password2}
+          label="Confirmation du mot de passe"
+          onChangeText={
+            password2 => {
+              let tempUser = { ...user }
+              tempUser.password2 = password2
+              update(tempUser)
+            }
+          }
+          style={styles.input}
+        />
+        {(user.password != user.password2) && (
+          <Text>Veuillez entrer le même mot de passe</Text>
+        )}
+
+        <Button
+          onPress={handleRegistration}
+          style={styles.button}
+        >
+          Valider
                 </Button>
-    
-            </Layout>
-        </>
-    )
+
+      </View>
+    </>
+  )
 };
 
 
 const RegisterScreen = () => {
 
-    //Information about the new user
-    const [user, setUser] = useState({
-        phone: "",
-        username: "",
-        password: "",
-        password2: "",
-        email: ""
-    });
+  //Information about the new user
+  const [user, setUser] = useState({
+    phone: "",
+    username: "",
+    password: "",
+    password2: "",
+    email: ""
+  });
 
-    const [registerStep, setRegisterStep] = useState(0);
+  const [registerStep, setRegisterStep] = useState(0);
 
-    const handleNextStep = () => {
-        setRegisterStep(registerStep + 1)
+  const handleNextStep = () => {
+    setRegisterStep(registerStep + 1)
+  }
+
+  const updateUser = (user) => {
+    setUser(user);
+  }
+
+  const registerStepList = [
+    {
+      step: <RegisterNumber user={user} update={updateUser} nextStep={handleNextStep} />
+    },
+    {
+      step: <VerifyNumber nextStep={handleNextStep} />
+    },
+    {
+      step: <RegisterInformation user={user} update={updateUser} />
     }
+  ];
 
-    const updateUser = (user) => {
-        setUser(user);
-    }
-
-    const registerStepList = [
-        {
-            step: <RegisterNumber user={user} update={updateUser} nextStep={handleNextStep} />
-        },
-      {
-         step: <VerifyNumber nextStep={handleNextStep} />
-        },
-        {
-            step: <RegisterInformation user={user} update={updateUser} />
-        }
-    ];
-
-    return (
-        <SafeAreaView style={{ flex: 1 }}>
-                {registerStepList[registerStep].step}
-        </SafeAreaView>
-    )
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      {registerStepList[registerStep].step}
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({
-    title_container: {
-        flex: 1, 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        padding: 20
-    },
-    icon_container: {
-        flex: 2, 
-        justifyContent: 'center', 
-        alignItems: 'center',
-        padding: 20
-    },
-    input_container: {
-        flex: 2, 
-        justifyContent: 'center', 
-        alignItems: 'center'
-    },
-    title: {
-      textAlign:'center',
-      marginBottom:10,
-    },
-    subtitle:{
-        marginBottom:20,
-    },
-    input:{
-        borderRadius:30,
-        marginLeft:50,
-        marginRight:50,
-        marginBottom:10,
-        marginTop:10,
-    },
-    inputNum:{
-        borderRadius:100,
-        width:53,
-        textAlign:'center', 
-        margin:1,
-    },
-    button:{
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 70,
-        marginTop:10,
+  title_container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20
+  },
+  icon_container: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20
+  },
+  input_container: {
+    flex: 2,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  title: {
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  subtitle: {
+    marginBottom: 20,
+  },
+  input: {
+    borderRadius: 30,
+    marginLeft: 50,
+    marginRight: 50,
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  inputNum: {
+    borderRadius: 100,
+    width: 53,
+    textAlign: 'center',
+    margin: 1,
+  },
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 70,
+    marginTop: 10,
 
-    },
-  });
+  },
+});
 
 export default RegisterScreen;
