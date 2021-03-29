@@ -40,7 +40,7 @@ const requestReadContactsPermission = async () => {
 
 const App = () => {
 
-  const [authState, setAuthState] = useState('NOT_SIGNED_IN')
+  const [authState, setAuthState] = useState('SIGNED_IN') //NOT_SIGNED_IN
 
   useEffect(() => {
     setTimeout(() => requestReadContactsPermission(), 200);
