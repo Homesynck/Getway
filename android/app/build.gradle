@@ -211,7 +211,8 @@ dependencies {
     implementation project(':react-native-contacts')
 
     // https://mvnrepository.com/artifact/com.github.homesynck/homesynck-java-sdk
-    implementation 'com.github.homesynck:homesynck-java-sdk:0.2.2'
+//    implementation 'com.github.homesynck:homesynck-java-sdk:0.2.2'
+    implementation group: 'com.github.homesynck', name: 'homesynck-java-sdk', version: '+'
 }
 
 // Run this once to be able to run the application with BUCK
