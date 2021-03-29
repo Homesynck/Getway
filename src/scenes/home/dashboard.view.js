@@ -1,17 +1,30 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
-import { Icon } from '@ui-kitten/components';
-
+import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
+import { Icon, Text } from '@ui-kitten/components';
+import Student from '../../assets/student.svg'
 const Dashboard = ({navigation}) => {
     return (
-        <ScrollView>
-            <SafeAreaView style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <Text>Getway Dasboard</Text>
-                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
-
-                    <TouchableOpacity 
+            <SafeAreaView>
+                <View style={{alignItems:'center', marginTop:10}}>
+                   <Student height={290} width={250}/>
+                   <Text category='h2' style={styles.text}>Mon Dashboard</Text>
+                </View>
+                <View style={{flexDirection:'row', justifyContent:'center'}}>
+                    <View style={[styles.container, styles.box]} >
+                    </View>
+                    <TouchableOpacity  style={[styles.container, styles.box]}>
+                        <View>
+                        </View>
+                    </TouchableOpacity>
+                    </View>
+                    <View style={{justifyContent:'center', alignSelf:'center'}}>
+                    <View style={[styles.container, styles.long_box]}>
+                    </View>
+                </View>
+            </SafeAreaView>
+    )
+}
+                    {/* <TouchableOpacity 
                         style={[styles.card, styles.contactListCard]} 
                         onPress={() => navigation.navigate('Contacts')}>
                         <Icon
@@ -20,75 +33,35 @@ const Dashboard = ({navigation}) => {
                             name='people-outline'
                         />
                         <Text>Contact List</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                        style={[styles.card, styles.addContactCard]}
-                        onPress={() => navigation.navigate('AddContact')}>
-                        <Icon
-                            style={styles.icCard}
-                            fill='#e3dfd5'
-                            name='person-add-outline'
-                        />
-                        <Text>Add Contact</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity 
-                        style={[styles.card, styles.contactSyncCard]}>
-                        <Icon
-                            style={styles.icCard}
-                            fill='#e3dfd5'
-                            name='sync-outline'
-                        />
-                        <Text>Contacts Sync</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.card}>
-                        <Icon
-                            style={styles.icCard}
-                            fill='#e3dfd5'
-                            name='people-outline'
-                        />
-                        <Text>Contact list</Text>
-                    </TouchableOpacity>
-                </View>
-            </SafeAreaView>
-            
-        </ScrollView>
-    )
-}
-
+                    </TouchableOpacity> */}
 const styles = StyleSheet.create({
-    dashboardChoices: {
-        padding: 5,
-        display: 'flex',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'center',
+    container:{
+        padding:10,
+        margin:13,
+        borderRadius:15,
+        shadowColor: "#d9d9d9",
+        shadowOffset: {
+            width: 0,
+            height: 7,
+        },
+        shadowOpacity: 0.8,
+        shadowRadius: 1,
+        backgroundColor:'white',
+        elevation: 15,
+        
     },
-    card: {
-        height: 160,
-        width: 160,
-        borderRadius: 25,
-        backgroundColor: '#00BCD4',
-        marginBottom: 16,
-        flex: 0.5,
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'column',
+    box: {
+        height: 135,
+        width: 135,
     },
-    icCard: {
-        width: 128,
-        height: 128,
+    long_box: {
+        height: 120,
+        width: 300,
     },
-
-    contactListCard: {
-        backgroundColor: '#0097A7',
-    },
-    addContactCard: {
-        backgroundColor: '#CDDC39',
-    },
-    contactSyncCard: {
-        backgroundColor: '#455A64',
-    },
+    text:{
+        letterSpacing:8,
+        color:'#E46F4C'
+    }
 });
 
 export default Dashboard;
