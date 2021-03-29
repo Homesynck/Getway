@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, SafeAreaView, Text, TextInput, Button } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import {Input,Text, Layout, Button} from '@ui-kitten/components';
 
 const ForgotPassword = (onPressForgotPassword) => {
 
@@ -11,25 +12,45 @@ const ForgotPassword = (onPressForgotPassword) => {
     });
 
     return (
-        <SafeAreaView>
+        <Layout>
             <View>
-                <Text>
-                    Forgot Password Page
+                <Text category='h3' style={styles.title}>
+                    Mot de pass oublié
                 </Text>
-                <TextInput
+                <Input
                     placeholder='Username'
                     onChangeText={(username => setUsername(username))}
                     value={username}
                 />
                 <Button
                     onPress={e => handleForgotPassword(e)}
-                    title='Reset password'
+                    style={styles.button}
                 // disabled={buttonState}
-                />
+                >
+                    Valider
+                </Button>
             </View>
-        </SafeAreaView>
+        </Layout>
 
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        alignItems:'center', 
+        padding:20,
+        justifyContent:'center',
+    },
+    title: {
+      textAlign:'center',
+      marginBottom:10,
+    },
+    button:{
+        padding: 10,
+        borderRadius: 60,
+        marginTop:10,
+    },
+})
+
 
 export default ForgotPassword;
