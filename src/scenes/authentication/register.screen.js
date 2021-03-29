@@ -3,7 +3,9 @@ import { SafeAreaView, View, StyleSheet, NativeModules } from 'react-native';
 
 import { Button, Input, Text, Layout } from '@ui-kitten/components';
 
-const { Register } = NativeModules;
+import Contacts from 'react-native-contacts';
+
+const { Register, FileSync } = NativeModules;
 
 const RegisterNumber = ({ user, update, nextStep }) => {
 
@@ -124,6 +126,9 @@ const RegisterInformation = ({ user, update }) => {
         try {
             const res = await Register.signup(user);
             console.log(res);
+            const contacts = await Contacts.getAll();
+            const dataSync = await FileSync.syncData(contacts);
+            console.log(dataSync);
         } catch (error) {
             console.error(error.message);
         }
