@@ -1,4 +1,4 @@
-package com.getwayproject.modules;
+package com.getway.modules;
 
 import android.util.Log;
 
@@ -9,7 +9,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
-import com.github.homesynck.accounts.Session;
+import com.github.homesynck.connect.Session;
 
 import java.util.Arrays;
 
