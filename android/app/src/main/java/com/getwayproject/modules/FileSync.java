@@ -1,7 +1,6 @@
-package com.getway.modules;
+package com.getwayproject.modules;
 
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,12 +20,10 @@ import com.github.homesynck.data.FileException;
 import com.github.homesynck.data.FileManager;
 import com.github.homesynck.data.FileSynck;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,7 +55,8 @@ public class FileSync extends ReactContextBaseJavaModule {
 
     /**
      * It will be called once, (at the register of an user)
-     * @param data data to be pushed on the server
+     *
+     * @param data        data to be pushed on the server
      * @param promiseSync promise to resolve
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -68,7 +66,8 @@ public class FileSync extends ReactContextBaseJavaModule {
         // creating the new directory
         Directory.create("test", "Directory test", "", success -> {
             serializedData.forEach(o -> {
-                fileSynck.pushUpdate(o.toString(), pushSuccess -> {}, error -> {
+                fileSynck.pushUpdate(o.toString(), pushSuccess -> {
+                }, error -> {
                     promiseSync.reject("homesynck", error);
                 });
             });

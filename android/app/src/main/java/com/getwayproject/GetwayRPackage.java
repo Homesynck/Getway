@@ -1,4 +1,4 @@
-package com.getway;
+package com.getwayproject;
 
 import androidx.annotation.NonNull;
 
@@ -6,8 +6,8 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
-import com.getway.modules.SignInModule;
-import com.getway.modules.Register;
+import com.getwayproject.modules.Register;
+import com.getwayproject.modules.SignInModule;
 
 import java.util.ArrayList;
 import java.util.Collections;

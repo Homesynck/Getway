@@ -1,4 +1,4 @@
-package com.getway.modules;
+package com.getwayproject.modules;
 
 import android.util.Log;
 
@@ -15,10 +15,10 @@ import java.util.Arrays;
 
 
 public class Register extends ReactContextBaseJavaModule {
-    private final Session session;
     private static final String TAG = "Register";
+    private final Session session;
 
-    public Register(ReactApplicationContext applicationContext){
+    public Register(ReactApplicationContext applicationContext) {
         super(applicationContext);
         this.session = Session.getSession();
     }
@@ -30,7 +30,7 @@ public class Register extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void signup(ReadableMap user, Promise signedPromise){
+    public void signup(ReadableMap user, Promise signedPromise) {
 
         String username = user.getString("username");
         String password = user.getString("password");
@@ -47,7 +47,7 @@ public class Register extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void sendPhoneNumber(String phoneNumber, Promise promisePhoneSend){
+    public void sendPhoneNumber(String phoneNumber, Promise promisePhoneSend) {
 
         session.phoneValidation(phoneNumber, success -> {
             Log.d(TAG, success);

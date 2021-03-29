@@ -1,12 +1,11 @@
-package com.getway.modules;
+package com.getwayproject.modules;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.facebook.react.bridge.ReactApplicationContext;
-
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.github.homesynck.connect.Session;
@@ -18,7 +17,7 @@ public class SignInModule extends ReactContextBaseJavaModule {
     private final Session session;
     private final String TAG = "SignIn";
 
-    public SignInModule(ReactApplicationContext reactContext){
+    public SignInModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.session = Session.getSession();
     }
