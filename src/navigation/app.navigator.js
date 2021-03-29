@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 
-import HomeNavigator from './home.navigator';
+import AuthNavigatorConsumer from '../modules/authentication/authentication-navigator.consumer';
 
 /*
  * Navigation theming: https://reactnavigation.org/docs/en/next/themes.html
@@ -18,10 +18,7 @@ const navigatorTheme = {
 const AppNavigator = () => (
   <NavigationContainer theme={navigatorTheme}>
 
-    {/* Si connecté : */}
-    <HomeNavigator />
-    {/* Sinon
-    <LoginNavigator /> */}
+    <AuthNavigatorConsumer />
 
   </NavigationContainer>
 )
