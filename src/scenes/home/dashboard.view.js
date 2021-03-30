@@ -2,9 +2,10 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
 import {Text } from '@ui-kitten/components';
 import Student from '../../assets/student.svg';
-import { Avatar } from "react-native-elements";
+import { Avatar, Icon } from "react-native-elements";
 
 import { getContacts } from '../../modules/contact/contacts.module';
+import { Divider } from 'react-native-elements/dist/divider/Divider';
 
 const Dashboard = ({navigation}) => {
 
@@ -18,6 +19,16 @@ const Dashboard = ({navigation}) => {
         activeOpacity={0.7}
         containerStyle={{ margin:10, backgroundColor: color}}
       />
+    )
+
+    const Star = () =>(
+      <View style={[styles.center]}>
+        <Icon
+          name='star'
+          type='font-awesome'
+          color='#fad34a'
+        />
+      </View>
     )
 
     return (
@@ -45,12 +56,13 @@ const Dashboard = ({navigation}) => {
                     <View style={[styles.container, styles.long_box]}>
                       <TouchableOpacity 
                         //TODO onPress()
-                        style={{flexDirection:"row"}}
+                        style={{flexDirection:"row", flex:1}}
                       >
                         <MyAvatar i={1} size={'small'} color={'#C1AB9A'} />
-                        <View style={styles.center}>
+                        <View style={styles.icon}>
                           <Text category='s1' style={styles.text}>{contacts[1].displayName}</Text>
                         </View>
+                          <Star />
                       </TouchableOpacity>
                       
                       <TouchableOpacity 
@@ -58,9 +70,10 @@ const Dashboard = ({navigation}) => {
                         style={{flexDirection:"row"}}
                       >
                         <MyAvatar i={1} size={'small'} color={'#C1AB9A'}/>
-                        <View style={styles.center}>
+                        <View style={styles.icon}>
                           <Text category='s1' style={styles.text}>{contacts[2].displayName}</Text>
                         </View>
+                        <Star />
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -114,6 +127,10 @@ const styles = StyleSheet.create({
     text:{
       color:'#24190F', 
       letterSpacing:2
+    },
+    icon:{
+      flex:1,
+      justifyContent:'center'
     }
 });
 
