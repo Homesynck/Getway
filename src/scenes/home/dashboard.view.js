@@ -11,7 +11,7 @@ const Dashboard = ({navigation}) => {
 
     const getAllContacts = async () => {
         const contacts = await Contacts.getAll();
-        console.log(contacts.length + " contacts : " + contacts.map((contact) => contact.displayName).join(', '));
+        //console.log(contacts.length + " contacts : " + contacts.map((contact) => contact.displayName).join(', '));
         setContactsData(contacts);
     }
 
