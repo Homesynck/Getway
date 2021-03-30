@@ -1,8 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Icon, Text } from '@ui-kitten/components';
 import Student from '../../assets/student.svg'
+
+
 const Dashboard = ({navigation}) => {
+    const getAllContacts = async () => {
+        const contacts = await Contacts.getAll();
+        //console.log(contacts.length + " contacts : " + contacts.map((contact) => contact.displayName).join(', '));
+        setContactsData(contacts);
+    }
+
+    useEffect(() => {
+        getAllContacts();
+    },[]);
     return (
             <SafeAreaView>
                 <View style={{alignItems:'center', marginTop:10}}>
@@ -11,6 +22,7 @@ const Dashboard = ({navigation}) => {
                 </View>
                 <View style={{flexDirection:'row', justifyContent:'center'}}>
                     <View style={[styles.container, styles.box]} >
+                        {contacts.length}
                     </View>
                     <TouchableOpacity  style={[styles.container, styles.box]}>
                         <View>
@@ -27,12 +39,6 @@ const Dashboard = ({navigation}) => {
                     {/* <TouchableOpacity 
                         style={[styles.card, styles.contactListCard]} 
                         onPress={() => navigation.navigate('Contacts')}>
-                        <Icon
-                            style={styles.icCard}
-                            fill='#e3dfd5'
-                            name='people-outline'
-                        />
-                        <Text>Contact List</Text>
                     </TouchableOpacity> */}
 const styles = StyleSheet.create({
     container:{
