@@ -15,6 +15,7 @@ const LoginButton = ({style, user, fallback}) => {
         try {
             const res = await SignIn.signIn(user.username, user.password);
             console.log(res);
+            // TODO set auth token to res.token
             setAuthState('SIGNED_IN');
         } catch (error) {
             console.error(error.message);
