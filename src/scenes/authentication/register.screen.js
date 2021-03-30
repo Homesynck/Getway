@@ -1,7 +1,10 @@
-import React, { useState, createRef } from 'react'
+import React, { useState, useContext, createRef } from 'react'
 import { SafeAreaView, View, StyleSheet, NativeModules } from 'react-native';
 
-import { Button, Input, Text, Layout } from '@ui-kitten/components';
+import AuthContext from "../../modules/authentication/authentication.context";
+
+
+import { Button, Input, Text } from '@ui-kitten/components';
 
 import Unlock from '../../assets/unlock.svg';
 import AppTree from '../../assets/appTree.svg';
@@ -16,7 +19,6 @@ const RegisterNumber = ({ user, update, nextStep }) => {
   const [error, setError] = useState("");
 
   const handleRegistrationNumber = async e => {
-    nextStep();
     e.preventDefault();
     try {
       await Register.sendPhoneNumber(number);
@@ -24,9 +26,9 @@ const RegisterNumber = ({ user, update, nextStep }) => {
       update(user);
       nextStep();
     } catch (error) {
+      setError("Please verify your number!");
       console.error("[SEND PHONE NUMBER] ", error.message);
-      setError(error.message);
-      nextStep();
+      nextStep(); // dev purpose
     }
   };
 
@@ -140,6 +142,9 @@ const VerifyNumber = ({ nextStep }) => {
 
 const RegisterInformation = ({ user, update }) => {
 
+  const { authState, setAuthState } = useContext(AuthContext);
+
+
   const handleRegistration = async e => {
     e.preventDefault();
     if (user.username == null || user.password == null)
@@ -147,6 +152,8 @@ const RegisterInformation = ({ user, update }) => {
     try {
       const res = await Register.signup(user);
       console.log(res);
+      // TODO set auth token to res.token
+      setAuthState('SIGNED_IN');
     } catch (error) {
       console.error(error.message);
     }
@@ -191,6 +198,7 @@ const RegisterInformation = ({ user, update }) => {
         <Input
           value={user.password}
           label="Mot de passe"
+          secureTextEntry={true}
           onChangeText={
             password => {
               let tempUser = { ...user }
@@ -207,6 +215,7 @@ const RegisterInformation = ({ user, update }) => {
         <Input
           value={user.password2}
           label="Confirmation du mot de passe"
+          secureTextEntry={true}
           onChangeText={
             password2 => {
               let tempUser = { ...user }
