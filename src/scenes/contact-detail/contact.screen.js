@@ -78,7 +78,7 @@ const Contact = ({ route }) => {
       <View style={styles.container}>
         <Text category='label' style={styles.text}>Description</Text>
         <Text>{contact.description}</Text>
-        <Text>DESCRIPTION ICI</Text>
+        {/* TODO description */}
       </View>
     )
   }
@@ -90,7 +90,7 @@ const Contact = ({ route }) => {
     return (
       <>
         <View style={[styles.row, { flexDirection: 'row', marginBottom: 10}]}>
-          <View>
+          <View style={styles.icon}>
             <Icon
               reverse
               reverseColor='#C1AB9A'
@@ -102,7 +102,7 @@ const Contact = ({ route }) => {
           </View>
           <View>
             {list.map((mail, id) => (
-              <View key={id}>
+              <View key={id} style={{justifyContent:'center', flex:1}}>
                 <Text category='label'>{mail.label}</Text>
                 <Text style={{marginBottom: 3}}>{mail.email}</Text>
               </View>
@@ -121,7 +121,8 @@ const Contact = ({ route }) => {
 
     return (
       <>
-        <View style={{ flexDirection: 'row' }}>
+      <View style={[styles.row, { flexDirection: 'row', marginBottom: 10}]}>
+        <View style={styles.icon}>
           <Icon
             reverse
             reverseColor='#C1AB9A'
@@ -130,9 +131,10 @@ const Contact = ({ route }) => {
             color='#F0DFCF'
             iconStyle={styles.iconStyle}
           />
+          </View>
           <View>
             {list.map((address, id) => (
-              <View key={id}>
+              <View key={id} style={{justifyContent:'center', flex:1}}>
                 <Text category='label'>{address.label}</Text>
                 <Text style={{marginBottom: 3}}>{address.formattedAddress}</Text>
               </View>
@@ -152,7 +154,8 @@ const Contact = ({ route }) => {
 
     return (
       <>
-        <View style={{ flexDirection: 'row' }}>
+      <View style={[styles.row, { flexDirection: 'row', marginBottom: 10}]}>
+        <View style={styles.icon}>
           <Icon
             reverse
             reverseColor='#C1AB9A'
@@ -161,9 +164,10 @@ const Contact = ({ route }) => {
             color='#F0DFCF'
             iconStyle={styles.iconStyle}
           />
+          </View>
           <View>
             {list.map((phone, id) => (
-              <View key={id}>
+              <View key={id} style={{justifyContent:'center', flex:1}}>
                 <Text category='label'>{phone.label}</Text>
                 <Text style={{marginBottom: 3}}>{phone.number}</Text>
               </View>
@@ -258,6 +262,10 @@ const styles = StyleSheet.create({
   text: {
     marginBottom: 10
   },
+  icon:{
+    justifyContent:'center', 
+    marginRight:10
+  }
 
 });
 
