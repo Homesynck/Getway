@@ -7,14 +7,10 @@ import { Divider, TopNavigation, TopNavigationAction, Text, Layout } from '@ui-k
 import { ArrowIosBackIcon } from '../../components/icons';
 import { ScrollView } from 'react-native';
 
-
-
 const Contact = ({ route }) => {
   //TODO useRoute hook here
   const { contact } = route.params;
   const navigation = useNavigation();
-
-  console.log(contact)
 
   const renderBackAction = () => (
     <TopNavigationAction
@@ -22,6 +18,169 @@ const Contact = ({ route }) => {
       onPress={navigation.goBack}
     />
   );
+
+  const ContactProp = ({str, title}) => {
+    if(!str)
+      return null;
+
+      return (
+        <>
+          <Text category='label'>{title}</Text>
+          <Text category='h6' style={styles.text}>{str}</Text>
+        </>
+      )
+  }
+
+  const ContactInfoCard = ({contact}) => (
+    <View style={[styles.container, { flexDirection: 'row', }]} >
+
+      <View style={[styles.row, { marginLeft: 20 }, { justifyContent: 'center' }]}>
+        <Avatar
+          size="large"
+          rounded
+          title={contact.displayName.split(" ").map((name) => name[0]).join('').toUpperCase()}
+          activeOpacity={0.7}
+          containerStyle={{ backgroundColor: '#C1AB9A' }}/>
+      </View>
+
+      <View style={styles.row}>
+        <ContactProp str={contact.givenName} title={'Prénom'}/>
+        {/* <Text category='label'>N° téléphone</Text>
+        <Text category='h6'>{phoneNumber}</Text> */}
+        <ContactProp str={contact.phoneNumbers.length > 0 ? contact.phoneNumbers[0].number : ''} title={'N° téléphone'}/>
+      </View>
+
+      <View style={styles.row}>
+        <ContactProp str={contact.familyName} title={'Nom'}/>
+      </View>
+
+    </View>
+  )
+
+  const ContactDescriptionCard = ({contact}) => (
+    <View style={styles.container}>
+      <Text category='label' style={styles.text}>Description</Text>
+      {/* <Text>{contact.memo}</Text> */}
+      <Text>DESCRIPTION ICI</Text>
+  </View>
+  )
+
+  const MailsAdress = ({list, hasNext}) => {
+    if(list.length == 0)
+      return null
+
+    return (
+      <>
+        <View style={[styles.row, { flexDirection: 'row', marginBottom: 10}]}>
+          <View>
+            <Icon
+              reverse
+              reverseColor='#C1AB9A'
+              name='envelope'
+              type='font-awesome'
+              color='#F0DFCF'
+              style={{alignSelf: 'flex-end'}}
+            />
+          </View>
+          <View>
+            {list.map((mail, id) => (
+              <View key={id}>
+                <Text category='label'>{mail.label}</Text>
+                <Text style={{marginBottom: 3}}>{mail.email}</Text>
+              </View>
+              ))}
+          </View>
+          
+        </View>
+        {hasNext ? <Divider style={{marginBottom: 10}}/> : null}
+      </>
+    )
+  }
+
+  const ContactAdress = ({list, hasNext}) => {
+    if(list.length == 0)
+      return null
+
+    return (
+      <>
+        <View style={{ flexDirection: 'row' }}>
+          <Icon
+            reverse
+            reverseColor='#C1AB9A'
+            name='map-pin'
+            type='font-awesome'
+            color='#F0DFCF'
+            iconStyle={styles.iconStyle}
+          />
+          <View>
+            {list.map((address, id) => (
+              <View key={id}>
+                <Text category='label'>{address.label}</Text>
+                <Text style={{marginBottom: 3}}>{address.formattedAddress}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+        {hasNext ? <Divider style={{marginBottom: 10}}/> : null}
+      </>
+    )
+  }
+
+  const AdditionalPhoneNumbers = ({list, hasNext}) => {
+    if(list.length < 2)
+      return null
+
+    list.shift()
+
+    return (
+      <>
+        <View style={{ flexDirection: 'row' }}>
+          <Icon
+            reverse
+            reverseColor='#C1AB9A'
+            name='phone'
+            type='font-awesome'
+            color='#F0DFCF'
+            iconStyle={styles.iconStyle}
+          />
+          <View>
+            {list.map((phone, id) => (
+              <View key={id}>
+                <Text category='label'>{phone.label}</Text>
+                <Text style={{marginBottom: 3}}>{phone.number}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+        {hasNext ? <Divider style={{marginBottom: 10}}/> : null}
+      </>
+    )
+  }
+
+  const ContactAllInformations = ({contact}) => {
+    let checker = arr => arr.every(Boolean);
+    console.log(contact)
+    let conditions = [
+      contact.phoneNumbers.length >= 2,
+      contact.emailAddresses.length > 0,
+      contact.postalAddresses.length > 0
+    ]
+
+    console.log(conditions)
+
+    if(!(conditions.includes(true)))
+      return null
+
+    return (
+      <View style={styles.container}>
+
+        <AdditionalPhoneNumbers list={contact.phoneNumbers}  hasNext={conditions.slice(1).includes(true)} />
+        <MailsAdress list={contact.emailAddresses} hasNext={conditions.slice(2).includes(true)} />
+        <ContactAdress list={contact.postalAddresses} />
+
+      </View>
+    )
+  }
 
   return (
 
@@ -33,71 +192,13 @@ const Contact = ({ route }) => {
         />
         <Divider />
         <View >
-          <View style={[styles.container, { flexDirection: 'row', }]} >
 
-            <View style={[styles.row, { marginLeft: 20 }, { justifyContent: 'center' }]}>
-              <Avatar
-                size="large"
-                rounded
-                title={contact.displayName.split(" ").map((name) => name[0]).join('').toUpperCase()}
-                activeOpacity={0.7}
-                containerStyle={{ backgroundColor: '#C1AB9A' }}
-              />
-            </View>
-            <View style={styles.row}>
-              <Text category='label'>Prénom</Text>
-              <Text category='h6' style={styles.text}>{contact.givenName}</Text>
-              <Text category='label'>N° téléphone</Text>
-              <Text category='h6'>{contact.phoneNumbers[0].number}</Text>
-            </View>
-            <View style={styles.row}>
-              <Text category='label'>Nom</Text>
-              <Text category='h6' style={styles.text}>{contact.familyName}</Text>
+          <ContactInfoCard contact={contact}/>
 
-            </View>
-          </View>
-          <View style={styles.container}>
-            <Text category='label' style={styles.text}>Description</Text>
+          <ContactDescriptionCard contact={contact} />
 
-            <Text>ICI LA DESCRIPTION DU CONTACT</Text>
-          </View>
-          <View style={styles.container}>
-            <View style={[styles.row, { flexDirection: 'row' }]}>
-              <Icon
-                reverse
-                reverseColor='#C1AB9A'
-                name='envelope'
-                type='font-awesome'
-                color='#F0DFCF'
-              />
-              <View>
-                {contact.emailAddresses.map((mail) => (
-                  <View>
-                    <Text category='label'>{mail.label} </Text>
-                    <Text>{mail.email + '\n'}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-              <Icon
-                reverse
-                reverseColor='#C1AB9A'
-                name='map-pin'
-                type='font-awesome'
-                color='#F0DFCF'
-                iconStyle={styles.iconStyle}
-              />
-              <View>
-                {contact.postalAddresses.map((address) => (
-                  <View>
-                    <Text category='label'>{address.label} </Text>
-                    <Text>{address.formattedAddress + '\n'}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-          </View>
+          <ContactAllInformations contact={contact} />
+
         </View>
       </SafeAreaView>
     </ScrollView>

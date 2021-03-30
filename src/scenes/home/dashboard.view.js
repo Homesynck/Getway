@@ -1,23 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
-import { Divider, Icon, Text } from '@ui-kitten/components';
-import Student from '../../assets/student.svg'
+import {Text } from '@ui-kitten/components';
+import Student from '../../assets/student.svg';
 import { Avatar } from "react-native-elements";
-import Contacts from "react-native-contacts";
+
+import { getContacts } from '../../modules/contact/contacts.module';
 
 const Dashboard = ({navigation}) => {
 
-    const [contactsData, setContactsData] = useState([]);
-
-    const getAllContacts = async () => {
-        const contacts = await Contacts.getAll();
-        //console.log(contacts.length + " contacts : " + contacts.map((contact) => contact.displayName).join(', '));
-        setContactsData(contacts);
-    }
-
-    useEffect(() => {
-        getAllContacts();
-    },[]);
+    const contacts = getContacts()
 
     const MyAvatar = ({i, size}) => (
       <Avatar
