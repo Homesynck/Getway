@@ -15,19 +15,19 @@ class ContactListItem extends PureComponent {
     const props = this.props;
     const [badgesVisible, setBadge] = props.badgeState
     const badge = (!badgesVisible) ? null
-    : 
-    (
-      <Badge //TODO Touchable
-      status='error'
-      value={'X'}
-      containerStyle={{ marginTop: -65, marginRight: -20}}
-      onPress={
-        () => console.log("TODO, delete contact " + props.title)
-      }
-    />
-    )
+      :
+      (
+        <Badge //TODO Touchable
+          status='error'
+          value={'X'}
+          containerStyle={{ marginTop: -65, marginRight: -20 }}
+          onPress={
+            () => console.log("TODO, delete contact " + props.title)
+          }
+        />
+      )
 
-    return ( 
+    return (
       <ListItem
         Component={TouchableScale}
         friction={90}
@@ -44,9 +44,9 @@ class ContactListItem extends PureComponent {
         <Avatar
           size="small"
           rounded
-          title={props.title.split(" ").map((name) =>name[0]).join('').toUpperCase()}
+          title={props.title.split(" ").map((name) => name[0]).join('').toUpperCase()}
           activeOpacity={0.7}
-          containerStyle={{backgroundColor: '#C1AB9A'}}
+          containerStyle={{ backgroundColor: '#C1AB9A' }}
         />
         <ListItem.Content>
           <ListItem.Title style={{ fontWeight: 'bold' }}>
@@ -66,46 +66,46 @@ const ListContact = () => {
 
   const navigation = useNavigation();
 
-    const [contactsData, setContactsData] = useState([]);
-    const [badgesVisible, setBadge] = useState(false);
+  const [contactsData, setContactsData] = useState([]);
+  const [badgesVisible, setBadge] = useState(false);
 
-    const getAllContacts = async () => {
-        const contacts = await Contacts.getAll();
-        //console.log(contacts.length + " contacts : " + contacts.map((contact) => contact.displayName).join(', '));
-        setContactsData(contacts);
-    }
+  const getAllContacts = async () => {
+    const contacts = await Contacts.getAll();
+    //console.log(contacts.length + " contacts : " + contacts.map((contact) => contact.displayName).join(', '));
+    setContactsData(contacts);
+  }
 
-    useEffect(() => {
-        getAllContacts();
-    },[]);
-    
-    const renderItem = ({item}) => (
-      <ContactListItem 
-        title = {item.displayName}
-        badgeState={[badgesVisible, setBadge]}
-        onPress={() => {
-          setBadge(false)
-          navigation.navigate('Contact', {contact: item})
-        }}
-        style={{
-          margin: '10'
-        }}
-      />
-    );
+  useEffect(() => {
+    getAllContacts();
+  }, []);
 
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <View  onResponderGrant={(e) => console.log("received event:", e)}>
-          <List
-            data={contactsData}
-            renderItem={renderItem}
-            keyExtractor={item => item.recordID}
-            contentContainerStyle={{borderRadius: 6, overflow: 'hidden'}}
+  const renderItem = ({ item }) => (
+    <ContactListItem
+      title={item.displayName}
+      badgeState={[badgesVisible, setBadge]}
+      onPress={() => {
+        setBadge(false)
+        navigation.navigate('Contact', { contact: item })
+      }}
+      style={{
+        margin: '10'
+      }}
+    />
+  );
 
-          />
-        </View >
-      </SafeAreaView>
-    )
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <View onResponderGrant={(e) => console.log("received event:", e)}>
+        <List
+          data={contactsData}
+          renderItem={renderItem}
+          keyExtractor={item => item.recordID}
+          contentContainerStyle={{ borderRadius: 6, overflow: 'hidden' }}
+
+        />
+      </View >
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({

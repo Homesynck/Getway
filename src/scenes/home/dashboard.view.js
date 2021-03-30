@@ -1,19 +1,24 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Icon, Text } from '@ui-kitten/components';
 import Student from '../../assets/student.svg'
 
+import Contacts from "react-native-contacts";
 
 const Dashboard = ({navigation}) => {
+
+    const [contactsData, setContactsData] = useState([]);
+
     const getAllContacts = async () => {
         const contacts = await Contacts.getAll();
-        //console.log(contacts.length + " contacts : " + contacts.map((contact) => contact.displayName).join(', '));
+        console.log(contacts.length + " contacts : " + contacts.map((contact) => contact.displayName).join(', '));
         setContactsData(contacts);
     }
 
     useEffect(() => {
         getAllContacts();
     },[]);
+
     return (
             <SafeAreaView>
                 <View style={{alignItems:'center', marginTop:10}}>
@@ -22,7 +27,7 @@ const Dashboard = ({navigation}) => {
                 </View>
                 <View style={{flexDirection:'row', justifyContent:'center'}}>
                     <View style={[styles.container, styles.box]} >
-                        {contacts.length}
+                        <Text>{contactsData.length}</Text>
                     </View>
                     <TouchableOpacity  style={[styles.container, styles.box]}>
                         <View>
