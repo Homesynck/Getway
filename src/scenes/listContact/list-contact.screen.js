@@ -1,12 +1,11 @@
 import React, { useState, useEffect, PureComponent } from 'react';
 
-import { StyleSheet, StatusBar, SafeAreaView, View } from 'react-native'
+import { Text, StyleSheet, StatusBar, SafeAreaView, View, SectionList } from 'react-native'
 import { ListItem, Avatar, Badge } from 'react-native-elements';
+import { AlphabetList } from "react-native-section-alphabet-list";
 
 import TouchableScale from 'react-native-touchable-scale';
 import { useNavigation } from '@react-navigation/native';
-
-import { List, Icon } from '@ui-kitten/components';
 
 import { getContacts } from '../../modules/contact/contacts.module';
 
@@ -36,10 +35,14 @@ class ContactListItem extends PureComponent {
         activeScale={0.95}
         onPress={props.onPress}
         onLongPress={() => setBadge(!badgesVisible)}
-        style={{
-          margin: 10,
-          marginBottom: 0,
-          borderRadius: 100
+        containerStyle={{
+          padding:10,
+          margin:13,
+          borderRadius:10,
+          shadowOpacity: 0.5,
+          shadowRadius: 1,
+          backgroundColor:'white',
+          elevation: 10
         }}
       >
         <Avatar
@@ -63,14 +66,35 @@ class ContactListItem extends PureComponent {
   }
 }
 
+function convertContactToSections(contacts) {
+  let contactsList = [];
+  let aCode = "A".charCodeAt(0);
+  for(let i = 0; i < 26; i++) {
+    let currChar = String.fromCharCode(aCode + i)
+    let obj = {title: currChar}
+
+    let currContacts = contacts.filter(contact => {
+      if(contact.familyName.length > 0)
+        return contact.familyName[0].toUpperCase() === currChar
+      return contact.displayName[0].toUpperCase() === currChar
+    });
+
+    if (currContacts.length > 0) {
+      currContacts.sort((a,b) => a.familyName.localeCompare(b.familyName));
+      obj.data = currContacts;
+      contactsList.push(obj)
+    }
+  }
+  return contactsList;
+}
+
 const ListContact = () => {
 
   const navigation = useNavigation();
 
   const [badgesVisible, setBadge] = useState(false);
 
-  const contacts = getContacts()
-
+  const contacts = convertContactToSections(getContacts())
 
   const renderItem = ({ item }) => (
     <ContactListItem
@@ -81,20 +105,26 @@ const ListContact = () => {
         navigation.navigate('Contact', { contact: item })
       }}
       style={{
-        margin: '10'
+        margin:'10'
       }}
     />
   );
 
+  const renderTitle = ({ section: { title } }) => (
+    <Badge value={title} status="warning" style={{ alignSelf: 'flex-start'}} />
+  )
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff'}}>
       <View onResponderGrant={(e) => console.log("received event:", e)}>
-        <List
-          data={contacts}
+        <SectionList
+          sections={contacts}
+          keyExtractor={(item, index) => item + index}
           renderItem={renderItem}
-          keyExtractor={item => item.recordID}
+          renderSectionHeader={renderTitle}
           contentContainerStyle={{ borderRadius: 6, overflow: 'hidden' }}
         />
+
       </View >
     </SafeAreaView>
   )
