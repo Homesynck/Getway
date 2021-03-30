@@ -9,7 +9,7 @@ export const getContacts = () => {
     return contacts
 }
 
-export const getContactsFromAndroid = (setter) => {
+export const getContactsFromAndroid = (setter, loading) => {
     Contacts.getAll()
         .then((r) => {
             const contacts = r.map((c) => {
@@ -18,6 +18,7 @@ export const getContactsFromAndroid = (setter) => {
                 c.groupes = []
             })
             console.log("LOADED CONTACT FROM CONTEXT", JSON.stringify(r, null, 2))
+            loading(false)
             setter(r)
         })
 }

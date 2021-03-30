@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView, View, StyleSheet } from 'react-native';
-import { Avatar, Icon } from "react-native-elements";
-import { Divider, TopNavigation, TopNavigationAction, Text, Layout } from '@ui-kitten/components';
+import { Avatar, Icon, Input } from "react-native-elements";
+import { Divider, TopNavigation, TopNavigationAction, Text } from '@ui-kitten/components';
 
-import { ArrowIosBackIcon } from '../../components/icons';
+import { ArrowIosBackIcon, EditIcon, Checkmark } from '../../components/icons';
 import { ScrollView } from 'react-native';
+import { set } from 'react-native-reanimated';
 
 const Contact = ({ route }) => {
   //TODO useRoute hook here
   const { contact } = route.params;
   const navigation = useNavigation();
+
+  const [ isEditing, setEditor ] = useState(false) 
 
   const renderBackAction = () => (
     <TopNavigationAction
@@ -23,12 +26,23 @@ const Contact = ({ route }) => {
     if(!str)
       return null;
 
+    if(isEditing)
       return (
         <>
           <Text category='label'>{title}</Text>
-          <Text category='h6' style={styles.text}>{str}</Text>
+          <Input 
+          style={styles.text}>
+            {str}
+          </Input>
         </>
       )
+    
+    return (
+      <>
+        <Text category='label'>{title}</Text>
+        <Text category='h6' style={styles.text}>{str}</Text>
+      </>
+    )
   }
 
   const ContactInfoCard = ({contact}) => (
@@ -45,8 +59,7 @@ const Contact = ({ route }) => {
 
       <View style={styles.row}>
         <ContactProp str={contact.givenName} title={'Prénom'}/>
-        {/* <Text category='label'>N° téléphone</Text>
-        <Text category='h6'>{phoneNumber}</Text> */}
+
         <ContactProp str={contact.phoneNumbers.length > 0 ? contact.phoneNumbers[0].number : ''} title={'N° téléphone'}/>
       </View>
 
@@ -57,13 +70,18 @@ const Contact = ({ route }) => {
     </View>
   )
 
-  const ContactDescriptionCard = ({contact}) => (
-    <View style={styles.container}>
-      <Text category='label' style={styles.text}>Description</Text>
-      {/* <Text>{contact.memo}</Text> */}
-      <Text>DESCRIPTION ICI</Text>
-  </View>
-  )
+  const ContactDescriptionCard = ({contact}) => {
+    if(!contact.description)
+      return null
+    
+    return (
+      <View style={styles.container}>
+        <Text category='label' style={styles.text}>Description</Text>
+        <Text>{contact.description}</Text>
+        <Text>DESCRIPTION ICI</Text>
+      </View>
+    )
+  }
 
   const MailsAdress = ({list, hasNext}) => {
     if(list.length == 0)
@@ -166,8 +184,6 @@ const Contact = ({ route }) => {
       contact.postalAddresses.length > 0
     ]
 
-    console.log(conditions)
-
     if(!(conditions.includes(true)))
       return null
 
@@ -182,6 +198,19 @@ const Contact = ({ route }) => {
     )
   }
 
+  const renderRightActions = () => (
+    <React.Fragment>
+      <TopNavigationAction 
+      icon={isEditing ? Checkmark : EditIcon}
+      onPress={() => {
+        if(isEditing) {
+          //TODO APPLY MODIFICATION
+        }
+        setEditor(!isEditing)
+      }}/>
+    </React.Fragment>
+  );
+
   return (
 
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
@@ -189,6 +218,7 @@ const Contact = ({ route }) => {
         <TopNavigation
           title={contact.displayName}
           accessoryLeft={renderBackAction}
+          accessoryRight={renderRightActions}
         />
         <Divider />
         <View >
@@ -205,6 +235,7 @@ const Contact = ({ route }) => {
 
   )
 }
+
 const styles = StyleSheet.create({
   container: {
     padding: 10,

@@ -42,41 +42,47 @@ const requestReadContactsPermission = async () => {
   };
 
 const App = () => {
+  const [loading, setLoading] = useState(true)
 
   const [authState, setAuthState] = useState('SIGNED_IN') //NOT_SIGNED_IN
   const [contacts, setContacts] = useState()
 
   useEffect(() => {
-    getContactsFromAndroid(setContacts)
+    setTimeout(() => requestReadContactsPermission(), 200);
   }, []);
 
   useEffect(() => {
-    setTimeout(() => requestReadContactsPermission(), 200);
+    getContactsFromAndroid(setContacts, setLoading)
   }, []);
+
   //On execute avant toutes les tâches d'initialisations
-  setTimeout(() => SplashScreen.hide(), 200);
 
-  return (
-  <>
-      <IconRegistry icons={EvaIconsPack} />
-      {/* AppearanceProvider si besoin d'un dark mode */}
-          <ApplicationProvider 
-          {...eva} 
-          theme={{...eva.light, ...theme}}
-          customMapping={mapping}>
-      
-              <SafeAreaProvider>
-                  <AuthContext.Provider value={{authState, setAuthState}}>
-
-                    <ContactsContext.Provider value={{contacts, setContacts}}>
-                      <AppNavigator />
-                    </ContactsContext.Provider>
-
-                  </AuthContext.Provider>
-              </SafeAreaProvider>
-      
-          </ApplicationProvider>
-  </>
-)};
+  if(!loading) {
+    setTimeout(() => SplashScreen.hide(), 200);
+    return (
+      <>
+          <IconRegistry icons={EvaIconsPack} />
+          {/* AppearanceProvider si besoin d'un dark mode */}
+              <ApplicationProvider 
+              {...eva} 
+              theme={{...eva.light, ...theme}}
+              customMapping={mapping}>
+          
+                  <SafeAreaProvider>
+                      <AuthContext.Provider value={{authState, setAuthState}}>
+    
+                        <ContactsContext.Provider value={{contacts, setContacts}}>
+                          <AppNavigator />
+                        </ContactsContext.Provider>
+    
+                      </AuthContext.Provider>
+                  </SafeAreaProvider>
+          
+              </ApplicationProvider>
+      </>
+    )
+  }
+  return null;
+};
 
 export default App;

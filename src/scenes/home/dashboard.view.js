@@ -10,13 +10,13 @@ const Dashboard = ({navigation}) => {
 
     const contacts = getContacts()
 
-    const MyAvatar = ({i, size}) => (
+    const MyAvatar = ({i, size, color}) => (
       <Avatar
         size={size}
         rounded
         title={contacts[i].displayName.split(' ').map((name) => name[0]).join('').toUpperCase()}
         activeOpacity={0.7}
-        containerStyle={{ margin:10, backgroundColor: '#C1AB9A'}}
+        containerStyle={{ margin:10, backgroundColor: color}}
       />
     )
 
@@ -32,15 +32,13 @@ const Dashboard = ({navigation}) => {
                         <Text style={styles.number}>{contacts.length}</Text>
                         <Text category='s1' style={{color:'#E46F4C'}}>contacts</Text>
                     </View>
-                  <TouchableOpacity 
-                    //TODO onPress() 
-                    style={[styles.container, styles.box, styles.center]}
-                  >
-                    <MyAvatar i={0} size={'medium'}/>
-                    <View>
+                    <View style={[styles.container, styles.box, styles.center]}>
+                      <TouchableOpacity //TODO onPress() 
+                      >
+                      <MyAvatar i={0} size={'medium'} color={'#F0DFCF'}/>
                       <Text category='s1' style={{color:'#C1AB9A'}}>{contacts[0].displayName}</Text>
+                      </TouchableOpacity>
                     </View>
-                  </TouchableOpacity>
                </View>
 
                 <View style={styles.center}>
@@ -49,7 +47,7 @@ const Dashboard = ({navigation}) => {
                         //TODO onPress()
                         style={{flexDirection:"row"}}
                       >
-                        <MyAvatar i={1} size={'small'}/>
+                        <MyAvatar i={1} size={'small'} color={'#C1AB9A'} />
                         <View style={styles.center}>
                           <Text category='s1' style={styles.text}>{contacts[1].displayName}</Text>
                         </View>
@@ -59,7 +57,7 @@ const Dashboard = ({navigation}) => {
                         //TODO onPress()
                         style={{flexDirection:"row"}}
                       >
-                        <MyAvatar i={1} size={'small'}/>
+                        <MyAvatar i={1} size={'small'} color={'#C1AB9A'}/>
                         <View style={styles.center}>
                           <Text category='s1' style={styles.text}>{contacts[2].displayName}</Text>
                         </View>
