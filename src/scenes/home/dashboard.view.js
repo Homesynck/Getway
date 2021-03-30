@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Icon, Text } from '@ui-kitten/components';
 import Student from '../../assets/student.svg'
-
+import { Avatar } from "react-native-elements";
 import Contacts from "react-native-contacts";
 
 const Dashboard = ({navigation}) => {
@@ -26,11 +26,21 @@ const Dashboard = ({navigation}) => {
                    <Text category='h2' style={styles.text}>Mon Dashboard</Text>
                 </View>
                 <View style={{flexDirection:'row', justifyContent:'center'}}>
-                    <View style={[styles.container, styles.box]} >
-                        <Text>{contactsData.length}</Text>
+                    <View style={[styles.container, styles.box, {justifyContent:'center', alignItems:'center'}]} >
+                        <Text style={styles.number}>{contactsData.length}</Text>
+                        <Text category='s1' style={{color:'#E46F4C'}}>contacts</Text>
                     </View>
                     <TouchableOpacity  style={[styles.container, styles.box]}>
+                        <Avatar
+                        size="large"
+                        rounded
+                        title={contactsData[0].displayName.split(" ").map((name) => name[0]).join('').toUpperCase()}
+                        activeOpacity={0.7}
+                        containerStyle={{ backgroundColor: '#F0DFCF' }}
+                        /> 
                         <View>
+                            <Text>{contactsData[0].displayName}</Text>
+                            <Text>{contactsData[0].phoneNumbers[0].number}</Text>
                         </View>
                     </TouchableOpacity>
                     </View>
@@ -70,7 +80,14 @@ const styles = StyleSheet.create({
         width: 300,
     },
     text:{
+        
         letterSpacing:8,
+        color:'#C1AB9A'
+    },
+    number: {
+        textAlign:'center',
+        fontSize:50,
+        fontWeight:'bold', 
         color:'#E46F4C'
     }
 });
