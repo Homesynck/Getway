@@ -16,6 +16,9 @@ import AppNavigator from '../navigation/app.navigator';
 import { default as theme } from './theme.json';
 import { default as mapping } from './mapping.json';
 
+import ContactsContext from '../modules/contact/contacts.context';
+import { getContactsFromAndroid } from '../modules/contact/contacts.module';
+
 const requestReadContactsPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -41,6 +44,11 @@ const requestReadContactsPermission = async () => {
 const App = () => {
 
   const [authState, setAuthState] = useState('SIGNED_IN') //NOT_SIGNED_IN
+  const [contacts, setContacts] = useState()
+
+  useEffect(() => {
+    getContactsFromAndroid(setContacts)
+  }, []);
 
   useEffect(() => {
     setTimeout(() => requestReadContactsPermission(), 200);
@@ -60,7 +68,9 @@ const App = () => {
               <SafeAreaProvider>
                   <AuthContext.Provider value={{authState, setAuthState}}>
 
-                    <AppNavigator />
+                    <ContactsContext.Provider value={{contacts, setContacts}}>
+                      <AppNavigator />
+                    </ContactsContext.Provider>
 
                   </AuthContext.Provider>
               </SafeAreaProvider>

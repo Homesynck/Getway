@@ -6,8 +6,9 @@ import { ListItem, Avatar, Badge } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
 import { useNavigation } from '@react-navigation/native';
 
-import Contacts from 'react-native-contacts';
 import { List, Icon } from '@ui-kitten/components';
+
+import { getContacts } from '../../modules/contact/contacts.module';
 
 class ContactListItem extends PureComponent {
 
@@ -66,18 +67,10 @@ const ListContact = () => {
 
   const navigation = useNavigation();
 
-  const [contactsData, setContactsData] = useState([]);
   const [badgesVisible, setBadge] = useState(false);
 
-  const getAllContacts = async () => {
-    const contacts = await Contacts.getAll();
-    //console.log(contacts.length + " contacts : " + contacts.map((contact) => contact.displayName).join(', '));
-    setContactsData(contacts);
-  }
+  const contacts = getContacts()
 
-  useEffect(() => {
-    getAllContacts();
-  }, []);
 
   const renderItem = ({ item }) => (
     <ContactListItem
@@ -97,11 +90,10 @@ const ListContact = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View onResponderGrant={(e) => console.log("received event:", e)}>
         <List
-          data={contactsData}
+          data={contacts}
           renderItem={renderItem}
           keyExtractor={item => item.recordID}
           contentContainerStyle={{ borderRadius: 6, overflow: 'hidden' }}
-
         />
       </View >
     </SafeAreaView>

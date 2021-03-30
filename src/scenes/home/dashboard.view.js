@@ -1,23 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Icon, Text } from '@ui-kitten/components';
-import Student from '../../assets/student.svg'
+import Student from '../../assets/student.svg';
 import { Avatar } from "react-native-elements";
-import Contacts from "react-native-contacts";
+
+import { getContacts } from '../../modules/contact/contacts.module';
 
 const Dashboard = ({navigation}) => {
 
-    const [contactsData, setContactsData] = useState([]);
-
-    const getAllContacts = async () => {
-        const contacts = await Contacts.getAll();
-        //console.log(contacts.length + " contacts : " + contacts.map((contact) => contact.displayName).join(', '));
-        setContactsData(contacts);
-    }
-
-    useEffect(() => {
-        getAllContacts();
-    },[]);
+    const contacts = getContacts()
 
     return (
             <SafeAreaView>
@@ -27,20 +18,20 @@ const Dashboard = ({navigation}) => {
                 </View>
                 <View style={{flexDirection:'row', justifyContent:'center'}}>
                     <View style={[styles.container, styles.box, {justifyContent:'center', alignItems:'center'}]} >
-                        <Text style={styles.number}>{contactsData.length}</Text>
+                        <Text style={styles.number}>{contacts.length}</Text>
                         <Text category='s1' style={{color:'#E46F4C'}}>contacts</Text>
                     </View>
                     <TouchableOpacity  style={[styles.container, styles.box]}>
                         <Avatar
                         size="large"
                         rounded
-                        title={contactsData[0].displayName.split(" ").map((name) => name[0]).join('').toUpperCase()}
+                        title={contacts[0].displayName.split(" ").map((name) => name[0]).join('').toUpperCase()}
                         activeOpacity={0.7}
                         containerStyle={{ backgroundColor: '#F0DFCF' }}
                         /> 
                         <View>
-                            <Text>{contactsData[0].displayName}</Text>
-                            <Text>{contactsData[0].phoneNumbers[0].number}</Text>
+                            <Text>{contacts[0].displayName}</Text>
+                            <Text>{contacts[0].phoneNumbers[0].number}</Text>
                         </View>
                     </TouchableOpacity>
                     </View>
