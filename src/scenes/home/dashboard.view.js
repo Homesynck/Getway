@@ -14,7 +14,7 @@ const Dashboard = ({navigation}) => {
       <Avatar
         size={size}
         rounded
-        title={contactsData[i].displayName.split(' ').map((name) => name[0]).join('').toUpperCase()}
+        title={contacts[i].displayName.split(' ').map((name) => name[0]).join('').toUpperCase()}
         activeOpacity={0.7}
         containerStyle={{ margin:10, backgroundColor: '#C1AB9A'}}
       />
@@ -22,14 +22,14 @@ const Dashboard = ({navigation}) => {
 
     return (
             <SafeAreaView>
-                <View style={styles.image}>
+              <View style={styles.image}>
                    <Student height={290} width={250}/>
                    <Text style={styles.title}>MON DASHBOARD</Text>
                 </View>
 
                 <View style={[{flexDirection:'row'}, styles.center] }>
                     <View style={[styles.container, styles.box, styles.center]} >
-                        <Text style={styles.number}>{contactsData.length}</Text>
+                        <Text style={styles.number}>{contacts.length}</Text>
                         <Text category='s1' style={{color:'#E46F4C'}}>contacts</Text>
                     </View>
                   <TouchableOpacity 
@@ -38,7 +38,7 @@ const Dashboard = ({navigation}) => {
                   >
                     <MyAvatar i={0} size={'medium'}/>
                     <View>
-                      <Text category='s1' style={{color:'#C1AB9A'}}>{contactsData[0].displayName}</Text>
+                      <Text category='s1' style={{color:'#C1AB9A'}}>{contacts[0].displayName}</Text>
                     </View>
                   </TouchableOpacity>
                </View>
@@ -51,17 +51,17 @@ const Dashboard = ({navigation}) => {
                       >
                         <MyAvatar i={1} size={'small'}/>
                         <View style={styles.center}>
-                          <Text category='s1' style={styles.text}>{contactsData[1].displayName}</Text>
+                          <Text category='s1' style={styles.text}>{contacts[1].displayName}</Text>
                         </View>
                       </TouchableOpacity>
-                      <Divider/>
+                      
                       <TouchableOpacity 
                         //TODO onPress()
                         style={{flexDirection:"row"}}
                       >
                         <MyAvatar i={1} size={'small'}/>
                         <View style={styles.center}>
-                          <Text category='s1' style={styles.text}>{contactsData[2].displayName}</Text>
+                          <Text category='s1' style={styles.text}>{contacts[2].displayName}</Text>
                         </View>
                       </TouchableOpacity>
                     </View>
