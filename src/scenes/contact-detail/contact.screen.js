@@ -7,6 +7,7 @@ import { Divider, TopNavigation, TopNavigationAction, Text } from '@ui-kitten/co
 import { ArrowIosBackIcon, EditIcon, Checkmark } from '../../components/icons';
 import { ScrollView } from 'react-native';
 import { set } from 'react-native-reanimated';
+import { TextInput } from 'react-native';
 
 const Contact = ({ route }) => {
   //TODO useRoute hook here
@@ -30,10 +31,9 @@ const Contact = ({ route }) => {
       return (
         <>
           <Text category='label'>{title}</Text>
-          <Input 
-          style={styles.text}>
+          <TextInput style={{color:'#a0a0a0'}}>
             {str}
-          </Input>
+          </TextInput>
         </>
       )
     
@@ -47,7 +47,6 @@ const Contact = ({ route }) => {
 
   const ContactInfoCard = ({contact}) => (
     <View style={[styles.container, { flexDirection: 'row', }]} >
-
       <View style={[styles.row, { marginLeft: 20 }, { justifyContent: 'center' }]}>
         <Avatar
           size="large"
@@ -78,11 +77,30 @@ const Contact = ({ route }) => {
       <View style={styles.container}>
         <Text category='label' style={styles.text}>Description</Text>
         <Text>{contact.description}</Text>
-        {/* TODO description */}
       </View>
     )
   }
+  const ContactInfo = ({str, title}) => {
+    if(!str)
+      return null;
 
+    if(isEditing)
+      return (
+        <>
+          <Text category='label'>{title}</Text>
+          <TextInput style={{color:'#a0a0a0'}}>
+            {str}
+          </TextInput>
+        </>
+      )
+    
+    return (
+      <>
+        <Text category='label'>{title}</Text>
+        <Text style={{marginBottom: 3}}>{str}</Text>
+      </>
+    )
+  }
   const MailsAdress = ({list, hasNext}) => {
     if(list.length == 0)
       return null
@@ -103,8 +121,7 @@ const Contact = ({ route }) => {
           <View>
             {list.map((mail, id) => (
               <View key={id} style={{justifyContent:'center', flex:1}}>
-                <Text category='label'>{mail.label}</Text>
-                <Text style={{marginBottom: 3}}>{mail.email}</Text>
+                <ContactInfo title={mail.label} str={mail.email}/>
               </View>
               ))}
           </View>
@@ -135,8 +152,7 @@ const Contact = ({ route }) => {
           <View>
             {list.map((address, id) => (
               <View key={id} style={{justifyContent:'center', flex:1}}>
-                <Text category='label'>{address.label}</Text>
-                <Text style={{marginBottom: 3}}>{address.formattedAddress}</Text>
+                <ContactInfo title={address.label} str={address.formattedAddress}/>
               </View>
             ))}
           </View>
@@ -168,8 +184,8 @@ const Contact = ({ route }) => {
           <View>
             {list.map((phone, id) => (
               <View key={id} style={{justifyContent:'center', flex:1}}>
-                <Text category='label'>{phone.label}</Text>
-                <Text style={{marginBottom: 3}}>{phone.number}</Text>
+                <ContactInfo title={phone.label} str={phone.number}/>
+                
               </View>
             ))}
           </View>
