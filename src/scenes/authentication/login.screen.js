@@ -44,7 +44,7 @@ const Login = (props) => {
 
                 <Logo height={100} width={100} />
 
-                <Text style={styles.getwayTitle} category='h1'>GETWAY</Text>
+                <Text style={styles.getwayTitle}>Getway</Text>
                 <Text style={styles.subtitle} category='s1'>Bon retour parmis nous!</Text>
 
                 <Input
@@ -103,8 +103,11 @@ const styles = StyleSheet.create({
     },
     getwayTitle: {
       marginTop: 15,
-      letterSpacing: 20, 
-      fontWeight:'bold'
+      letterSpacing: 3, 
+      fontWeight:'bold',
+      color:'#24190F',
+      fontSize:50
+
     },
     subtitle:{
         marginBottom:20
