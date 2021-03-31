@@ -19,7 +19,7 @@ const DashboardDrawerContent = (props) => {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem
-        label="Importation contacts android"
+        label="Importation des contacts android"
         onPress={() => {
           getContactsFromAndroid().then((r) => {
             setContacts(r)
@@ -40,6 +40,6 @@ export const ContactsNavigator = () => (
     drawerContent={(props) => <DashboardDrawerContent {...props} />}
     screenOptions={{ gestureEnabled: true, headerShown: false }} 
     initialRouteName="Dashboard">
-    <Drawer.Screen name="Dashboard" component={Dashboard} />
+    <Drawer.Screen name="Mon espace" component={Dashboard} />
   </Drawer.Navigator>
 );

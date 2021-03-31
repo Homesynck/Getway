@@ -110,7 +110,7 @@ const Dashboard = ({ navigation }) => {
     <SafeAreaView>
       <View style={styles.image}>
         <Student height={290} width={250} />
-        <Text style={styles.title}>MON DASHBOARD</Text>
+        <Text style={styles.title}>MON ESPACE</Text>
       </View>
 
       <View style={[{ flexDirection: "row" }, styles.center]}>

@@ -24,7 +24,7 @@ class ContactListItem extends PureComponent {
           onPress={
             () => {console.log("TRYING TO DELETE ", id);deleteContactById(id)}
           }
-          badgeStyle={{backgroundColor: '#d4281b', paddingHorizontal:10, paddingVertical:15}}
+          badgeStyle={{backgroundColor: '#d4281b', margin:10, paddingLeft:8, paddingRight:8}}
         />
       )
 
@@ -93,7 +93,7 @@ const ListContact = () => {
 
   const navigation = useNavigation();
 
-  const [badgesVisible, setBadge] = useState(true);
+  const [badgesVisible, setBadge] = useState(false);
 
   const contacts = convertContactToSections(getContacts())
 
@@ -102,12 +102,12 @@ const ListContact = () => {
       id={item.id}
       title={item.displayName}
       badgeState={[badgesVisible, setBadge]}
-      // onPress={() => {
-      //   if(!badgesVisible)
-      //     navigation.navigate('Contact', { contact: item })
-      //   else
-      //   setBadge(false)
-      // }}
+       onPress={() => {
+         if(!badgesVisible)
+           navigation.navigate('Contact', { contact: item })
+         else
+         setBadge(false)
+      }}
       style={{
         margin:'10'
       }}
@@ -115,7 +115,9 @@ const ListContact = () => {
   );
 
   const renderTitle = ({ section: { title } }) => (
-    <Badge value={title} badgeStyle={{backgroundColor:'#E46F4C', alignSelf:'baseline', padding:10, marginLeft:10, marginTop:10}}/>
+    <View style={styles.index}>
+      <Text style={{textAlign:'center', color:'white'}}>{title}</Text>
+    </View>
   )
 
   return (
@@ -139,12 +141,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: StatusBar.currentHeight || 0
   },
-  item: {
-    backgroundColor: '#607D8B',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
+  index:{
+    backgroundColor:'#E46F4C', 
+    borderRadius:12, 
+    width:50, 
+    padding:5, 
+    margin:8
+  }
 
 });
 
