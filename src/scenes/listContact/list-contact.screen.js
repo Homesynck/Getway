@@ -115,7 +115,7 @@ const ListContact = () => {
   );
 
   const renderTitle = ({ section: { title } }) => (
-    <Badge value={title} status="warning" style={{ alignSelf: 'flex-start'}} />
+    <Badge value={title} badgeStyle={{backgroundColor:'#E46F4C', alignSelf:'baseline', padding:10, marginLeft:10, marginTop:10}}/>
   )
 
   return (
