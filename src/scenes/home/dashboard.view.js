@@ -105,7 +105,7 @@ const BigContact = ({contact}) => {
 const Dashboard = ({ navigation }) => {
 
   const contacts = getContacts()
-
+  console.log(contacts)
   return (
     <SafeAreaView>
       <View style={styles.image}>
