@@ -10,8 +10,8 @@ const Star = ({outline = false, onPress = null}) => (
   <View style={[styles.center]} onPress={onPress}>
     <Icon
       name={outline ? 'star-o' : 'star'}
-      type='font-awesome'
-      color='#fad34a'
+      type="font-awesome"
+      color="#fad34a"
     />
   </View>
 )
@@ -31,7 +31,7 @@ const FavoriteCard = ({contacts}) => {
     return (
       <View style={styles.center}>
         <View style={[styles.container, styles.long_box]}>
-          <Text>Aucun contact pour l'instant</Text>
+          <Text style={{textAlign: "center"}}>Aucun contact pour l'instant</Text>
         </View>
       </View>
     ) 
@@ -67,7 +67,7 @@ const FavoriteCard = ({contacts}) => {
               >
                 <MyAvatar contact={contact} size={'small'} color={'#C1AB9A'} />
                 <View style={styles.icon}>
-                  <Text category='s1' style={styles.text}>{contact.displayName}</Text>
+                  <Text category="s1" style={styles.text}>{contact.displayName}</Text>
                 </View>
                 <Star 
                 outline={!contact.favoris}
@@ -86,7 +86,7 @@ const BigContact = ({contact}) => {
   if(contact == null) {
     return (
       <View style={[styles.container, styles.box, styles.center]}>
-        <Text category='s1' style={{ color: '#C1AB9A' }}>Aucun contact</Text>
+        <Text category="s1" style={{ color: '#C1AB9A' }}>Aucun contact</Text>
       </View>
     )
   }
@@ -95,7 +95,7 @@ const BigContact = ({contact}) => {
       <TouchableOpacity //TODO onPress() 
       >
         <MyAvatar contact={contact} size={'medium'} color={'#F0DFCF'} />
-        <Text category='s1' style={{ color: '#C1AB9A' }}>{contact.displayName}</Text>
+        <Text category="s1" style={{ color: '#C1AB9A' }}>{contact.displayName}</Text>
       </TouchableOpacity>
     </View>
   )
@@ -113,10 +113,12 @@ const Dashboard = ({ navigation }) => {
         <Text style={styles.title}>MON DASHBOARD</Text>
       </View>
 
-      <View style={[{ flexDirection: 'row' }, styles.center]}>
+      <View style={[{ flexDirection: "row" }, styles.center]}>
         <View style={[styles.container, styles.box, styles.center]} >
           <Text style={styles.number}>{contacts.length}</Text>
-          <Text category='s1' style={{ color: '#E46F4C' }}>contacts</Text>
+          <Text category="s1" style={{ color: "#E46F4C" }}>
+            contact{contacts.length > 1 ? "s" : null}
+          </Text>
         </View>
 
         <BigContact contact={contacts.length > 0 ? contacts[0] : null} />
