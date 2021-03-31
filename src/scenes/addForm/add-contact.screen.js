@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button, Input, Text, Layout } from '@ui-kitten/components';
-
+import { Button, Text, Layout } from '@ui-kitten/components';
+import { Icon, Input } from 'react-native-elements'
     
 const AddContact = () => {
     const [contact, setContact] = useState({
@@ -12,14 +12,20 @@ const AddContact = () => {
     });
     return (
         
-        <Layout style={styles.container}>
-             
+        <View style={styles.container}>
+             <Icon
+              name='user-circle'
+              type='font-awesome'
+              color='#C1AB9A'
+              size={50}
+              />
             <View>
             <Text style={styles.title} category='h3'>Nouveau contact</Text>
+            <View style={{margin:20}}>
                 <Input
                     value={contact.name}
-                    label="Nom"
-                    style={styles.input}
+                    placeholder="Nom"  
+                    style={styles.text}    
                     onChangeText={ lastName => {
                         const tempContact = { ...contact }
                         tempContact.lasrName = lastName
@@ -28,8 +34,8 @@ const AddContact = () => {
                 />
                 <Input
                     value={contact.firstName}
-                    label="Prénom"
-                    style={styles.input}
+                    placeholder="Prénom"
+                    style={styles.text} 
                     onChangeText={ firstName => {
                         const tempContact = { ...contact }
                         tempContact.firstName = firstName
@@ -38,8 +44,8 @@ const AddContact = () => {
                 />
                 <Input
                     value={contact.phoneNumber}
-                    label="Numéro de téléphone"
-                    style={styles.input}
+                    placeholder="Numéro de téléphone"
+                    style={styles.text} 
                     onChangeText={ phoneNumber => {
                         const tempContact = { ...contact }
                         tempContact.phoneNumber = phoneNumber
@@ -49,22 +55,27 @@ const AddContact = () => {
                 
                     <Input
                         value={contact.email}
-                        label="Email"
-                        style={styles.input}
+                        placeholder="Email"
+                        style={styles.text} 
                         onChangeText={email => {
                             const tempContact = { ...contact }
                             tempContact.email = email
                             setContact(tempContact);
                         }}
                     />
-               
+              </View> 
                 <Button
                     style={styles.button}
                     onPress={() => console.log(contact)}>
-                    Ajouter
+                    <Icon
+                    name='plus'
+                    type='font-awesome'
+                    color='white'
+                    size={15}
+                    />
                 </Button>
             </View>
-        </Layout>
+        </View>
     )
 }
 const styles = StyleSheet.create({
@@ -74,14 +85,12 @@ const styles = StyleSheet.create({
     },
     title:{
         textAlign:'center',
-        marginBottom:40,
-        letterSpacing:12
+        letterSpacing:3,
+        color:'#C1AB9A'
+        
     }, 
-    input:{
-        borderRadius:5,
-        marginLeft:20,
-        marginRight:20,
-        marginBottom:10
+    text:{
+      fontSize:16,
     },
     button:{
         padding: 10,
@@ -90,6 +99,7 @@ const styles = StyleSheet.create({
         marginRight:20,
         alignSelf:'flex-end'
     },
+
 })
 
 export default AddContact;
