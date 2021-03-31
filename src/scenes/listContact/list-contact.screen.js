@@ -2,28 +2,29 @@ import React, { useState, useEffect, PureComponent } from 'react';
 
 import { Text, StyleSheet, StatusBar, SafeAreaView, View, SectionList } from 'react-native'
 import { ListItem, Avatar, Badge } from 'react-native-elements';
-import { AlphabetList } from "react-native-section-alphabet-list";
 
 import TouchableScale from 'react-native-touchable-scale';
 import { useNavigation } from '@react-navigation/native';
 
-import { getContacts } from '../../modules/contact/contacts.module';
+import { getContacts, deleteContactById } from '../../modules/contact/contacts.module';
 
 class ContactListItem extends PureComponent {
 
   render() {
     const props = this.props;
+    const id = props.id
     const [badgesVisible, setBadge] = props.badgeState
     const badge = (!badgesVisible) ? null
       :
       (
         <Badge //TODO Touchable
-          status='error'
-          value={'X'}
-          containerStyle={{ marginTop: -65, marginRight: -20 }}
+          status="error"
+          value={'-'}
+          //containerStyle={{ marginTop: -65, marginRight: -20 }}
           onPress={
-            () => console.log("TODO, delete contact " + props.title)
+            () => {console.log("TRYING TO DELETE ", id);deleteContactById(id)}
           }
+          badgeStyle={{backgroundColor: '#d4281b', paddingHorizontal:10, paddingVertical:15}}
         />
       )
 
@@ -92,18 +93,21 @@ const ListContact = () => {
 
   const navigation = useNavigation();
 
-  const [badgesVisible, setBadge] = useState(false);
+  const [badgesVisible, setBadge] = useState(true);
 
   const contacts = convertContactToSections(getContacts())
 
   const renderItem = ({ item }) => (
     <ContactListItem
+      id={item.id}
       title={item.displayName}
       badgeState={[badgesVisible, setBadge]}
-      onPress={() => {
-        setBadge(false)
-        navigation.navigate('Contact', { contact: item })
-      }}
+      // onPress={() => {
+      //   if(!badgesVisible)
+      //     navigation.navigate('Contact', { contact: item })
+      //   else
+      //   setBadge(false)
+      // }}
       style={{
         margin:'10'
       }}
