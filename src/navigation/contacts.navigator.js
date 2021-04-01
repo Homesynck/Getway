@@ -37,6 +37,7 @@ const DashboardDrawerContent = (props) => {
 
 export const ContactsNavigator = () => (
   <Drawer.Navigator
+    drawerType={'front'}
     drawerContent={(props) => <DashboardDrawerContent {...props} />}
     screenOptions={{ gestureEnabled: true, headerShown: false }} 
     initialRouteName="Dashboard">
