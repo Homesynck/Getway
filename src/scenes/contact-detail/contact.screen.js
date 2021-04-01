@@ -13,7 +13,7 @@ const Contact = ({ route }) => {
   const { contacts, setContacts } = useContext(ContactsContext)
 
   //TODO useRoute hook here
-  var contact = getContactById((route.params).contact.id, contacts)
+  let contact = getContactById((route.params).contact.id, contacts);
 
   const navigation = useNavigation();
 
@@ -74,7 +74,8 @@ const Contact = ({ route }) => {
         title={'N° téléphone'}
         onChange={ prop => {
           let tempContact = { ...contact }
-          tempContact.phoneNumbers.push({number: prop})
+          tempContact.phoneNumbers[0] = {number: prop}
+          console.log(tempContact);
           editContact(tempContact)
         }}/>
 
@@ -232,6 +233,7 @@ const Contact = ({ route }) => {
   }
 
   const AdditionalPhoneNumbers = ({list, hasNext}) => {
+    console.log(list);
     if(list.length < 2 && !isEditing)
       return null
 
@@ -312,10 +314,10 @@ const Contact = ({ route }) => {
         if(isFavoris){
           //TODO Changement d'état
           contact.favoris = false
-          updateContactById(contact.id, contact, contacts, setContacts)
+          updateContactById(contact.id, contact, setContacts)
         }else{
           contact.favoris = true
-          updateContactById(contact.id, contact, contacts, setContacts)
+          updateContactById(contact.id, contact, setContacts)
         }
         setFavoris(!isFavoris)
       }}/>
@@ -323,7 +325,7 @@ const Contact = ({ route }) => {
       icon={isEditing ? Checkmark : EditIcon}
       onPress={() => {
         if(isEditing) {
-          updateContactById(contact.id, contact, contacts, setContacts)
+          updateContactById(contact.id, contact, setContacts)
         }
         setEditor(!isEditing)
       }}

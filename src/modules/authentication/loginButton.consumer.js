@@ -3,20 +3,27 @@ import { NativeModules } from 'react-native';
 import { Button } from '@ui-kitten/components';
 
 import AuthContext from "./authentication.context";
+import ContactsContext from '../contact/contacts.context';
 
-const { SignIn } = NativeModules;
+import { getData } from "../contact/contacts.module";
+
+const { SignIn, FileSync } = NativeModules;
 
 const LoginButton = ({style, user, fallback}) => {
 
-    const { authState, setAuthState } = useContext(AuthContext);
+    const { setAuthState } = useContext(AuthContext);
+    const { setContacts } = useContext(ContactsContext);
 
     const handleLogin = async e => {
         e.preventDefault();
         try {
-            const res = await SignIn.signIn(user.username, user.password);
-            console.log(res);
-            // TODO set auth token to res.token
-            setAuthState('SIGNED_IN');
+            const loginResponse = await SignIn.signIn(user.username, user.password);
+            console.log(loginResponse);
+            await FileSync.openDirectory();
+            FileSync.setOnUpdate();
+            await FileSync.startSyncing();
+            await getData(setContacts);
+            setAuthState({status: 'SIGNED_IN', token: loginResponse.token});
         } catch (error) {
             console.error(error.message);
             fallback(error.message);

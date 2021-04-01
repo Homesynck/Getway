@@ -45,17 +45,13 @@ const App = () => {
 
   const [loading, setLoading] = useState(false)
 
-  const [authState, setAuthState] = useState('SIGNED_IN') //NOT_SIGNED_IN
-  const [contacts, setContacts] = useState([])
-
-  useEffect(() => {
-    setTimeout(() => requestReadContactsPermission(), 200);
-  }, []);
+  const [authState, setAuthState] = useState({status: 'NOT_SIGNED_IN'}) //NOT_SIGNED_IN
+  const [contacts, setContacts] = useState([]);
 
   // useEffect(() => {
-  //loadContact from server
-  //.then(setLoading(false))
+  //   setTimeout(() => requestReadContactsPermission(), 200);
   // }, []);
+
 
   //On execute avant toutes les tâches d'initialisations
 
