@@ -6,7 +6,6 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerI
 import ContactsContext from '../modules/contact/contacts.context';
 import Dashboard from '../scenes/home/dashboard.view';
 import Contact from '../scenes/contact-detail/contact.screen';
-import { getContactsFromAndroid } from '../modules/contact/contacts.module'
 import { NativeModules } from 'react-native';
 
 const Stack = createStackNavigator();
@@ -44,11 +43,11 @@ const DashboardDrawerContent = (props) => {
 
   return (
     <DrawerContentScrollView {...props}>
-      <DrawerItemList {...props} />
       <DrawerItem
         labelStyle={{color:"#E46F4C"}}
         label={username}
       />
+      <DrawerItemList {...props} />
     </DrawerContentScrollView>
   );
 }
@@ -59,7 +58,7 @@ export const ContactsNavigator = () => (
     drawerType={'front'}
     drawerContent={(props) => <DashboardDrawerContent {...props} />}
     screenOptions={{ gestureEnabled: true, headerShown: false , 
-      drawerActiveTintColor:'#e46f4c'}}
+    drawerActiveTintColor:'#e46f4c'}}
     initialRouteName="Mon espace"
     >
     <Drawer.Screen name="Mon espace" component={DashboardNavigator} 

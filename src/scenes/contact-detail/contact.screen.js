@@ -75,7 +75,6 @@ const Contact = ({ route }) => {
         onChange={ prop => {
           let tempContact = { ...contact }
           tempContact.phoneNumbers[0] = {number: prop}
-          console.log(tempContact);
           editContact(tempContact)
         }}/>
 
@@ -184,7 +183,7 @@ const Contact = ({ route }) => {
                 style={{color:'#a0a0a0'}} 
                 onChangeText={ prop => {
                   let tempContact = { ...contact }
-                  tempContact.emailAddresses.push({email: prop, label: 'Home'})
+                  tempContact.emailAddresses[0] = {email: prop, label: 'Home'}
                   editContact(tempContact)
                 }}/>
               </View>
@@ -233,7 +232,6 @@ const Contact = ({ route }) => {
   }
 
   const AdditionalPhoneNumbers = ({list, hasNext}) => {
-    console.log(list);
     if(list.length < 2 && !isEditing)
       return null
 

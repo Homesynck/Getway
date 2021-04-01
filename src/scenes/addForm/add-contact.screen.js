@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button, Text, Layout } from '@ui-kitten/components';
+import { Button, Text, Card, Modal } from '@ui-kitten/components';
 import { Icon, Input } from 'react-native-elements'
 import ContactsContext from '../../modules/contact/contacts.context'; 
 import { addContact } from '../../modules/contact/contacts.module';
     
 const AddContact = () => {
     const { contacts, setContacts } = useContext(ContactsContext);
+    const [visible, setVisible] = useState(false);
 
     const [phoneNumber, setPhoneNumber] = useState({
         number: "",
@@ -30,13 +31,24 @@ const AddContact = () => {
         contact.displayName = contact.givenName + " " + contact.familyName;
         const res = await addContact(contact, contacts, setContacts);
         console.log(res);
-        // TODO navigate to homepage
+        setVisible(true)
     }
 
 
     return (
         
         <View style={styles.container}>
+                <Modal
+                    visible={visible}
+                    backdropStyle={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
+                    onBackdropPress={() => setVisible(false)}>
+                    <Card disabled={true}>
+                    <Text>Contact ajouté avec succès</Text>
+                    <Button onPress={() => setVisible(false)}>
+                        Ok !
+                    </Button>
+                    </Card>
+                </Modal>
              <Icon
               name='user-circle'
               type='font-awesome'

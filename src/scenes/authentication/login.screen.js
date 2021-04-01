@@ -62,11 +62,11 @@ const Login = (props) => {
                 <TouchableOpacity 
                     style={{alignSelf: 'flex-end', marginRight: '15%', marginBottom: '5%'}}
                     onPress={() => navigation.navigate('ForgotPassword')}>
-                    <View style={styles.link}>
+                    {/* <View style={styles.link}>
                         <Text category='p2' appearance='hint'>
                             Mot de passe oublié ?
                         </Text>
-                    </View>
+                    </View> */}
                 </TouchableOpacity>
                 <LoginButton 
                     style={styles.button}

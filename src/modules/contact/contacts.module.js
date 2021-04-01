@@ -33,7 +33,6 @@ export const syncContactsFromAndroid = async (setContacts) => {
   FileSync.setOnUpdate();
   await FileSync.startSyncing();
   const syncData = await FileSync.syncData(contactList);
-  console.log("Data sync: ", syncData);
 }
 
 //need to pass: { contacts, setContacts } from useContext(ContactsContext)
@@ -42,9 +41,7 @@ export const deleteContactById = async (id, contacts, setContacts) => {
   const contact = contacts.find(contact => contact.id == id );
   try {
     const deletedRes = await FileSync.deleteFile(contact);
-    console.log(deletedRes);
     const newContactsList = await FileSync.getData();
-    console.log(newContactsList);
     setContacts(newContactsList)
     console.log("DELETED CONTACT ", id);
   } catch (error) {
@@ -54,14 +51,12 @@ export const deleteContactById = async (id, contacts, setContacts) => {
 }
 
 export const addContact = async (contact, contacts, setContacts) => {
-  contact.id = contacts[contacts.length - 1].id + 1
+  contact.id = (contacts.length > 0) ? contacts[contacts.length - 1].id + 1 : 0;
   contact.recordID = Math.floor(Math.random() * (9999999 - 10000) + 10000) + "";
   try {
     const addedContact = await FileSync.editFile(contact);
-    console.log("New contact: ", addedContact);
     // get the new data
     const newContactsList = await FileSync.getData();
-    console.log(newContactsList);
 
     setContacts(newContactsList);
     console.log("ADDED NEW CONTACT ", contact.id)
@@ -73,11 +68,10 @@ export const addContact = async (contact, contacts, setContacts) => {
 
 export const updateContactById = async (id, newContact, setContacts) => {
   try {
+    newContact.displayName = newContact.givenName + ' ' + newContact.familyName;
     const addedContact = await FileSync.editFile(newContact);
-    console.log("New contact: ", addedContact);
     // get the new data
     const newContactsList = await FileSync.getData();
-    console.log(newContactsList);
 
     setContacts(newContactsList);
     console.log("EDITED CONTACT ", id)
@@ -93,7 +87,6 @@ export const getContactById = (id, contacts) => {
 
 export const getData = async (setContacts) => {
   const newContactsList = await FileSync.getData();
-  console.log(newContactsList);
   setContacts(newContactsList);
 }
 

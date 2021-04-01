@@ -97,9 +97,7 @@ const ListContact = () => {
 
   const { contacts, setContacts } = useContext(ContactsContext)
 
-  const contacts_list = convertContactToSections(getContacts())
-
-  console.log(contacts)
+  const contacts_list = convertContactToSections(contacts)
 
   const renderItem = ({ item }) => (
     <ContactListItem
@@ -126,6 +124,16 @@ const ListContact = () => {
       <Text style={{textAlign:'center', color:'white'}}>{title}</Text>
     </View>
   )
+
+  if(contacts.length == 0){
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff'}}>
+        <View>
+          <Text style={{ alignSelf: 'center', margin: 10 }}>Aucun contact pour l'instant</Text>
+        </View >
+      </SafeAreaView>
+    )
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff'}}>
