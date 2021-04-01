@@ -6,6 +6,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerI
 import ContactsContext from '../modules/contact/contacts.context';
 import Dashboard from '../scenes/home/dashboard.view';
 import { getContactsFromAndroid } from '../modules/contact/contacts.module'
+import { TouchableOpacity } from 'react-native';
 
 // import Contacts from "./src/screens/ContactsView";
 // import AddContact from "./src/screens/AddContactView";
@@ -19,6 +20,7 @@ const DashboardDrawerContent = (props) => {
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem
+        labelStyle={{color:"#E46F4C"}}
         label="Importation des contacts android"
         onPress={() => {
           getContactsFromAndroid().then((r) => {
@@ -28,6 +30,7 @@ const DashboardDrawerContent = (props) => {
         }}
       />
       <DrawerItem
+        labelStyle={{color:"#E46F4C"}}
         label="Se déconnecter"
         onPress={() => console.log("TODO/ déconnexion")}
       />
@@ -36,10 +39,14 @@ const DashboardDrawerContent = (props) => {
 }
 
 export const ContactsNavigator = () => (
+  //TODO change color of onPress element
   <Drawer.Navigator
     drawerContent={(props) => <DashboardDrawerContent {...props} />}
-    screenOptions={{ gestureEnabled: true, headerShown: false }} 
-    initialRouteName="Dashboard">
-    <Drawer.Screen name="Mon espace" component={Dashboard} />
+    screenOptions={{ gestureEnabled: true, headerShown: false , 
+      drawerActiveTintColor:'#e46f4c'}}
+    initialRouteName="Dashboard"
+    >
+    <Drawer.Screen name="Mon espace" component={Dashboard} 
+    />
   </Drawer.Navigator>
 );

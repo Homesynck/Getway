@@ -4,7 +4,7 @@ import { SafeAreaView, View, StyleSheet } from 'react-native';
 import { Avatar, Icon, Input } from "react-native-elements";
 import { Divider, TopNavigation, TopNavigationAction, Text } from '@ui-kitten/components';
 
-import { ArrowIosBackIcon, EditIcon, Checkmark } from '../../components/icons';
+import { ArrowIosBackIcon, EditIcon, Checkmark,StarOutlineIcon,StarIcon } from '../../components/icons';
 import { ScrollView } from 'react-native';
 import { set } from 'react-native-reanimated';
 import { TextInput } from 'react-native';
@@ -15,7 +15,7 @@ const Contact = ({ route }) => {
   const navigation = useNavigation();
 
   const [ isEditing, setEditor ] = useState(false) 
-
+  const [ isFavoris, setFavoris] = useState(contact.favoris)
   const renderBackAction = () => (
     <TopNavigationAction
       icon={ArrowIosBackIcon}
@@ -219,7 +219,19 @@ const Contact = ({ route }) => {
   }
 
   const renderRightActions = () => (
+
     <React.Fragment>
+      <TopNavigationAction 
+      icon={isFavoris? StarIcon : StarOutlineIcon}
+      onPress={() => {
+        if(isFavoris){
+          //TODO Changement d'état
+          contact.favoris = false
+        }else{
+          contact.favoris = true
+        }
+        setFavoris(!isFavoris)
+      }}/>
       <TopNavigationAction 
       icon={isEditing ? Checkmark : EditIcon}
       onPress={() => {
@@ -228,6 +240,7 @@ const Contact = ({ route }) => {
         }
         setEditor(!isEditing)
       }}/>
+      
     </React.Fragment>
   );
 

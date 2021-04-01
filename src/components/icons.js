@@ -82,11 +82,11 @@ export const SettingsIcon = (style) => (
 );
 
 export const StarIcon = (style) => (
-  <Icon {...style} name='star'/>
+  <Icon {...style}  fill='#fad34a' name='star'/>
 );
 
 export const StarOutlineIcon = (style) => (
-  <Icon {...style} name='star-outline'/>
+  <Icon {...style}  fill='#fad34a' name='star-outline'/>
 );
 
 export const TrashIcon = (style) => (
