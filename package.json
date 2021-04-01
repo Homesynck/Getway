@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "run": "npx react-native start",
-    "app": "npx react-native run-android",
+    "start": "npx react-native start",
+    "android": "npx react-native run-android",
     "test": "jest",
     "lint": "eslint ."
   },
