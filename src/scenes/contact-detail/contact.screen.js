@@ -4,7 +4,7 @@ import { SafeAreaView, View, StyleSheet, ScrollView, TextInput } from 'react-nat
 import { Avatar, Icon } from "react-native-elements";
 import { Divider, TopNavigation, TopNavigationAction, Text } from '@ui-kitten/components';
 
-import { ArrowIosBackIcon, EditIcon, Checkmark, CloseIcon } from '../../components/icons';
+import { ArrowIosBackIcon, EditIcon, Checkmark, CloseIcon, StarOutlineIcon, StarIcon } from '../../components/icons';
 
 import ContactsContext from '../../modules/contact/contacts.context';
 import { updateContactById, getContactById } from '../../modules/contact/contacts.module';
@@ -312,8 +312,10 @@ const Contact = ({ route }) => {
         if(isFavoris){
           //TODO Changement d'état
           contact.favoris = false
+          updateContactById(contact.id, contact, contacts, setContacts)
         }else{
           contact.favoris = true
+          updateContactById(contact.id, contact, contacts, setContacts)
         }
         setFavoris(!isFavoris)
       }}/>
