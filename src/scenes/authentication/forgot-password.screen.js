@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import {Input,Text, Layout, Button} from '@ui-kitten/components';
-
+import {Input,Text, Layout, Button, TopNavigation, TopNavigationAction} from '@ui-kitten/components';
+import Error from '../../assets/error.svg';
+import { SafeAreaView } from 'react-native';
+import { ArrowIosBackIcon } from '../../components/icons';
+import { useNavigation } from '@react-navigation/native';
 const ForgotPassword = (onPressForgotPassword) => {
 
     const [username, setUsername] = useState('');
@@ -11,26 +14,41 @@ const ForgotPassword = (onPressForgotPassword) => {
         isLoggingIn: false
     });
 
+    const navigation = useNavigation();
+    const renderBackAction = () => (
+        <TopNavigationAction
+          icon={ArrowIosBackIcon}
+          onPress={navigation.goBack}
+        />
+      );
     return (
-        <Layout>
-            <View>
-                <Text category='h3' style={styles.title}>
-                    Mot de pass oublié
-                </Text>
-                <Input
-                    placeholder='Username'
-                    onChangeText={(username => setUsername(username))}
-                    value={username}
-                />
-                <Button
-                    onPress={e => handleForgotPassword(e)}
-                    style={styles.button}
-                // disabled={buttonState}
-                >
-                    Valider
-                </Button>
+        <SafeAreaView>
+            <TopNavigation
+            accessoryLeft={renderBackAction}
+            />
+            <View style={{alignSelf : 'center'}}>
+            <Error height={350} width={270}/>
             </View>
-        </Layout>
+        </SafeAreaView>
+        // <Layout>
+        //     <View>
+        //         <Text category='h3' style={styles.title}>
+        //             Mot de pass oublié
+        //         </Text>
+        //         <Input
+        //             placeholder='Username'
+        //             onChangeText={(username => setUsername(username))}
+        //             value={username}
+        //         />
+        //         <Button
+        //             onPress={e => handleForgotPassword(e)}
+        //             style={styles.button}
+        //         // disabled={buttonState}
+        //         >
+        //             Valider
+        //         </Button>
+        //     </View>
+        // </Layout>
 
     )
 }

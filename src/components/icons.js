@@ -13,6 +13,14 @@ export const HomeOutlineIcon = (style) => (
   <Icon {...style} name='home-outline' />
 )
 
+export const EditIcon = (style) => (
+  <Icon {...style} name='edit-outline' />
+)
+
+export const Checkmark = (style) => (
+  <Icon {...style} name='checkmark-outline' />
+)
+
 export const ArrowIosBackIcon = (style) => (
   <Icon {...style} name='arrow-ios-back'/>
 );
