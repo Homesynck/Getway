@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
 
-import { Text } from 'react-native';
-
 import Contacts from 'react-native-contacts';
 import ContactsContext from './contacts.context';
 
@@ -35,14 +33,18 @@ export const deleteContactById = (id, contacts, setContacts) => {
 
 export const addContact = (contact, contacts, setContacts) => {
   contact.id = contacts[contacts.length - 1].id + 1
-  contactsArr = [...contacts.push(contact)]
+  let contactsArr = [...contacts.push(contact)]
   setContacts(contactsArr)
   console.log("ADDED NEW CONTACT ", contact.id)
 }
 
 export const updateContactById = (id, newContact, contacts, setContacts) => {
-  contactsArr = [...contacts]
+  let contactsArr = [...contacts]
   contactsArr[contactsArr.findIndex(contact => contact.id == id)] = newContact
   setContacts(contactsArr)
   console.log("EDITED CONTACT ", id)
+}
+
+export const getContactById = (id, contacts) => {
+  return contacts.find(contact => contact.id == id)
 }
