@@ -57,9 +57,9 @@ class ContactListItem extends PureComponent {
           <ListItem.Title style={{ fontWeight: 'bold' }}>
             {props.title}
           </ListItem.Title>
-          <ListItem.Subtitle>
-            Some info here
-          </ListItem.Subtitle>
+          {props.description != null
+          ? <ListItem.Subtitle>{props.description}</ListItem.Subtitle>
+          : null}
         </ListItem.Content>
         {badge}
       </ListItem>
@@ -105,6 +105,7 @@ const ListContact = () => {
     <ContactListItem
       id={item.id}
       title={item.displayName}
+      description={item.description}
       badgeState={[badgesVisible, setBadge]}
       onBadgePress={() => deleteContactById(item.id, contacts, setContacts)}
       onPress={() => {        
@@ -128,7 +129,7 @@ const ListContact = () => {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff'}}>
-      <View onResponderGrant={(e) => console.log("received event:", e)}>
+      <View>
         <SectionList
           sections={contacts_list}
           keyExtractor={(item, index) => item + index}
