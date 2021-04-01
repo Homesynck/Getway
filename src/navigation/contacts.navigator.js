@@ -5,6 +5,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerI
 
 import ContactsContext from '../modules/contact/contacts.context';
 import Dashboard from '../scenes/home/dashboard.view';
+import Contact from '../scenes/contact-detail/contact.screen';
 import { getContactsFromAndroid } from '../modules/contact/contacts.module'
 import { TouchableOpacity } from 'react-native';
 
@@ -13,6 +14,15 @@ import { TouchableOpacity } from 'react-native';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+const DashboardNavigator = () => (
+  <Stack.Navigator 
+  screenOptions={{ headerShown: false }}
+  initialRouteName="Dashboard">
+    <Stack.Screen name="Dashboard" component={Dashboard} />
+    <Stack.Screen name="Contact" component={Contact} />
+  </Stack.Navigator>
+)
 
 const DashboardDrawerContent = (props) => {
   const { contacts, setContacts } = useContext(ContactsContext)
@@ -45,9 +55,9 @@ export const ContactsNavigator = () => (
     drawerContent={(props) => <DashboardDrawerContent {...props} />}
     screenOptions={{ gestureEnabled: true, headerShown: false , 
       drawerActiveTintColor:'#e46f4c'}}
-    initialRouteName="Dashboard"
+    initialRouteName="Mon espace"
     >
-    <Drawer.Screen name="Mon espace" component={Dashboard} 
+    <Drawer.Screen name="Mon espace" component={DashboardNavigator} 
     />
   </Drawer.Navigator>
 );

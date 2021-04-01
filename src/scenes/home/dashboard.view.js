@@ -3,16 +3,19 @@ import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity } from 're
 import { Text, Divider } from '@ui-kitten/components';
 import Student from '../../assets/student.svg';
 import { Avatar, Icon } from "react-native-elements";
+import { useNavigation } from '@react-navigation/native';
 
 import { getContacts } from '../../modules/contact/contacts.module';
 
 const Star = ({outline = false, onPress = null}) => (
   <View style={[styles.center]} onPress={onPress}>
+    {outline ?
     <Icon
-      name={outline ? 'star-o' : 'star'}
+      name={'star'}
       type="font-awesome"
       color="#fad34a"
     />
+    : null}
   </View>
 )
 
@@ -26,85 +29,89 @@ const MyAvatar = ({ contact, size, color }) => (
   />
 )
 
-const FavoriteCard = ({contacts}) => {
-  if(!contacts.length) {
-    return (
-      <View style={styles.center}>
-        <View style={[styles.container, styles.long_box]}>
-          <Text style={{textAlign: "center"}}>Aucun contact pour l'instant</Text>
+const Dashboard = (props) => {
+
+  const navigation = useNavigation();
+  const contacts = getContacts()
+
+  const BigContact = ({contact}) => {
+    if(contact == null) {
+      return (
+        <View style={[styles.container, styles.box, styles.center]}>
+          <Text category="s1" style={{ color: '#C1AB9A' }}>Aucun contact</Text>
         </View>
-      </View>
-    ) 
-  }
-
-  const favoritesContacts = contacts.filter(contact => contact.favoris)
-  let contactsArr = []
-  if(favoritesContacts.length > 1 ) {
-    //AFFICHAGE 2 CONTACT FAVORIS
-    contactsArr = favoritesContacts.slice(0,2)
-  }
-  else if(favoritesContacts.length == 1) {
-    //AFFICHAGE 2 CONTACT FAVORIS
-    contactsArr.push(favoritesContacts[0])
-  }
-  else if(contacts.length > 1) {
-    //AFFICHAGE 2 CONTACTS NON FAVORIS
-    contactsArr = contacts.slice(0,2)
-  }
-  else {
-    //AFFICHAGE 1 CONTACT
-    contactsArr.push(contacts[0])
-  }
-  return (
-    <View style={styles.center}>
-      <View style={[styles.container, styles.long_box]}>
-        {contactsArr.map((contact, id) => {
-          return (
-            <React.Fragment key={id}>
-              <TouchableOpacity
-                //TODO onPress()
-                style={styles.favoris}
-              >
-                <MyAvatar contact={contact} size={'small'} color={'#C1AB9A'} />
-                <View style={styles.icon}>
-                  <Text category="s1" style={styles.text}>{contact.displayName}</Text>
-                </View>
-                <Star 
-                outline={!contact.favoris}
-                />
-              </TouchableOpacity>
-              {id < contactsArr.length - 1 ? <Divider/> : null }
-            </React.Fragment>
-          )
-        })}
-      </View>
-    </View>
-  )
-}
-
-const BigContact = ({contact}) => {
-  if(contact == null) {
+      )
+    }
     return (
       <View style={[styles.container, styles.box, styles.center]}>
-        <Text category="s1" style={{ color: '#C1AB9A' }}>Aucun contact</Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Contact', { contact: contact })}
+        >
+          <MyAvatar contact={contact} size={'medium'} color={'#F0DFCF'} />
+          <Text category="s1" style={{ color: '#C1AB9A', alignSelf: 'center' }}>{contact.displayName}</Text>
+        </TouchableOpacity>
       </View>
     )
   }
-  return (
-    <View style={[styles.container, styles.box, styles.center]}>
-      <TouchableOpacity //TODO onPress() 
-      >
-        <MyAvatar contact={contact} size={'medium'} color={'#F0DFCF'} />
-        <Text category="s1" style={{ color: '#C1AB9A' }}>{contact.displayName}</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
 
+  const FavoriteCard = ({contacts}) => {
+    if(!contacts.length) {
+      return (
+        <View style={styles.center}>
+          <View style={[styles.container, styles.long_box]}>
+            <Text style={{textAlign: "center"}}>Aucun contact pour l'instant</Text>
+          </View>
+        </View>
+      ) 
+    }
+  
+    const favoritesContacts = contacts.filter(contact => contact.favoris)
 
-const Dashboard = ({ navigation }) => {
+    let contactsArr = []
+    if(favoritesContacts.length > 1 ) {
+      //AFFICHAGE 2 CONTACT FAVORIS
+      contactsArr = favoritesContacts.slice(0,2)
+    }
+    else if(favoritesContacts.length == 1) {
+      //AFFICHAGE 1 CONTACT FAVORIS
+      contactsArr.push(favoritesContacts[0])
+    }
+    else if(contacts.length > 1) {
+      //AFFICHAGE 2 CONTACTS NON FAVORIS
+      contactsArr = contacts.slice(0,2)
+    }
+    else {
+      //AFFICHAGE 1 CONTACT
+      contactsArr.push(contacts[0])
+    }
+    return (
+      <View style={styles.center}>
+        <View style={[styles.container, styles.long_box]}>
+          {contactsArr.map((contact, id) => {
+            return (
+              <React.Fragment key={id}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Contact', { contact: contact })}
+                  style={styles.favoris}
+                >
+                  <MyAvatar contact={contact} size={'small'} color={'#C1AB9A'} />
+                  <View style={styles.icon}>
+                    <Text category="s1" style={styles.text}>{contact.displayName}</Text>
+                  </View>
+                  <Star 
+                  outline={contact.favoris}
+                  />
+                </TouchableOpacity>
+                {id < contactsArr.length - 1 ? <Divider/> : null }
+              </React.Fragment>
+            )
+          })}
+        </View>
+      </View>
+    )
+  }
 
-  const contacts = getContacts()
+  
   return (
     <SafeAreaView>
       <View style={styles.image}>
@@ -120,7 +127,7 @@ const Dashboard = ({ navigation }) => {
           </Text>
         </View>
 
-        <BigContact contact={contacts.length > 0 ? contacts[0] : null} />
+        <BigContact contact={contacts.length > 0 ? contacts[contacts.length - 1] : null} />
       </View>
 
       <FavoriteCard contacts={contacts} />

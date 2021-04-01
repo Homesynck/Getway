@@ -12,7 +12,6 @@ import { ListNavigator } from "./list.navigator";
 import { HomeBottomNavigation } from "../scenes/home/home-bottom-navigation.component";
 
 const BottomTab = createBottomTabNavigator();
-const Drawer = createDrawerNavigator();
 
 const initialTabRoute = "Contacts";
 const ROOT_ROUTES = ["Home", "Contacts", "Nouveau", "List"];
