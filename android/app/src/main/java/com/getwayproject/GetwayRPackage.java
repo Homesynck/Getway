@@ -9,6 +9,7 @@ import com.facebook.react.uimanager.ViewManager;
 import com.getwayproject.modules.FileSync;
 import com.getwayproject.modules.SignInModule;
 import com.getwayproject.modules.Register;
+import com.getwayproject.modules.UserModule;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,6 +22,7 @@ public class GetwayRPackage implements ReactPackage {
         List<NativeModule> modules = new ArrayList<>();
         modules.add(new SignInModule(reactContext));
         modules.add(new Register(reactContext));
+        modules.add(new UserModule(reactContext));
         modules.add(new FileSync(reactContext));
         return modules;
     }

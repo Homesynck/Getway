@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from "@react-navigation/drawer";
@@ -7,10 +7,7 @@ import ContactsContext from '../modules/contact/contacts.context';
 import Dashboard from '../scenes/home/dashboard.view';
 import Contact from '../scenes/contact-detail/contact.screen';
 import { getContactsFromAndroid } from '../modules/contact/contacts.module'
-import { TouchableOpacity } from 'react-native';
-
-// import Contacts from "./src/screens/ContactsView";
-// import AddContact from "./src/screens/AddContactView";
+import { NativeModules } from 'react-native';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -24,25 +21,33 @@ const DashboardNavigator = () => (
   </Stack.Navigator>
 )
 
+const { UserModule } = NativeModules;
+
 const DashboardDrawerContent = (props) => {
   const { contacts, setContacts } = useContext(ContactsContext)
+  const [username, setUsername] = useState("");
+
+  const getUsername = async () => {
+    const name = await UserModule.getUsername()
+    setUsername(name);
+  }
+
+  useEffect(() => {
+    let mounted = true;
+
+    if(mounted){
+      getUsername();
+    }
+
+    return mounted = false;
+  }, []);
+
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
       <DrawerItem
         labelStyle={{color:"#E46F4C"}}
-        label="Importation des contacts android"
-        onPress={() => {
-          getContactsFromAndroid().then((r) => {
-            setContacts(r)
-            console.log("Imported: " + r.length)
-          })
-        }}
-      />
-      <DrawerItem
-        labelStyle={{color:"#E46F4C"}}
-        label="Se déconnecter"
-        onPress={() => console.log("TODO/ déconnexion")}
+        label={username}
       />
     </DrawerContentScrollView>
   );

@@ -25,8 +25,7 @@ const MyAvatar = ({ contact, size, color }) => (
   <Avatar
     size={size}
     rounded
-    // title={contact?.displayName.split(' ').map((name) => name[1]).join('').toUpperCase()}
-    title=""
+    title={contact?.displayName.split(' ').map((name) => name[0]).join('').toUpperCase()}
     activeOpacity={0.7}
     containerStyle={{ alignSelf: 'center', margin: 10, backgroundColor: color }}
   />
