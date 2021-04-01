@@ -25,23 +25,24 @@ export const getContactsFromAndroid = async() => {
   return imported
 }
 
-export const deleteContactById = (id) => {
-  const { contacts, setContacts } = useContext(ContactsContext)
-  // contactsArr = [...contacts.filter((contact) => contact.id != id)]
-  // setContacts(contactsArr)
+//need to pass: { contacts, setContacts } from useContext(ContactsContext)
+
+export const deleteContactById = (id, contacts, setContacts) => {
+  let contactsArr = [...contacts.filter((contact) => contact.id != id)]
+  setContacts(contactsArr)
   console.log("DELETED CONTACT ", id)
 }
 
-export const addContact = (contact) => {
-  const { contacts, setContacts } = useContext(ContactsContext)
+export const addContact = (contact, contacts, setContacts) => {
+  contact.id = contacts[contacts.length - 1].id + 1
   contactsArr = [...contacts.push(contact)]
   setContacts(contactsArr)
+  console.log("ADDED NEW CONTACT ", contact.id)
 }
 
-export const updateContactById = (id, newContact) => {
-  const { contacts, setContacts } = useContext(ContactsContext)
-  
+export const updateContactById = (id, newContact, contacts, setContacts) => {
   contactsArr = [...contacts]
   contactsArr[contactsArr.findIndex(contact => contact.id == id)] = newContact
   setContacts(contactsArr)
+  console.log("EDITED CONTACT ", id)
 }

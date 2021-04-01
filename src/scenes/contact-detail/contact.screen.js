@@ -197,7 +197,6 @@ const Contact = ({ route }) => {
 
   const ContactAllInformations = ({contact}) => {
     let checker = arr => arr.every(Boolean);
-    console.log(contact)
     let conditions = [
       contact.phoneNumbers.length >= 2,
       contact.emailAddresses.length > 0,

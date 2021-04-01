@@ -1,10 +1,12 @@
-import React, { useState, useEffect, PureComponent } from 'react';
+import React, { useState, useContext, PureComponent } from 'react';
 
 import { Text, StyleSheet, StatusBar, SafeAreaView, View, SectionList } from 'react-native'
 import { ListItem, Avatar, Badge } from 'react-native-elements';
 
 import TouchableScale from 'react-native-touchable-scale';
 import { useNavigation } from '@react-navigation/native';
+
+import ContactsContext from '../../modules/contact/contacts.context';
 
 import { getContacts, deleteContactById } from '../../modules/contact/contacts.module';
 
@@ -21,9 +23,7 @@ class ContactListItem extends PureComponent {
           status="error"
           value={'-'}
           //containerStyle={{ marginTop: -65, marginRight: -20 }}
-          onPress={
-            () => {console.log("TRYING TO DELETE ", id);deleteContactById(id)}
-          }
+          onPress={props.onBadgePress}
           badgeStyle={{backgroundColor: '#d4281b', margin:10, paddingLeft:8, paddingRight:8}}
         />
       )
@@ -35,7 +35,7 @@ class ContactListItem extends PureComponent {
         tension={100}
         activeScale={0.95}
         onPress={props.onPress}
-        onLongPress={() => setBadge(!badgesVisible)}
+        onLongPress={props.onLongPress}
         containerStyle={{
           padding:10,
           margin:13,
@@ -95,19 +95,25 @@ const ListContact = () => {
 
   const [badgesVisible, setBadge] = useState(false);
 
-  const contacts = convertContactToSections(getContacts())
+  const { contacts, setContacts } = useContext(ContactsContext)
+
+  const contacts_list = convertContactToSections(getContacts())
+
+  console.log(contacts)
 
   const renderItem = ({ item }) => (
     <ContactListItem
       id={item.id}
       title={item.displayName}
       badgeState={[badgesVisible, setBadge]}
-       onPress={() => {
+      onBadgePress={() => deleteContactById(item.id, contacts, setContacts)}
+      onPress={() => {        
          if(!badgesVisible)
            navigation.navigate('Contact', { contact: item })
          else
          setBadge(false)
       }}
+      onLongPress={() => setBadge(!badgesVisible)}
       style={{
         margin:'10'
       }}
@@ -124,13 +130,12 @@ const ListContact = () => {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff'}}>
       <View onResponderGrant={(e) => console.log("received event:", e)}>
         <SectionList
-          sections={contacts}
+          sections={contacts_list}
           keyExtractor={(item, index) => item + index}
           renderItem={renderItem}
           renderSectionHeader={renderTitle}
           contentContainerStyle={{ borderRadius: 6, overflow: 'hidden' }}
         />
-
       </View >
     </SafeAreaView>
   )

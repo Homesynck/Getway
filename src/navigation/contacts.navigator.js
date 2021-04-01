@@ -41,6 +41,7 @@ const DashboardDrawerContent = (props) => {
 export const ContactsNavigator = () => (
   //TODO change color of onPress element
   <Drawer.Navigator
+    drawerType={'front'}
     drawerContent={(props) => <DashboardDrawerContent {...props} />}
     screenOptions={{ gestureEnabled: true, headerShown: false , 
       drawerActiveTintColor:'#e46f4c'}}
