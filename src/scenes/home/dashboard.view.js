@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { StyleSheet, SafeAreaView, View, ScrollView, TouchableOpacity } from 'react-native';
 import { Text, Divider } from '@ui-kitten/components';
 import Student from '../../assets/student.svg';
 import { Avatar, Icon } from "react-native-elements";
 import { useNavigation } from '@react-navigation/native';
 
-import { getContacts } from '../../modules/contact/contacts.module';
+import { getContacts, onContactsUpdate } from '../../modules/contact/contacts.module';
+
+import ContactsContext from '../../modules/contact/contacts.context';
 
 const Star = ({outline = false, onPress = null}) => (
   <View style={[styles.center]} onPress={onPress}>
@@ -23,7 +25,8 @@ const MyAvatar = ({ contact, size, color }) => (
   <Avatar
     size={size}
     rounded
-    title={contact.displayName.split(' ').map((name) => name[0]).join('').toUpperCase()}
+    // title={contact?.displayName.split(' ').map((name) => name[1]).join('').toUpperCase()}
+    title=""
     activeOpacity={0.7}
     containerStyle={{ alignSelf: 'center', margin: 10, backgroundColor: color }}
   />
@@ -33,6 +36,18 @@ const Dashboard = (props) => {
 
   const navigation = useNavigation();
   const contacts = getContacts()
+
+  const { setContacts } = useContext(ContactsContext);
+  
+  useEffect(() => {
+    let mounted = true
+    
+    if(mounted){
+      onContactsUpdate(setContacts);
+    }
+  
+    return () => mounted = false;
+  }, []);
 
   const BigContact = ({contact}) => {
     if(contact == null) {
@@ -47,7 +62,7 @@ const Dashboard = (props) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Contact', { contact: contact })}
         >
-          <MyAvatar contact={contact} size={'medium'} color={'#F0DFCF'} />
+          <MyAvatar contact={contact ? contact: {}} size={'medium'} color={'#F0DFCF'} />
           <Text category="s1" style={{ color: '#C1AB9A', alignSelf: 'center' }}>{contact.displayName}</Text>
         </TouchableOpacity>
       </View>

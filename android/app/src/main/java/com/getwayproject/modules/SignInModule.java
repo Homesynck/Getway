@@ -1,17 +1,13 @@
 package com.getwayproject.modules;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
-import com.facebook.react.bridge.ReactApplicationContext;
-
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.github.homesynck.accounts.Session;
-
-import java.util.Arrays;
+import com.github.homesynck.Response;
+import com.github.homesynck.connect.Session;
 
 
 public class SignInModule extends ReactContextBaseJavaModule {
@@ -32,13 +28,9 @@ public class SignInModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void signIn(String username, String password, Promise connectedPromise) {
 
-        session.login(username, password, success -> {
-            String response = Arrays.toString(success);
-            Log.d(TAG, response);
-            connectedPromise.resolve(response);
-        }, error -> {
-            Log.e(TAG, error);
-            connectedPromise.reject("homesynck", error);
-        });
+        Response signInResponse = session.login(username, password);
+        if(!signInResponse.isCorrect())
+            connectedPromise.reject("signIn", signInResponse.getResponse());
+        connectedPromise.resolve(signInResponse.getResponse());
     }
 }

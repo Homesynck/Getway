@@ -7,7 +7,7 @@ import LoginNavigator from '../../navigation/login.navigator';
 const AuthNavigatorConsumer = () => {
     const { authState, setAuthState } = useContext(AuthContext)
 
-    return authState === "SIGNED_IN"
+    return authState.status === "SIGNED_IN"
         ? <HomeNavigator />
         : <LoginNavigator />
 }

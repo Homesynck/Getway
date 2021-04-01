@@ -1,15 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, Text, Layout } from '@ui-kitten/components';
 import { Icon, Input } from 'react-native-elements'
+import ContactsContext from '../../modules/contact/contacts.context'; 
+import { addContact } from '../../modules/contact/contacts.module';
     
 const AddContact = () => {
-    const [contact, setContact] = useState({
-        lastName: "",
-        firstName:"",
-        phoneNumber: "",
-        email: ""
+    const { contacts, setContacts } = useContext(ContactsContext);
+
+    const [phoneNumber, setPhoneNumber] = useState({
+        number: "",
+        label: "",
     });
+    const [contact, setContact] = useState({
+        familyName: "",
+        givenName:"",
+        displayName:"",
+        email: "",
+        description: null,
+        favoris: false,
+        groupes: [],
+        postalAddresses:[],
+        emailAddresses:[],
+    });
+
+    const addNewContact = async () => {
+        console.log("Add contact");
+        contact.phoneNumbers = [phoneNumber];
+        contact.displayName = contact.givenName + " " + contact.familyName;
+        const res = await addContact(contact, contacts, setContacts);
+        console.log(res);
+        // TODO navigate to homepage
+    }
+
+
     return (
         
         <View style={styles.container}>
@@ -23,33 +47,33 @@ const AddContact = () => {
             <Text style={styles.title} category='h3'>Nouveau contact</Text>
             <View style={{margin:20}}>
                 <Input
-                    value={contact.name}
+                    value={contact.familyName}
                     placeholder="Nom"  
                     style={styles.text}    
-                    onChangeText={ lastName => {
+                    onChangeText={ familyName => {
                         const tempContact = { ...contact }
-                        tempContact.lasrName = lastName
+                        tempContact.familyName = familyName
                         setContact(tempContact);
                     }}
                 />
                 <Input
-                    value={contact.firstName}
+                    value={contact.givenName}
                     placeholder="Prénom"
                     style={styles.text} 
-                    onChangeText={ firstName => {
+                    onChangeText={ givenName => {
                         const tempContact = { ...contact }
-                        tempContact.firstName = firstName
+                        tempContact.givenName = givenName
                         setContact(tempContact);
                     }}
                 />
                 <Input
-                    value={contact.phoneNumber}
+                    value={phoneNumber.number}
                     placeholder="Numéro de téléphone"
                     style={styles.text} 
-                    onChangeText={ phoneNumber => {
-                        const tempContact = { ...contact }
-                        tempContact.phoneNumber = phoneNumber
-                        setContact(tempContact);
+                    onChangeText={ number => {
+                        const tempPhoneNumber = { ...phoneNumber }
+                        tempPhoneNumber.number = number;
+                        setPhoneNumber(tempPhoneNumber);
                     }}
                 />
                 
@@ -66,7 +90,7 @@ const AddContact = () => {
               </View> 
                 <Button
                     style={styles.button}
-                    onPress={() => console.log(contact)}>
+                    onPress={addNewContact}>
                     <Icon
                     name='plus'
                     type='font-awesome'

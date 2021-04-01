@@ -10,6 +10,8 @@ import Unlock from '../../assets/unlock.svg';
 import AppTree from '../../assets/appTree.svg';
 import touchApp from '../../assets/touchApp.svg';
 import Phone from '../../assets/phone.svg';
+import ContactsContext from '../../modules/contact/contacts.context';
+import { syncContactsFromAndroid } from '../../modules/contact/contacts.module';
 
 const { Register } = NativeModules;
 
@@ -143,6 +145,7 @@ const VerifyNumber = ({ nextStep }) => {
 const RegisterInformation = ({ user, update }) => {
 
   const { authState, setAuthState } = useContext(AuthContext);
+  const {contacts, setContacts} = useContext(ContactsContext);
 
 
   const handleRegistration = async e => {
@@ -150,10 +153,10 @@ const RegisterInformation = ({ user, update }) => {
     if (user.username == null || user.password == null)
       return;
     try {
-      const res = await Register.signup(user);
-      console.log(res);
-      // TODO set auth token to res.token
-      setAuthState('SIGNED_IN');
+      const registerResponse = await Register.signup(user);
+      console.log(registerResponse);
+      await syncContactsFromAndroid(setContacts);
+      setAuthState({status:'SIGNED_IN', token:registerResponse[1]});
     } catch (error) {
       console.error(error.message);
     }
