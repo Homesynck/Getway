@@ -4,21 +4,47 @@ import Contacts from 'react-native-contacts';
 import ContactsContext from './contacts.context';
 
 export const getContacts = () => {
-    const {contacts, setContacts} = useContext(ContactsContext)
+  const { contacts, setContacts } = useContext(ContactsContext)
 
-    return contacts
+  return contacts
 }
 
-export const getContactsFromAndroid = (setter, loading) => {
-    Contacts.getAll()
-        .then((r) => {
-            const contacts = r.map((c) => {
-                c.description = null
-                c.favoris = false
-                c.groupes = []
-            })
-            console.log("LOADED CONTACT FROM CONTEXT", JSON.stringify(r, null, 2))
-            loading(false)
-            setter(r)
-        })
+export const getContactsFromAndroid = async() => {
+  let imported = await Contacts.getAll()
+  imported = imported.map((c, id) => ({
+      ...c,
+      id: id,
+      description: null,
+      favoris: false,
+      groupes: []
+    })
+  )
+
+  return imported
+}
+
+//need to pass: { contacts, setContacts } from useContext(ContactsContext)
+
+export const deleteContactById = (id, contacts, setContacts) => {
+  let contactsArr = [...contacts.filter((contact) => contact.id != id)]
+  setContacts(contactsArr)
+  console.log("DELETED CONTACT ", id)
+}
+
+export const addContact = (contact, contacts, setContacts) => {
+  contact.id = contacts[contacts.length - 1].id + 1
+  let contactsArr = [...contacts.push(contact)]
+  setContacts(contactsArr)
+  console.log("ADDED NEW CONTACT ", contact.id)
+}
+
+export const updateContactById = (id, newContact, contacts, setContacts) => {
+  let contactsArr = [...contacts]
+  contactsArr[contactsArr.findIndex(contact => contact.id == id)] = newContact
+  setContacts(contactsArr)
+  console.log("EDITED CONTACT ", id)
+}
+
+export const getContactById = (id, contacts) => {
+  return contacts.find(contact => contact.id == id)
 }

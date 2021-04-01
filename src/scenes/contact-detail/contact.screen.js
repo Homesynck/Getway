@@ -1,41 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView, View, StyleSheet } from 'react-native';
-import { Avatar, Icon, Input } from "react-native-elements";
+import { SafeAreaView, View, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { Avatar, Icon } from "react-native-elements";
 import { Divider, TopNavigation, TopNavigationAction, Text } from '@ui-kitten/components';
 
-import { ArrowIosBackIcon, EditIcon, Checkmark } from '../../components/icons';
-import { ScrollView } from 'react-native';
-import { set } from 'react-native-reanimated';
+import { ArrowIosBackIcon, EditIcon, Checkmark, CloseIcon, StarOutlineIcon, StarIcon } from '../../components/icons';
+
+import ContactsContext from '../../modules/contact/contacts.context';
+import { updateContactById, getContactById } from '../../modules/contact/contacts.module';
 
 const Contact = ({ route }) => {
+  const { contacts, setContacts } = useContext(ContactsContext)
+
   //TODO useRoute hook here
-  const { contact } = route.params;
+  var contact = getContactById((route.params).contact.id, contacts)
+
   const navigation = useNavigation();
 
   const [ isEditing, setEditor ] = useState(false) 
 
-  const renderBackAction = () => (
-    <TopNavigationAction
-      icon={ArrowIosBackIcon}
-      onPress={navigation.goBack}
-    />
-  );
+  const [ isFavoris, setFavoris] = useState(contact.favoris)
+  
+  const editContact = (c) => contact = c
 
-  const ContactProp = ({str, title}) => {
-    if(!str)
-      return null;
-
+  const ContactProp = ({str, title, onChange = null}) => {
+  
     if(isEditing)
       return (
         <>
           <Text category='label'>{title}</Text>
-          <Input 
-          style={styles.text}>
+          <TextInput 
+          style={{color:'#a0a0a0'}}
+          onChangeText={onChange}>
             {str}
-          </Input>
+          </TextInput>
         </>
       )
+
+    if(!str)
+      return null;
     
     return (
       <>
@@ -47,7 +50,6 @@ const Contact = ({ route }) => {
 
   const ContactInfoCard = ({contact}) => (
     <View style={[styles.container, { flexDirection: 'row', }]} >
-
       <View style={[styles.row, { marginLeft: 20 }, { justifyContent: 'center' }]}>
         <Avatar
           size="large"
@@ -58,19 +60,57 @@ const Contact = ({ route }) => {
       </View>
 
       <View style={styles.row}>
-        <ContactProp str={contact.givenName} title={'Prénom'}/>
+        <ContactProp 
+        str={contact.givenName}
+        title={'Prénom'}
+        onChange={ prop => {
+          let tempContact = { ...contact }
+          tempContact.givenName = prop
+          editContact(tempContact)
+        }}/>
 
-        <ContactProp str={contact.phoneNumbers.length > 0 ? contact.phoneNumbers[0].number : ''} title={'N° téléphone'}/>
+        <ContactProp 
+        str={contact.phoneNumbers.length > 0 ? contact.phoneNumbers[0].number : ''} 
+        title={'N° téléphone'}
+        onChange={ prop => {
+          let tempContact = { ...contact }
+          tempContact.phoneNumbers.push({number: prop})
+          editContact(tempContact)
+        }}/>
+
       </View>
 
       <View style={styles.row}>
-        <ContactProp str={contact.familyName} title={'Nom'}/>
+        <ContactProp 
+        str={contact.familyName} 
+        title={'Nom'}
+        onChange={ prop => {
+          let tempContact = { ...contact }
+          tempContact.familyName = prop
+          editContact(tempContact)
+        }}/>
       </View>
 
     </View>
   )
 
   const ContactDescriptionCard = ({contact}) => {
+    if(isEditing)
+      return (
+        <View style={styles.container}>
+          <Text category='label' style={styles.text}>Description</Text>
+          <TextInput 
+          style={{color:'#a0a0a0'}}
+          onChangeText={ prop => {
+            let tempContact = { ...contact }
+            tempContact.description = prop
+            editContact(tempContact)
+          }}>
+            {contact.description}
+          </TextInput>
+        </View>
+      )
+
     if(!contact.description)
       return null
     
@@ -78,13 +118,36 @@ const Contact = ({ route }) => {
       <View style={styles.container}>
         <Text category='label' style={styles.text}>Description</Text>
         <Text>{contact.description}</Text>
-        {/* TODO description */}
       </View>
     )
   }
 
-  const MailsAdress = ({list, hasNext}) => {
-    if(list.length == 0)
+  const ContactInfo = ({str, title, onChange}) => {
+    if(isEditing)
+      return (
+        <>
+          <Text category='label'>{title}</Text>
+          <TextInput 
+          style={{color:'#a0a0a0', marginBottom: 3}}
+          onChangeText={onChange}>
+            {str}
+          </TextInput>
+        </>
+      )
+
+    if(!str)
+      return null;
+    
+    return (
+      <>
+        <Text category='label'>{title}</Text>
+        <Text style={{marginBottom: 3}}>{str}</Text>
+      </>
+    )
+  }
+
+  const MailsAdress = ({list, hasNext}) => {    
+    if(list.length == 0 && !isEditing)
       return null
 
     return (
@@ -103,20 +166,38 @@ const Contact = ({ route }) => {
           <View>
             {list.map((mail, id) => (
               <View key={id} style={{justifyContent:'center', flex:1}}>
-                <Text category='label'>{mail.label}</Text>
-                <Text style={{marginBottom: 3}}>{mail.email}</Text>
+                <ContactInfo 
+                title={mail.label} 
+                str={mail.email}
+                onChange={ prop => {
+                  let tempContact = { ...contact }
+                  tempContact.emailAddresses[id].email = prop
+                  editContact(tempContact)
+                }}/>
               </View>
               ))}
+            { isEditing ? 
+              <View style={{justifyContent:'center', flex:1}}>
+                <TextInput 
+                placeholder={"mail adress"} 
+                style={{color:'#a0a0a0'}} 
+                onChangeText={ prop => {
+                  let tempContact = { ...contact }
+                  tempContact.emailAddresses.push({email: prop, label: 'Home'})
+                  editContact(tempContact)
+                }}/>
+              </View>
+            : null}
           </View>
           
         </View>
-        {hasNext ? <Divider style={{marginBottom: 10}}/> : null}
+        {(hasNext || isEditing) ? <Divider style={{marginBottom: 10}}/> : null}
       </>
     )
   }
 
   const ContactAdress = ({list, hasNext}) => {
-    if(list.length == 0)
+    if(list.length == 0 && !isEditing)
       return null
 
     return (
@@ -135,10 +216,14 @@ const Contact = ({ route }) => {
           <View>
             {list.map((address, id) => (
               <View key={id} style={{justifyContent:'center', flex:1}}>
-                <Text category='label'>{address.label}</Text>
-                <Text style={{marginBottom: 3}}>{address.formattedAddress}</Text>
+                <ContactInfo title={address.label} str={address.formattedAddress}/>
               </View>
             ))}
+            { isEditing ? 
+              <View style={{justifyContent:'center', flex:1}}>
+                <TextInput placeholder={"adress"} style={{color:'#a0a0a0'}} />
+              </View>
+            : null}
           </View>
         </View>
         {hasNext ? <Divider style={{marginBottom: 10}}/> : null}
@@ -147,7 +232,7 @@ const Contact = ({ route }) => {
   }
 
   const AdditionalPhoneNumbers = ({list, hasNext}) => {
-    if(list.length < 2)
+    if(list.length < 2 && !isEditing)
       return null
 
     list.shift()
@@ -168,27 +253,29 @@ const Contact = ({ route }) => {
           <View>
             {list.map((phone, id) => (
               <View key={id} style={{justifyContent:'center', flex:1}}>
-                <Text category='label'>{phone.label}</Text>
-                <Text style={{marginBottom: 3}}>{phone.number}</Text>
+                <ContactInfo title={phone.label} str={phone.number}/>
               </View>
             ))}
+            { isEditing ? 
+              <View style={{justifyContent:'center', flex:1}}>
+                <TextInput placeholder={"phone number"} style={{color:'#a0a0a0'}} />
+              </View>
+            : null}
           </View>
         </View>
-        {hasNext ? <Divider style={{marginBottom: 10}}/> : null}
+        {(hasNext || isEditing) ? <Divider style={{marginBottom: 10}}/> : null}
       </>
     )
   }
 
   const ContactAllInformations = ({contact}) => {
-    let checker = arr => arr.every(Boolean);
-    console.log(contact)
     let conditions = [
       contact.phoneNumbers.length >= 2,
       contact.emailAddresses.length > 0,
       contact.postalAddresses.length > 0
     ]
 
-    if(!(conditions.includes(true)))
+    if(!(conditions.includes(true)) && !isEditing)
       return null
 
     return (
@@ -202,16 +289,45 @@ const Contact = ({ route }) => {
     )
   }
 
+  const renderBackAction = () => (
+    <TopNavigationAction
+      icon={isEditing ? CloseIcon : ArrowIosBackIcon}
+      onPress={() => {
+        if(isEditing) {
+          setEditor(false)
+          contact = getContactById((route.params).contact.id, contacts)
+        }
+        else
+          navigation.goBack()
+      }}
+    />
+  );
+
   const renderRightActions = () => (
+
     <React.Fragment>
+      <TopNavigationAction 
+      icon={isFavoris? StarIcon : StarOutlineIcon}
+      onPress={() => {
+        if(isFavoris){
+          //TODO Changement d'état
+          contact.favoris = false
+          updateContactById(contact.id, contact, contacts, setContacts)
+        }else{
+          contact.favoris = true
+          updateContactById(contact.id, contact, contacts, setContacts)
+        }
+        setFavoris(!isFavoris)
+      }}/>
       <TopNavigationAction 
       icon={isEditing ? Checkmark : EditIcon}
       onPress={() => {
         if(isEditing) {
-          //TODO APPLY MODIFICATION
+          updateContactById(contact.id, contact, contacts, setContacts)
         }
         setEditor(!isEditing)
-      }}/>
+      }}
+      />
     </React.Fragment>
   );
 

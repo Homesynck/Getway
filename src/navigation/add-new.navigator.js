@@ -6,7 +6,7 @@ import AddContact from '../scenes/addForm/add-contact.screen';
 const Stack = createStackNavigator();
 
 export const AddNewNavigator = () => (
-  <Stack.Navigator headerMode='none'>
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="AddContact" component={AddContact} />
   </Stack.Navigator>
 );
