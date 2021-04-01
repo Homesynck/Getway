@@ -18,9 +18,13 @@ const Contact = ({ route }) => {
   const navigation = useNavigation();
 
   const [ isEditing, setEditor ] = useState(false) 
+
+  const [ isFavoris, setFavoris] = useState(contact.favoris)
+  
   const editContact = (c) => contact = c
 
   const ContactProp = ({str, title, onChange = null}) => {
+  
     if(isEditing)
       return (
         <>
@@ -300,7 +304,19 @@ const Contact = ({ route }) => {
   );
 
   const renderRightActions = () => (
+
     <React.Fragment>
+      <TopNavigationAction 
+      icon={isFavoris? StarIcon : StarOutlineIcon}
+      onPress={() => {
+        if(isFavoris){
+          //TODO Changement d'état
+          contact.favoris = false
+        }else{
+          contact.favoris = true
+        }
+        setFavoris(!isFavoris)
+      }}/>
       <TopNavigationAction 
       icon={isEditing ? Checkmark : EditIcon}
       onPress={() => {
