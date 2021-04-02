@@ -99,29 +99,31 @@ const Dashboard = (props) => {
       contactsArr.push(contacts[0])
     }
     return (
-      <View style={styles.center}>
-        <View style={[styles.container, styles.long_box]}>
-          {contactsArr.map((contact, id) => {
-            return (
-              <React.Fragment key={id}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Contact', { contact: contact })}
-                  style={styles.favoris}
-                >
-                  <MyAvatar contact={contact} size={'small'} color={'#C1AB9A'} />
-                  <View style={styles.icon}>
-                    <Text category="s1" style={styles.text}>{contact.displayName}</Text>
-                  </View>
-                  <Star 
-                  outline={contact.favoris}
-                  />
-                </TouchableOpacity>
-                {id < contactsArr.length - 1 ? <Divider/> : null }
-              </React.Fragment>
-            )
-          })}
+      <ScrollView>
+        <View style={styles.center}>
+          <View style={[styles.container, styles.long_box]}>
+            {contactsArr.map((contact, id) => {
+              return (
+                <React.Fragment key={id}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('Contact', { contact: contact })}
+                    style={styles.favoris}
+                  >
+                    <MyAvatar contact={contact} size={'small'} color={'#C1AB9A'} />
+                    <View style={styles.icon}>
+                      <Text category="s1" style={styles.text}>{contact.displayName}</Text>
+                    </View>
+                    <Star 
+                    outline={contact.favoris}
+                    />
+                  </TouchableOpacity>
+                  {id < contactsArr.length - 1 ? <Divider/> : null }
+                </React.Fragment>
+              )
+            })}
+          </View>
         </View>
-      </View>
+      </ScrollView>
     )
   }
 

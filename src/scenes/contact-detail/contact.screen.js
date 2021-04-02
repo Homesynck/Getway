@@ -12,16 +12,26 @@ import { updateContactById, getContactById } from '../../modules/contact/contact
 const Contact = ({ route }) => {
   const { contacts, setContacts } = useContext(ContactsContext)
 
-  //TODO useRoute hook here
-  let contact = getContactById((route.params).contact.id, contacts);
+  //TODO useRoute hook here 
+  let tpContact = {...getContactById((route.params).contact.id, contacts)};
+  console.log("LOADED CONTACT: ", tpContact.phoneNumbers)
 
   const navigation = useNavigation();
 
   const [ isEditing, setEditor ] = useState(false) 
 
-  const [ isFavoris, setFavoris] = useState(contact.favoris)
+  var onEditIndex = {
+    phone: null,
+    mail: null,
+    adress: null
+  }
+
+  const [ isFavoris, setFavoris] = useState(tpContact.favoris)
   
-  const editContact = (c) => contact = c
+  const editContact = (c) => {
+    console.log("changed phone number to: ", c.phoneNumbers)
+    tpContact = c
+  }
 
   const ContactProp = ({str, title, onChange = null}) => {
   
@@ -31,8 +41,8 @@ const Contact = ({ route }) => {
           <Text category='label'>{title}</Text>
           <TextInput 
           style={{color:'#a0a0a0'}}
-          onChangeText={onChange}>
-            {str}
+          onChangeText={onChange}
+          defaultValue={str}>
           </TextInput>
         </>
       )
@@ -73,8 +83,9 @@ const Contact = ({ route }) => {
         str={contact.phoneNumbers.length > 0 ? contact.phoneNumbers[0].number : ''} 
         title={'N° téléphone'}
         onChange={ prop => {
-          let tempContact = { ...contact }
+          let tempContact = { ...tpContact }
           tempContact.phoneNumbers[0] = {number: prop}
+          console.log("changed phone number (2) to", tempContact.phoneNumbers)
           editContact(tempContact)
         }}/>
 
@@ -85,7 +96,7 @@ const Contact = ({ route }) => {
         str={contact.familyName} 
         title={'Nom'}
         onChange={ prop => {
-          let tempContact = { ...contact }
+          let tempContact = { ...tpContact }
           tempContact.familyName = prop
           editContact(tempContact)
         }}/>
@@ -102,7 +113,7 @@ const Contact = ({ route }) => {
           <TextInput 
           style={{color:'#a0a0a0'}}
           onChangeText={ prop => {
-            let tempContact = { ...contact }
+            let tempContact = { ...tpContact }
             tempContact.description = prop
             editContact(tempContact)
           }}>
@@ -170,7 +181,7 @@ const Contact = ({ route }) => {
                 title={mail.label} 
                 str={mail.email}
                 onChange={ prop => {
-                  let tempContact = { ...contact }
+                  let tempContact = { ...tpContact }
                   tempContact.emailAddresses[id].email = prop
                   editContact(tempContact)
                 }}/>
@@ -182,8 +193,10 @@ const Contact = ({ route }) => {
                 placeholder={"mail adress"} 
                 style={{color:'#a0a0a0'}} 
                 onChangeText={ prop => {
-                  let tempContact = { ...contact }
-                  tempContact.emailAddresses[0] = {email: prop, label: 'Home'}
+                  let tempContact = { ...tpContact }
+                  if (onEditIndex.mail == null)
+                    onEditIndex.mail = (tempContact.emailAddresses.length > 0) ? tempContact.emailAddresses.length : 0;
+                  tempContact.emailAddresses[onEditIndex.mail] = {email: prop, label: 'Home'}
                   editContact(tempContact)
                 }}/>
               </View>
@@ -221,7 +234,16 @@ const Contact = ({ route }) => {
             ))}
             { isEditing ? 
               <View style={{justifyContent:'center', flex:1}}>
-                <TextInput placeholder={"adress"} style={{color:'#a0a0a0'}} />
+                <TextInput 
+                  placeholder={"adress"} 
+                  style={{color:'#a0a0a0'}}
+                  onChangeText={ prop => {
+                    let tempContact = { ...tpContact }
+                    if (onEditIndex.adress == null)
+                      onEditIndex.adress = (tempContact.postalAddresses.length > 0) ? tempContact.postalAddresses.length : 0;
+                    tempContact.postalAddresses[onEditIndex.adress] = {formattedAddress: prop, label: 'Home'}
+                    editContact(tempContact)
+                  }} />
               </View>
             : null}
           </View>
@@ -256,9 +278,19 @@ const Contact = ({ route }) => {
                 <ContactInfo title={phone.label} str={phone.number}/>
               </View>
             ))}
-            { isEditing ? 
+            { (isEditing && tpContact.phoneNumbers.length >= 1) ? 
               <View style={{justifyContent:'center', flex:1}}>
-                <TextInput placeholder={"phone number"} style={{color:'#a0a0a0'}} />
+                <TextInput 
+                placeholder={"phone number"} 
+                style={{color:'#a0a0a0'}}
+                onChangeText={ prop => {
+                  let tempContact = { ...tpContact }
+                  if (onEditIndex.adress == null)
+                    onEditIndex.phone = tempContact.phoneNumbers.length;
+                  tempContact.phoneNumbers[onEditIndex.phone] = {number: prop, label: 'Home'}
+                  console.log("changed phone number (3)", tempContact.phoneNumbers)
+                  editContact(tempContact)
+                }} />
               </View>
             : null}
           </View>
@@ -295,7 +327,13 @@ const Contact = ({ route }) => {
       onPress={() => {
         if(isEditing) {
           setEditor(false)
-          contact = getContactById((route.params).contact.id, contacts)
+          onEditIndex = {
+            phone: null,
+            mail: null,
+            adress: null
+          }
+          console.log("Rollback to : ", getContactById((route.params).contact.id, contacts).phoneNumbers )
+          tpContact = getContactById((route.params).contact.id, contacts)
         }
         else
           navigation.goBack()
@@ -306,24 +344,33 @@ const Contact = ({ route }) => {
   const renderRightActions = () => (
 
     <React.Fragment>
-      <TopNavigationAction 
-      icon={isFavoris? StarIcon : StarOutlineIcon}
-      onPress={() => {
-        if(isFavoris){
-          //TODO Changement d'état
-          contact.favoris = false
-          updateContactById(contact.id, contact, setContacts)
-        }else{
-          contact.favoris = true
-          updateContactById(contact.id, contact, setContacts)
-        }
-        setFavoris(!isFavoris)
-      }}/>
+      {!isEditing ?
+        <TopNavigationAction 
+        icon={isFavoris? StarIcon : StarOutlineIcon}
+        onPress={() => {
+          if(isFavoris){
+            //TODO Changement d'état
+            tpContact.favoris = false
+            updateContactById(tpContact.id, tpContact, setContacts)
+          }else{
+            tpContact.favoris = true
+            updateContactById(tpContact.id, tpContact, setContacts)
+          }
+          setFavoris(!isFavoris)
+        }}/>
+      : null }
+    
       <TopNavigationAction 
       icon={isEditing ? Checkmark : EditIcon}
       onPress={() => {
         if(isEditing) {
-          updateContactById(contact.id, contact, setContacts)
+          console.log("Commited phone number to: ", tpContact.phoneNumbers)
+          updateContactById(tpContact.id, tpContact, setContacts)
+          onEditIndex = {
+            phone: null,
+            mail: null,
+            adress: null
+          }
         }
         setEditor(!isEditing)
       }}
@@ -336,18 +383,18 @@ const Contact = ({ route }) => {
     <ScrollView contentContainerStyle={{flexGrow: 1}}>
       <SafeAreaView>
         <TopNavigation
-          title={contact.displayName}
+          title={tpContact.displayName}
           accessoryLeft={renderBackAction}
           accessoryRight={renderRightActions}
         />
         <Divider />
         <View >
 
-          <ContactInfoCard contact={contact}/>
+          <ContactInfoCard contact={tpContact}/>
 
-          <ContactDescriptionCard contact={contact} />
+          <ContactDescriptionCard contact={tpContact} />
 
-          <ContactAllInformations contact={contact} />
+          <ContactAllInformations contact={tpContact} />
 
         </View>
       </SafeAreaView>
