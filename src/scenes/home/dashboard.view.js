@@ -99,55 +99,54 @@ const Dashboard = (props) => {
       contactsArr.push(contacts[0])
     }
     return (
-      <ScrollView>
-        <View style={styles.center}>
-          <View style={[styles.container, styles.long_box]}>
-            {contactsArr.map((contact, id) => {
-              return (
-                <React.Fragment key={id}>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('Contact', { contact: contact })}
-                    style={styles.favoris}
-                  >
-                    <MyAvatar contact={contact} size={'small'} color={'#C1AB9A'} />
-                    <View style={styles.icon}>
-                      <Text category="s1" style={styles.text}>{contact.displayName}</Text>
-                    </View>
-                    <Star 
-                    outline={contact.favoris}
-                    />
-                  </TouchableOpacity>
-                  {id < contactsArr.length - 1 ? <Divider/> : null }
-                </React.Fragment>
-              )
-            })}
-          </View>
+      <View style={styles.center}>
+        <View style={[styles.container, styles.long_box]}>
+          {contactsArr.map((contact, id) => {
+            return (
+              <React.Fragment key={id}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Contact', { contact: contact })}
+                  style={styles.favoris}
+                >
+                  <MyAvatar contact={contact} size={'small'} color={'#C1AB9A'} />
+                  <View style={styles.icon}>
+                    <Text category="s1" style={styles.text}>{contact.displayName}</Text>
+                  </View>
+                  <Star 
+                  outline={contact.favoris}
+                  />
+                </TouchableOpacity>
+                {id < contactsArr.length - 1 ? <Divider/> : null }
+              </React.Fragment>
+            )
+          })}
         </View>
-      </ScrollView>
+      </View>
     )
   }
 
   
   return (
     <SafeAreaView>
-      <View style={styles.image}>
-        <Student height={290} width={250} />
-        <Text style={styles.title}>MON ESPACE</Text>
-      </View>
-
-      <View style={[{ flexDirection: "row" }, styles.center]}>
-        <View style={[styles.container, styles.box, styles.center]} >
-          <Text style={styles.number}>{contacts.length}</Text>
-          <Text category="s1" style={{ color: "#E46F4C" }}>
-            contact{contacts.length > 1 ? "s" : null}
-          </Text>
+      <ScrollView>
+        <View style={styles.image}>
+          <Student height={290} width={250} />
+          <Text style={styles.title}>MON ESPACE</Text>
         </View>
 
-        <BigContact contact={contacts.length > 0 ? contacts[contacts.length - 1] : null} />
-      </View>
+        <View style={[{ flexDirection: "row" }, styles.center]}>
+          <View style={[styles.container, styles.box, styles.center]} >
+            <Text style={styles.number}>{contacts.length}</Text>
+            <Text category="s1" style={{ color: "#E46F4C" }}>
+              contact{contacts.length > 1 ? "s" : null}
+            </Text>
+          </View>
 
-      <FavoriteCard contacts={contacts} />
+          <BigContact contact={contacts.length > 0 ? contacts[contacts.length - 1] : null} />
+        </View>
 
+        <FavoriteCard contacts={contacts} />
+        </ScrollView>
     </SafeAreaView>
   )
 }
