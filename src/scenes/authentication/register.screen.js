@@ -22,9 +22,11 @@ const RegisterNumber = ({ user, update, nextStep }) => {
 
   const handleRegistrationNumber = async e => {
     e.preventDefault();
+    const nb = "+33"+number.substring(1, number.length);
+
     try {
-      await Register.sendPhoneNumber(number);
-      user.phone = number;
+      await Register.sendPhoneNumber(nb);
+      user.phone = nb;
       update(user);
       nextStep();
     } catch (error) {
@@ -83,17 +85,16 @@ const VerifyNumber = ({ nextStep }) => {
   }
 
   const handleVerifyNumber = async e => {
-    numericCode = code.join('')
-    console.log("VERIFYING CODE: " + numericCode)
+    const numericCode = code.join('');
+    console.log("VERIFYING CODE: " + numericCode);
     e.preventDefault();
-    nextStep();
-    // try {
-    //     // TODO call verifyNumber method from bridge
-    // } catch (error) {
-    //     //TODO update state
-    //     console.error(error);
-    //     setError(error);
-    // }
+    try {
+      await Register.setToken(numericCode);
+      nextStep();
+    } catch (error) {
+        console.error(error);
+        setError(error);
+    }
   };
 
   return (

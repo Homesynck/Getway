@@ -8,6 +8,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.github.homesynck.Response;
+import com.github.homesynck.connect.Connection;
 import com.github.homesynck.connect.Session;
 
 public class Register extends ReactContextBaseJavaModule {
@@ -30,12 +31,17 @@ public class Register extends ReactContextBaseJavaModule {
 
         String username = user.getString("username");
         String password = user.getString("password");
-        String token = "";
 
-        Response registerResponse = session.register(username, password, token);
+        Response registerResponse = session.register(username, password);
         if (!registerResponse.isCorrect())
             signedPromise.reject("register", registerResponse.getResponse());
         signedPromise.resolve(registerResponse.getResponse());
+    }
+
+    @ReactMethod
+    public void setToken(String token, Promise tokenPromise) {
+        Session.getSession().setPhoneToken(token);
+        tokenPromise.resolve("Token received!");
     }
 
     @ReactMethod
