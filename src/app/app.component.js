@@ -40,6 +40,54 @@ const requestReadContactsPermission = async () => {
   }
 };
 
+const requestReadExternalStoragePermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      {
+        title: "Read external storage",
+        message:
+          "This app need to have access to your external storage",
+        buttonPositive: "I give the permission"
+      }
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("You can use the read external storage feature");
+    } else {
+      console.log("Read contacts permission denied");
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
+
+const requestWriteExternalStoragePermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      {
+        title: "Write external storage",
+        message:
+          "This app need to have access to your external storage",
+        buttonPositive: "I give the permission"
+      }
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("You can use the read external storage feature");
+    } else {
+      console.log("Read contacts permission denied");
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
+
+const askPermissions = async () => {
+  await requestReadContactsPermission();
+  await requestReadExternalStoragePermission();
+  await requestWriteExternalStoragePermission();
+}
+
 const App = () => {
 
 
@@ -48,9 +96,9 @@ const App = () => {
   const [authState, setAuthState] = useState({status: 'NOT_SIGNED_IN'}) //NOT_SIGNED_IN
   const [contacts, setContacts] = useState([]);
 
-  // useEffect(() => {
-  //   setTimeout(() => requestReadContactsPermission(), 200);
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => askPermissions(), 200);
+  }, []);
 
 
   //On execute avant toutes les tâches d'initialisations
